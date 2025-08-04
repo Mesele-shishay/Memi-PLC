@@ -1,103 +1,275 @@
-import Image from "next/image";
+import React from "react";
+import Header from "@/components/Header";
+import HeroSection from "@/components/HeroSection";
+import TrustedSection from "@/components/TrustedSection";
+import SupportSection from "@/components/SupportSection";
+import FeaturesSection from "@/components/FeaturesSection";
+import BenefitSection from "@/components/BenefitSection";
+import PricingSection from "@/components/PricingSection";
+import TestimonialSection from "@/components/TestimonialSection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // Header data
+  const headerData = {
+    logo: "Memi PLC",
+    navLinks: [
+      { label: "Home", href: "#home" },
+      { label: "Solutions", href: "#solutions" },
+      { label: "Services", href: "#services" },
+      { label: "About", href: "#about" },
+      { label: "Contact", href: "#contact" },
+    ],
+    ctaButtons: [
+      { label: "Get Quote", variant: "secondary" as const },
+      { label: "Get Started", variant: "primary" as const },
+    ],
+  };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  // Hero section data
+  const heroData = {
+    title: "Advanced Memory & Electronic Solutions for Modern Business",
+    subtitle:
+      "Empowering businesses with cutting-edge memory solutions, electronic components, and software development services. Transform your technology infrastructure with our innovative solutions.",
+    ctaButtons: [
+      { label: "Explore Solutions", variant: "primary" as const },
+      { label: "Schedule Demo", variant: "secondary" as const },
+    ],
+    badges: [
+      { label: "Industry Leader", type: "rating" as const },
+      { label: "Since 2000", value: "24+ Years", type: "discount" as const },
+      { label: "Enterprise", value: "Solutions", type: "price" as const },
+    ],
+    image: {
+      src: "/hero-image.jpg",
+      alt: "Professional technology solutions and electronic components",
+    },
+  };
+
+  // Trusted section data
+  const trustedData = {
+    title: "Trusted by Leading Technology Companies Worldwide",
+    brands: [
+      { name: "Intel", logo: "💻", alt: "Intel" },
+      { name: "Samsung", logo: "📱", alt: "Samsung" },
+      { name: "Microsoft", logo: "🖥️", alt: "Microsoft" },
+      { name: "IBM", logo: "🔧", alt: "IBM" },
+      { name: "Oracle", logo: "🗄️", alt: "Oracle" },
+    ],
+  };
+
+  // Support section data
+  const supportData = {
+    title: "Comprehensive Technology Solutions & Global Support",
+    subtitle:
+      "Delivering enterprise-grade memory solutions and electronic components with 24/7 worldwide support.",
+    features: [
+      {
+        icon: "🔧",
+        title: "Technical Support",
+        description:
+          "Expert technical support and consultation for all your memory and electronic component needs.",
+      },
+      {
+        icon: "📊",
+        title: "Performance Analytics",
+        description:
+          "Advanced analytics and monitoring tools to optimize your technology infrastructure.",
+      },
+      {
+        icon: "🚀",
+        title: "Innovation",
+        description:
+          "Cutting-edge research and development in memory technology and software solutions.",
+      },
+    ],
+    ratings: [
+      { company: "techreview", score: "4.9 / 5", rating: 4.9 },
+      { company: "enterprise", score: "4.8 / 5", rating: 4.8 },
+    ],
+  };
+
+  // Features section data
+  const featuresData = {
+    title: "Advanced Technology Solutions We Offer",
+    subtitle:
+      "Discover our comprehensive range of memory solutions, electronic components, and software development services designed to enhance your business operations.",
+    features: [
+      {
+        title: "Memory Solutions",
+        description:
+          "High-performance memory components and systems designed for enterprise applications and critical computing environments.",
+      },
+      {
+        title: "Electronic Components",
+        description:
+          "Premium electronic components and semiconductors with guaranteed quality and reliability for your technology projects.",
+      },
+      {
+        title: "Software Development",
+        description:
+          "Custom software solutions and development services tailored to meet your specific business requirements and technical challenges.",
+      },
+    ],
+  };
+
+  // Benefits section data
+  const benefitsData = {
+    title: "Why Choose Memi PLC Technology Solutions",
+    benefits: [
+      {
+        id: "1",
+        text: "24/7 Technical Support & Expert Consultation",
+        completed: true,
+      },
+      {
+        id: "2",
+        text: "Enterprise-Grade Security & Reliability",
+        completed: true,
+      },
+      {
+        id: "3",
+        text: "Scalable Solutions for Growing Businesses",
+        completed: true,
+      },
+      {
+        id: "4",
+        text: "Cost-Effective Technology Infrastructure",
+        completed: true,
+      },
+      { id: "5", text: "Global Supply Chain & Fast Delivery", completed: true },
+    ],
+    testimonial: {
+      name: "Sarah Mitchell",
+      quote: "Outstanding technology solutions and exceptional support quality",
+      role: "CTO, TechCorp Industries",
+    },
+    image: {
+      src: "/benefit-image.jpg",
+      alt: "Professional working with advanced technology solutions",
+    },
+  };
+
+  // Pricing section data
+  const pricingData = {
+    title: "Entrepreneur Mastery Courses",
+    subtitle:
+      "Choose the learning path that fits your entrepreneurial journey and budget. From beginner to advanced business mastery.",
+    billingOptions: ["Monthly Access", "Annual Plan"],
+    plans: [
+      {
+        name: "Starter",
+        price: "$49",
+        period: "/month",
+        features: [
+          "Foundation Business Course",
+          "Basic Marketing Strategies",
+          "Financial Planning Basics",
+          "Community Access",
+          "Mobile Learning App",
+        ],
+        ctaText: "Start Learning",
+      },
+      {
+        name: "Professional",
+        price: "$97",
+        period: "/month",
+        highlight: "Most Popular Choice",
+        isPopular: true,
+        features: [
+          "All Starter Features",
+          "Advanced Business Strategy",
+          "Sales & Negotiation Mastery",
+          "Leadership Development",
+          "1-on-1 Monthly Coaching Call",
+          "Premium Templates & Tools",
+        ],
+        ctaText: "Go Professional",
+      },
+      {
+        name: "Enterprise",
+        price: "$197",
+        period: "/month",
+        features: [
+          "All Professional Features",
+          "Scale & Growth Accelerator",
+          "Investment & Funding Strategies",
+          "Weekly Group Coaching",
+          "Direct Mentor Access",
+          "Business Plan Review",
+          "Networking Mastermind Access",
+        ],
+        ctaText: "Master Entrepreneurship",
+      },
+    ],
+  };
+
+  // Testimonial section data
+  const testimonialData = {
+    title: "What Industry Leaders Say About Memi PLC",
+    testimonial: {
+      name: "David Chen",
+      quote:
+        "Memi PLC has been our trusted technology partner for over 5 years. Their memory solutions and electronic components have consistently exceeded our performance expectations, helping us deliver superior products to our customers.",
+      role: "Chief Technology Officer, InnovateTech Systems",
+    },
+    avatars: ["person1", "person2", "person3", "person4", "person5"],
+  };
+
+  // Footer data
+  const footerData = {
+    newsletter: {
+      title: "Stay Updated with Latest Technology Solutions",
+      placeholder: "Enter your business email",
+      buttonText: "Subscribe",
+    },
+    sections: [
+      {
+        title: "Solutions",
+        links: [
+          { label: "Memory Components", href: "#memory" },
+          { label: "Electronic Parts", href: "#electronics" },
+          { label: "Software Development", href: "#software" },
+          { label: "Technical Support", href: "#support" },
+        ],
+      },
+      {
+        title: "Services",
+        links: [
+          { label: "Consultation", href: "#consultation" },
+          { label: "Custom Solutions", href: "#custom" },
+          { label: "Technical Documentation", href: "#docs" },
+          { label: "Training Programs", href: "#training" },
+        ],
+      },
+      {
+        title: "Company",
+        links: [
+          { label: "About Memi PLC", href: "#about" },
+          { label: "Our Team", href: "#team" },
+          { label: "Careers", href: "#careers" },
+          { label: "News & Updates", href: "#news" },
+        ],
+      },
+    ],
+    legal: [
+      { label: "Terms of Service", href: "#terms" },
+      { label: "Privacy Policy", href: "#privacy" },
+    ],
+    copyright: "© 2024 Memi PLC. All rights reserved",
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header {...headerData} />
+      <HeroSection {...heroData} />
+      <TrustedSection {...trustedData} />
+      <SupportSection {...supportData} />
+      <FeaturesSection {...featuresData} />
+      <BenefitSection {...benefitsData} />
+      <PricingSection {...pricingData} />
+      <TestimonialSection {...testimonialData} />
+      <Footer {...footerData} />
     </div>
   );
 }
