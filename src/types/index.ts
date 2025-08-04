@@ -1,4 +1,4 @@
-// Core component interfaces for the Biccas landing page
+// Core component interfaces for the MEMi landing page
 
 export interface NavLink {
   label: string;

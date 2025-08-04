@@ -39,7 +39,7 @@ export default function Home() {
       { label: "Tigray-Based", type: "rating" as const },
       {
         label: "Youth Focused",
-        value: "300K+ Jobs",
+        value: "50+ Jobs",
         type: "discount" as const,
       },
       { label: "Global Vision", value: "2033 Goal", type: "price" as const },
@@ -109,7 +109,7 @@ export default function Home() {
     ],
     ratings: [
       { company: "Tigray Business Review", score: "4.9 / 5", rating: 4.9 },
-      { company: "Ethiopian Youth Development", score: "4.8 / 5", rating: 4.8 },
+      { company: "Ethiopian Youth", score: "4.8 / 5", rating: 4.8 },
     ],
   };
 

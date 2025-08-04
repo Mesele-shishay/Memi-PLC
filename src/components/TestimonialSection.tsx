@@ -136,7 +136,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 
             <div className="text-center sm:text-left sm:ml-8">
               <p className="text-white font-bold text-base sm:text-lg mb-1">
-                Join 500+ enterprise customers
+                Join 100+ enterprise customers
               </p>
               <p className="text-primary text-sm font-medium">
                 Trusted by technology leaders worldwide
@@ -169,20 +169,20 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                 ),
               },
               {
-                value: "10M+",
-                label: "Components Delivered",
-                icon: "📦",
+                value: "120M+",
+                label: "Ethiopian Users",
+                icon: "🇪🇹",
                 color: "from-primary to-accent",
               },
               {
-                value: "99.9%",
-                label: "System Reliability",
-                icon: "🚀",
-                color: "from-blue-400 to-purple-400",
+                value: "95%",
+                label: "Local Coverage",
+                icon: "🌍",
+                color: "from-green-400 to-emerald-400",
               },
             ].map((stat, index) => (
               <div key={index} className="group sm:col-span-1 lg:col-span-1">
-                <div className="relative bg-white/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <div className="relative bg-white/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 h-full">
                   {/* Gradient glow effect */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-r ${stat.color} rounded-xl sm:rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10`}
