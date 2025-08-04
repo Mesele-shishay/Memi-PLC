@@ -11,16 +11,19 @@ const PricingSection: React.FC<PricingSectionProps> = ({
 }) => {
   const [isYearly, setIsYearly] = useState(false);
 
-  // Convert USD to Ethiopian Birr (ETB)
-  // Current exchange rate: 1 USD ≈ 127 ETB
-  const convertToETB = (usdPrice: string): string => {
-    if (usdPrice === "Custom" || usdPrice === "Free") return usdPrice;
+  // Handle Ethiopian Birr prices
+  const parsePrice = (price: string): number => {
+    if (price === "Custom" || price === "Free") return 0;
 
-    const numericPrice = parseInt(usdPrice.replace("$", ""));
-    if (isNaN(numericPrice)) return usdPrice;
+    // Remove "ብር" and commas, then parse
+    const cleanPrice = price.replace("ብር", "").replace(/,/g, "").trim();
+    const numericPrice = parseInt(cleanPrice);
+    return isNaN(numericPrice) ? 0 : numericPrice;
+  };
 
-    const etbPrice = numericPrice * 127;
-    return `${etbPrice.toLocaleString()} Br`;
+  const formatPrice = (price: number): string => {
+    if (price === 0) return "Free";
+    return `${price.toLocaleString()} Br`;
   };
 
   return (
@@ -105,7 +108,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                     clipRule="evenodd"
                   />
                 </svg>
-                <span>Same 20% Annualy</span>
+                <span>Save 20% Annually</span>
               </div>
             )}
           </div>
@@ -188,21 +191,15 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                         plan.price !== "Custom" &&
                         plan.price !== "Free"
                           ? (() => {
-                              const numericPrice = parseInt(
-                                plan.price.replace("$", "")
-                              );
-                              const yearlyETB = Math.floor(
-                                numericPrice * 12 * 0.8 * 127
-                              );
-                              return `${yearlyETB.toLocaleString()} Br`;
+                              const monthlyPrice = parsePrice(plan.price);
+                              const yearlyPrice = Math.floor(
+                                monthlyPrice * 12 * 0.8
+                              ); // 20% discount
+                              return formatPrice(yearlyPrice);
                             })()
-                          : convertToETB(plan.price)}
+                          : plan.price}
                         <span className="text-lg font-medium text-slate-500 ml-1">
-                          {isYearly
-                            ? "/Year"
-                            : plan.period
-                            ? "/Month"
-                            : "/Month"}
+                          {isYearly ? "/Year" : plan.period || "/Month"}
                         </span>
                       </div>
 
@@ -211,13 +208,11 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                         plan.price !== "Free" && (
                           <div className="text-sm text-slate-500 line-through">
                             {(() => {
-                              const numericPrice = parseInt(
-                                plan.price.replace("$", "")
+                              const monthlyPrice = parsePrice(plan.price);
+                              const fullYearlyPrice = Math.floor(
+                                monthlyPrice * 12
                               );
-                              const fullYearlyETB = Math.floor(
-                                numericPrice * 12 * 127
-                              );
-                              return `${fullYearlyETB.toLocaleString()} Br`;
+                              return formatPrice(fullYearlyPrice);
                             })()}
                             /Year
                           </div>

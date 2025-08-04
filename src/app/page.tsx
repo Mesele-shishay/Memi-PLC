@@ -12,206 +12,235 @@ import Footer from "@/components/Footer";
 export default function Home() {
   // Header data
   const headerData = {
-    logo: "Memi PLC",
+    logo: "MEMi Trading PLC",
     navLinks: [
       { label: "Home", href: "#home" },
-      { label: "Solutions", href: "#solutions" },
-      { label: "Services", href: "#services" },
       { label: "About", href: "#about" },
+      { label: "Products", href: "#products" },
+      { label: "Youth Programs", href: "#youth" },
       { label: "Contact", href: "#contact" },
     ],
     ctaButtons: [
-      { label: "Get Quote", variant: "secondary" as const },
-      { label: "Get Started", variant: "primary" as const },
+      { label: "Join Us", variant: "secondary" as const },
+      { label: "Partner With Us", variant: "primary" as const },
     ],
   };
 
   // Hero section data
   const heroData = {
-    title: "Advanced Memory & Electronic Solutions for Modern Business",
+    title: "Transforming Tigray's Potential into Global Opportunities",
     subtitle:
-      "Empowering businesses with cutting-edge memory solutions, electronic components, and software development services. Transform your technology infrastructure with our innovative solutions.",
+      "MEMi Trading PLC is a fast-growing company based in Tigray, Ethiopia, creating a global platform for transforming local products, services, and youth potential into sustainable economic opportunities.",
     ctaButtons: [
-      { label: "Explore Solutions", variant: "primary" as const },
-      { label: "Schedule Demo", variant: "secondary" as const },
+      { label: "Explore Opportunities", variant: "primary" as const },
+      { label: "Join Our Mission", variant: "secondary" as const },
     ],
     badges: [
-      { label: "Industry Leader", type: "rating" as const },
-      { label: "Since 2000", value: "24+ Years", type: "discount" as const },
-      { label: "Enterprise", value: "Solutions", type: "price" as const },
+      { label: "Tigray-Based", type: "rating" as const },
+      {
+        label: "Youth Focused",
+        value: "300K+ Jobs",
+        type: "discount" as const,
+      },
+      { label: "Global Vision", value: "2033 Goal", type: "price" as const },
     ],
     image: {
       src: "/hero-image.jpg",
-      alt: "Professional technology solutions and electronic components",
+      alt: "MEMi Trading PLC - Empowering Tigray's youth and local products globally",
     },
   };
 
   // Trusted section data
   const trustedData = {
-    title: "Trusted by Leading Technology Companies Worldwide",
+    title: "Partners in Tigray's Economic Transformation",
     brands: [
-      { name: "Intel", logo: "💻", alt: "Intel" },
-      { name: "Samsung", logo: "📱", alt: "Samsung" },
-      { name: "Microsoft", logo: "🖥️", alt: "Microsoft" },
-      { name: "IBM", logo: "🔧", alt: "IBM" },
-      { name: "Oracle", logo: "🗄️", alt: "Oracle" },
+      {
+        name: "Tigray Youth Association",
+        logo: "👥",
+        alt: "Tigray Youth Association",
+      },
+      {
+        name: "Local Farmers Cooperative",
+        logo: "🌾",
+        alt: "Local Farmers Cooperative",
+      },
+      {
+        name: "Tigray Chamber of Commerce",
+        logo: "🏢",
+        alt: "Tigray Chamber of Commerce",
+      },
+      {
+        name: "Regional Development Agency",
+        logo: "🏛️",
+        alt: "Regional Development Agency",
+      },
+      {
+        name: "Ethiopian Export Promotion",
+        logo: "📦",
+        alt: "Ethiopian Export Promotion",
+      },
     ],
   };
 
   // Support section data
   const supportData = {
-    title: "Comprehensive Technology Solutions & Global Support",
+    title: "Empowering Tigray's Youth & Local Products Globally",
     subtitle:
-      "Delivering enterprise-grade memory solutions and electronic components with 24/7 worldwide support.",
+      "Building sustainable economic opportunities through innovation, excellence, and inclusiveness while showcasing Tigray's potential on the global economic stage.",
     features: [
       {
-        icon: "🔧",
-        title: "Technical Support",
+        icon: "🎯",
+        title: "Youth Empowerment",
         description:
-          "Expert technical support and consultation for all your memory and electronic component needs.",
+          "Providing meaningful, tech-driven job opportunities for Tigray's youth, aiming to create over 300,000 jobs by 2033.",
       },
       {
-        icon: "📊",
-        title: "Performance Analytics",
+        icon: "🌍",
+        title: "Global Platform",
         description:
-          "Advanced analytics and monitoring tools to optimize your technology infrastructure.",
+          "Transforming local Tigray products and services into international market opportunities with sustainable development focus.",
       },
       {
         icon: "🚀",
-        title: "Innovation",
+        title: "Innovation Hub",
         description:
-          "Cutting-edge research and development in memory technology and software solutions.",
+          "Leading with excellence, innovation, and inclusiveness to build an internationally recognized brand from Tigray.",
       },
     ],
     ratings: [
-      { company: "techreview", score: "4.9 / 5", rating: 4.9 },
-      { company: "enterprise", score: "4.8 / 5", rating: 4.8 },
+      { company: "Tigray Business Review", score: "4.9 / 5", rating: 4.9 },
+      { company: "Ethiopian Youth Development", score: "4.8 / 5", rating: 4.8 },
     ],
   };
 
   // Features section data
   const featuresData = {
-    title: "Advanced Technology Solutions We Offer",
+    title: "Our Core Services & Programs",
     subtitle:
-      "Discover our comprehensive range of memory solutions, electronic components, and software development services designed to enhance your business operations.",
+      "Discover how MEMi Trading PLC is creating sustainable economic opportunities through local product transformation and youth empowerment programs.",
     features: [
       {
-        title: "Memory Solutions",
+        title: "Local Product Transformation",
         description:
-          "High-performance memory components and systems designed for enterprise applications and critical computing environments.",
+          "Transforming Tigray's local products and services into globally competitive offerings, creating market access and sustainable economic growth for local communities.",
       },
       {
-        title: "Electronic Components",
+        title: "Youth Job Creation",
         description:
-          "Premium electronic components and semiconductors with guaranteed quality and reliability for your technology projects.",
+          "Empowering Tigray's youth with access to meaningful, tech-driven job opportunities, with a goal of creating over 300,000 youth jobs by 2033.",
       },
       {
-        title: "Software Development",
+        title: "Global Market Access",
         description:
-          "Custom software solutions and development services tailored to meet your specific business requirements and technical challenges.",
+          "Building international partnerships and market access for Tigray's products and services, promoting sustainable development through private-sector growth.",
       },
     ],
   };
 
   // Benefits section data
   const benefitsData = {
-    title: "Why Choose Memi PLC Technology Solutions",
+    title: "Why Choose MEMi Trading PLC",
     benefits: [
       {
         id: "1",
-        text: "24/7 Technical Support & Expert Consultation",
+        text: "Tigray-Based Company with Global Vision & Local Expertise",
         completed: true,
       },
       {
         id: "2",
-        text: "Enterprise-Grade Security & Reliability",
+        text: "Youth-Focused Programs Creating 300,000+ Job Opportunities",
         completed: true,
       },
       {
         id: "3",
-        text: "Scalable Solutions for Growing Businesses",
+        text: "Sustainable Development Through Private-Sector Growth",
         completed: true,
       },
       {
         id: "4",
-        text: "Cost-Effective Technology Infrastructure",
+        text: "Innovation & Excellence in Local Product Transformation",
         completed: true,
       },
-      { id: "5", text: "Global Supply Chain & Fast Delivery", completed: true },
+      {
+        id: "5",
+        text: "International Brand Building from Tigray to Global Markets",
+        completed: true,
+      },
     ],
     testimonial: {
-      name: "Sarah Mitchell",
-      quote: "Outstanding technology solutions and exceptional support quality",
-      role: "CTO, TechCorp Industries",
+      name: "Kidane Gebrehiwot",
+      quote:
+        "MEMi Trading PLC is transforming how we think about local products and youth opportunities in Tigray. Their vision for 2033 inspires us all.",
+      role: "Youth Program Coordinator, Tigray Region",
     },
     image: {
       src: "/benefit-image.jpg",
-      alt: "Professional working with advanced technology solutions",
+      alt: "MEMi Trading PLC team working on youth empowerment and local product development",
     },
   };
 
   // Pricing section data
   const pricingData = {
-    title: "Entrepreneur Mastery Courses",
+    title: "Youth Development & Training Programs",
     subtitle:
-      "Choose the learning path that fits your entrepreneurial journey and budget. From beginner to advanced business mastery.",
-    billingOptions: ["Monthly Access", "Annual Plan"],
+      "Choose the program that fits your journey in Tigray's economic transformation. From basic skills to advanced entrepreneurship training.",
+    billingOptions: ["Monthly Program", "Annual Program"],
     plans: [
       {
         name: "Starter",
-        price: "$49",
+        price: "ብር 1,500",
         period: "/month",
         features: [
-          "Foundation Business Course",
-          "Basic Marketing Strategies",
-          "Financial Planning Basics",
-          "Community Access",
-          "Mobile Learning App",
+          "Basic Skills Training",
+          "Local Product Knowledge",
+          "Market Access Introduction",
+          "Community Network Access",
+          "Mobile Learning Platform",
         ],
-        ctaText: "Start Learning",
+        ctaText: "Join Program",
       },
       {
         name: "Professional",
-        price: "$97",
+        price: "ብር 3,000",
         period: "/month",
         highlight: "Most Popular Choice",
         isPopular: true,
         features: [
           "All Starter Features",
-          "Advanced Business Strategy",
-          "Sales & Negotiation Mastery",
+          "Advanced Entrepreneurship Training",
+          "Global Market Strategies",
           "Leadership Development",
-          "1-on-1 Monthly Coaching Call",
-          "Premium Templates & Tools",
+          "1-on-1 Monthly Mentoring",
+          "Product Development Tools",
         ],
         ctaText: "Go Professional",
       },
       {
         name: "Enterprise",
-        price: "$197",
+        price: "ብር 6,000",
         period: "/month",
         features: [
           "All Professional Features",
-          "Scale & Growth Accelerator",
-          "Investment & Funding Strategies",
+          "International Market Access",
+          "Investment & Funding Support",
           "Weekly Group Coaching",
-          "Direct Mentor Access",
-          "Business Plan Review",
-          "Networking Mastermind Access",
+          "Direct Partner Access",
+          "Business Plan Development",
+          "Global Network Access",
         ],
-        ctaText: "Master Entrepreneurship",
+        ctaText: "Scale Your Business",
       },
     ],
   };
 
   // Testimonial section data
   const testimonialData = {
-    title: "What Industry Leaders Say About Memi PLC",
+    title: "What Tigray's Leaders Say About MEMi Trading PLC",
     testimonial: {
-      name: "David Chen",
+      name: "Martha Teklu",
       quote:
-        "Memi PLC has been our trusted technology partner for over 5 years. Their memory solutions and electronic components have consistently exceeded our performance expectations, helping us deliver superior products to our customers.",
-      role: "Chief Technology Officer, InnovateTech Systems",
+        "MEMi Trading PLC is not just a company; it's a movement that's empowering our youth and showcasing Tigray's potential to the world. Their commitment to creating 300,000 jobs by 2033 is exactly what our region needs.",
+      role: "Regional Development Director, Tigray",
     },
     avatars: ["person1", "person2", "person3", "person4", "person5"],
   };
@@ -219,35 +248,35 @@ export default function Home() {
   // Footer data
   const footerData = {
     newsletter: {
-      title: "Stay Updated with Latest Technology Solutions",
-      placeholder: "Enter your business email",
+      title: "Stay Updated with MEMi Trading PLC's Growth Journey",
+      placeholder: "Enter your email address",
       buttonText: "Subscribe",
     },
     sections: [
       {
-        title: "Solutions",
+        title: "Programs",
         links: [
-          { label: "Memory Components", href: "#memory" },
-          { label: "Electronic Parts", href: "#electronics" },
-          { label: "Software Development", href: "#software" },
-          { label: "Technical Support", href: "#support" },
+          { label: "Youth Empowerment", href: "#youth" },
+          { label: "Product Transformation", href: "#products" },
+          { label: "Market Access", href: "#market" },
+          { label: "Training Programs", href: "#training" },
         ],
       },
       {
         title: "Services",
         links: [
-          { label: "Consultation", href: "#consultation" },
-          { label: "Custom Solutions", href: "#custom" },
-          { label: "Technical Documentation", href: "#docs" },
-          { label: "Training Programs", href: "#training" },
+          { label: "Local Product Development", href: "#development" },
+          { label: "Global Market Access", href: "#global" },
+          { label: "Youth Training", href: "#training" },
+          { label: "Partnership Programs", href: "#partnerships" },
         ],
       },
       {
         title: "Company",
         links: [
-          { label: "About Memi PLC", href: "#about" },
-          { label: "Our Team", href: "#team" },
-          { label: "Careers", href: "#careers" },
+          { label: "About MEMi Trading PLC", href: "#about" },
+          { label: "Our Vision 2033", href: "#vision" },
+          { label: "Tigray Focus", href: "#tigray" },
           { label: "News & Updates", href: "#news" },
         ],
       },
@@ -256,7 +285,7 @@ export default function Home() {
       { label: "Terms of Service", href: "#terms" },
       { label: "Privacy Policy", href: "#privacy" },
     ],
-    copyright: "© 2024 Memi PLC. All rights reserved",
+    copyright: "© 2025 MEMi Trading PLC. All rights reserved. Tigray, Ethiopia",
   };
 
   return (

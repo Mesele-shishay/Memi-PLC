@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FooterProps } from "@/types";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 const Footer: React.FC<FooterProps> = ({
   newsletter,
@@ -205,32 +206,50 @@ const Footer: React.FC<FooterProps> = ({
                 </span>
               </div>
               <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
-                Leading provider of advanced memory solutions, electronic
-                components, and cutting-edge software development services.
-                Empowering businesses with innovative technology solutions since
-                2000.
+                Fast-growing company based in Tigray, Ethiopia, creating a
+                global platform for transforming local products, services, and
+                youth potential into sustainable economic opportunities.
+                Empowering Tigray's youth and showcasing regional potential
+                globally.
               </p>
 
               {/* Enhanced social links */}
               <div className="flex space-x-4">
                 {[
-                  { name: "Twitter", icon: "🐦", color: "hover:bg-blue-500" },
-                  { name: "LinkedIn", icon: "💼", color: "hover:bg-blue-600" },
-                  { name: "Facebook", icon: "📘", color: "hover:bg-blue-700" },
-                  { name: "Instagram", icon: "📷", color: "hover:bg-pink-500" },
-                ].map((social, index) => (
-                  <button
-                    key={index}
-                    className={`relative w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center ${social.color} transition-all duration-300 hover:scale-110 hover:shadow-lg group overflow-hidden`}
-                  >
-                    {/* Hover effect background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  {
+                    name: "Twitter",
+                    icon: Twitter,
+                    color: "hover:bg-blue-500",
+                  },
+                  {
+                    name: "LinkedIn",
+                    icon: Linkedin,
+                    color: "hover:bg-blue-600",
+                  },
+                  {
+                    name: "Facebook",
+                    icon: Facebook,
+                    color: "hover:bg-blue-700",
+                  },
+                  {
+                    name: "Instagram",
+                    icon: Instagram,
+                    color: "hover:bg-pink-500",
+                  },
+                ].map((social, index) => {
+                  const IconComponent = social.icon;
+                  return (
+                    <button
+                      key={index}
+                      className={`relative w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center ${social.color} transition-all duration-300 hover:scale-110 hover:shadow-lg group overflow-hidden`}
+                    >
+                      {/* Hover effect background */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                    <span className="text-lg relative z-10 transform group-hover:scale-110 transition-transform duration-300">
-                      {social.icon}
-                    </span>
-                  </button>
-                ))}
+                      <IconComponent className="w-5 h-5 relative z-10 transform group-hover:scale-110 transition-transform duration-300 text-white" />
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
