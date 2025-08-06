@@ -27,18 +27,18 @@ const PricingSection: React.FC<PricingSectionProps> = ({
   };
 
   return (
-    <section className="relative py-20 lg:py-32 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+    <section className="relative py-20 lg:py-32 bg-gradient-to-br from-secondary-50 via-white to-primary-50 overflow-hidden">
       {/* Advanced Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated gradient orbs */}
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/10 to-accent/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-accent/10 to-primary/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-blue-200/20 to-purple-200/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary-200/20 to-accent-200/20 rounded-full blur-3xl animate-pulse delay-500"></div>
 
         {/* Floating geometric shapes */}
         <div className="absolute top-20 left-1/4 w-4 h-4 bg-primary/20 rounded-full animate-bounce delay-300"></div>
         <div className="absolute bottom-32 right-1/4 w-6 h-6 bg-accent/20 rotate-45 animate-bounce delay-700"></div>
-        <div className="absolute top-1/3 right-1/6 w-3 h-3 bg-blue-400/20 rounded-full animate-pulse delay-1200"></div>
+        <div className="absolute top-1/3 right-1/6 w-3 h-3 bg-accent-400/20 rounded-full animate-pulse delay-1200"></div>
 
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(100,116,139,0.05)_1px,transparent_0)] bg-[length:24px_24px]"></div>
@@ -48,7 +48,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
         {/* Ultra-Modern Header */}
         <div className="text-center mb-16 sm:mb-20">
           <div className="relative inline-block">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-slate-900 via-primary to-accent bg-clip-text text-transparent mb-6 sm:mb-8 px-4 leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-secondary-900 via-primary to-accent bg-clip-text text-transparent mb-6 sm:mb-8 px-4 leading-tight">
               {title}
             </h2>
             {/* Animated underline */}
@@ -56,7 +56,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           </div>
 
           {subtitle && (
-            <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto mb-8 sm:mb-12 px-4 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl text-black max-w-3xl mx-auto mb-8 sm:mb-12 px-4 leading-relaxed font-light">
               {subtitle}
             </p>
           )}
@@ -67,10 +67,10 @@ const PricingSection: React.FC<PricingSectionProps> = ({
               <div className="flex items-center space-x-1">
                 <button
                   onClick={() => setIsYearly(false)}
-                  className={`relative px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${
+                  className={`relative px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer ${
                     !isYearly
                       ? "bg-primary text-white shadow-lg transform scale-105"
-                      : "text-slate-600 hover:text-primary"
+                      : "text-black hover:text-primary"
                   }`}
                 >
                   {billingOptions[0]}
@@ -81,10 +81,10 @@ const PricingSection: React.FC<PricingSectionProps> = ({
 
                 <button
                   onClick={() => setIsYearly(true)}
-                  className={`relative px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 ${
+                  className={`relative px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer ${
                     isYearly
                       ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg transform scale-105"
-                      : "text-slate-600 hover:text-primary"
+                      : "text-black hover:text-primary"
                   }`}
                 >
                   {billingOptions[1]}
@@ -96,7 +96,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
             </div>
 
             {isYearly && (
-              <div className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-full font-medium text-sm shadow-lg animate-bounce">
+              <div className="flex items-center space-x-2 gradient-primary-to-accent text-white px-4 py-2 rounded-full font-medium text-sm shadow-lg animate-bounce">
                 <svg
                   className="w-4 h-4"
                   fill="currentColor"
@@ -119,7 +119,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`group relative overflow-visible transition-all duration-500 hover:scale-[1.02] ${
+              className={`group relative overflow-visible transition-all duration-500 hover:scale-[1.02] cursor-pointer ${
                 plan.isPopular ? "lg:-mt-8" : ""
               }`}
               style={{ animationDelay: `${index * 200}ms` }}
@@ -129,7 +129,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                 className={`relative h-full bg-white/90 backdrop-blur-xl rounded-3xl border transition-all duration-500 ${
                   plan.isPopular
                     ? "border-primary/30 shadow-2xl shadow-primary/20 bg-gradient-to-br from-white via-primary/5 to-accent/5"
-                    : "border-slate-200/50 shadow-xl hover:shadow-2xl hover:border-primary/30"
+                    : "border-secondary-200/50 shadow-xl hover:shadow-2xl hover:border-primary/30"
                 }`}
               >
                 {/* Animated background pattern */}
@@ -165,16 +165,16 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                     <div
                       className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 ${
                         index === 0
-                          ? "bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600"
+                          ? "bg-gradient-to-br from-primary-100 to-primary-200 text-primary-600"
                           : index === 1
                           ? "bg-gradient-to-br from-primary/20 to-accent/20 text-primary"
-                          : "bg-gradient-to-br from-purple-100 to-pink-200 text-purple-600"
+                          : "bg-gradient-to-br from-accent-100 to-accent-200 text-accent-600"
                       }`}
                     >
                       {index === 0 ? "🚀" : index === 1 ? "💎" : "👑"}
                     </div>
 
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-3">
+                    <h3 className="text-xl sm:text-2xl font-bold text-black mb-3">
                       {plan.name}
                     </h3>
 
@@ -184,7 +184,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                         className={`text-4xl sm:text-5xl font-black mb-2 transition-all duration-300 group-hover:scale-110 ${
                           plan.isPopular
                             ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-                            : "text-slate-800"
+                            : "text-black"
                         }`}
                       >
                         {isYearly &&
@@ -198,7 +198,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                               return formatPrice(yearlyPrice);
                             })()
                           : plan.price}
-                        <span className="text-lg font-medium text-slate-500 ml-1">
+                        <span className="text-lg font-medium text-black ml-1">
                           {isYearly ? "/Year" : plan.period || "/Month"}
                         </span>
                       </div>
@@ -206,7 +206,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                       {isYearly &&
                         plan.price !== "Custom" &&
                         plan.price !== "Free" && (
-                          <div className="text-sm text-slate-500 line-through">
+                          <div className="text-sm text-black line-through">
                             {(() => {
                               const monthlyPrice = parsePrice(plan.price);
                               const fullYearlyPrice = Math.floor(
@@ -220,7 +220,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                     </div>
 
                     {plan.highlight && (
-                      <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 text-sm font-semibold rounded-full border border-green-200">
+                      <div className="inline-flex items-center px-3 py-1 gradient-bg-light text-primary-700 text-sm font-semibold rounded-full border border-primary-200">
                         <svg
                           className="w-3 h-3 mr-1"
                           fill="currentColor"
@@ -242,7 +242,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                     {plan.features.map((feature, featureIndex) => (
                       <div
                         key={featureIndex}
-                        className="group/feature flex items-start space-x-3 p-2 rounded-lg hover:bg-slate-50/50 transition-all duration-200"
+                        className="group/feature flex items-start space-x-3 p-2 rounded-lg hover:bg-secondary-50/50 transition-all duration-200 cursor-pointer"
                         style={{ animationDelay: `${featureIndex * 100}ms` }}
                       >
                         <div className="flex-shrink-0 mt-1">
@@ -250,7 +250,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                             className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 group-hover/feature:scale-110 ${
                               plan.isPopular
                                 ? "bg-gradient-to-br from-primary to-accent text-white shadow-md"
-                                : "bg-slate-100 text-slate-600 group-hover/feature:bg-primary group-hover/feature:text-white"
+                                : "bg-secondary-100 text-secondary-600 group-hover/feature:bg-primary group-hover/feature:text-white"
                             }`}
                           >
                             <svg
@@ -266,7 +266,7 @@ const PricingSection: React.FC<PricingSectionProps> = ({
                             </svg>
                           </div>
                         </div>
-                        <span className="text-slate-700 leading-relaxed font-medium">
+                        <span className="text-black leading-relaxed font-medium">
                           {feature}
                         </span>
                       </div>
@@ -275,10 +275,10 @@ const PricingSection: React.FC<PricingSectionProps> = ({
 
                   {/* Ultra-Enhanced CTA Button */}
                   <button
-                    className={`group/cta relative w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-[1.02] overflow-hidden ${
+                    className={`group/cta relative w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-[1.02] overflow-hidden cursor-pointer ${
                       plan.isPopular
                         ? "bg-gradient-to-r from-primary via-accent to-primary text-white shadow-2xl hover:shadow-primary/25"
-                        : "bg-slate-100 text-slate-700 hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:text-white shadow-lg hover:shadow-xl"
+                        : "bg-secondary-100 text-black hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:text-white shadow-lg hover:shadow-xl"
                     }`}
                   >
                     {/* Button background animation */}

@@ -73,7 +73,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                   {/* Verification badge */}
                   <div className="flex items-center justify-center sm:justify-start mt-2 space-x-2">
                     <svg
-                      className="w-4 h-4 text-green-400"
+                      className="w-4 h-4 text-primary-400"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -178,7 +178,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                 value: "95%",
                 label: "Local Coverage",
                 icon: "🌍",
-                color: "from-green-400 to-emerald-400",
+                color: "from-primary-400 to-accent-400",
               },
             ].map((stat, index) => (
               <div key={index} className="group sm:col-span-1 lg:col-span-1">
@@ -255,7 +255,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
           <div className="mt-6 sm:mt-8 text-center px-4 sm:px-0">
             <p className="text-gray-400 text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2">
               <svg
-                className="w-4 h-4 text-green-400 flex-shrink-0"
+                className="w-4 h-4 text-primary-400 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >

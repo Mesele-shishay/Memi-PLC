@@ -24,7 +24,7 @@ const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="bg-secondary text-white relative overflow-hidden">
+    <footer className="bg-gray-900 text-white relative overflow-hidden">
       {/* Newsletter section */}
       <div className="relative bg-gradient-to-br from-primary via-accent to-primary/80 py-20">
         {/* Animated background elements */}
@@ -75,7 +75,7 @@ const Footer: React.FC<FooterProps> = ({
                         className={`absolute left-6 transition-all duration-300 pointer-events-none ${
                           email
                             ? "top-2 text-xs text-primary font-medium"
-                            : "top-4 text-base text-gray-500 peer-focus:top-2 peer-focus:text-xs peer-focus:text-primary peer-focus:font-medium"
+                            : "top-4 text-base text-primary/70 peer-focus:top-2 peer-focus:text-xs peer-focus:text-primary peer-focus:font-medium"
                         }`}
                       >
                         {newsletter.placeholder}
@@ -89,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({
                     <button
                       type="submit"
                       disabled={isSubscribed}
-                      className="relative px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-75 disabled:transform-none group/btn overflow-hidden"
+                      className="relative px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-75 disabled:transform-none group/btn overflow-hidden cursor-pointer"
                     >
                       {/* Button background animation */}
                       <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
@@ -205,7 +205,7 @@ const Footer: React.FC<FooterProps> = ({
                   Memi PLC
                 </span>
               </div>
-              <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
+              <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
                 Fast-growing company based in Tigray, Ethiopia, creating a
                 global platform for transforming local products, services, and
                 youth potential into sustainable economic opportunities.
@@ -219,29 +219,29 @@ const Footer: React.FC<FooterProps> = ({
                   {
                     name: "Twitter",
                     icon: Twitter,
-                    color: "hover:bg-blue-500",
+                    color: "hover:bg-primary-500",
                   },
                   {
                     name: "LinkedIn",
                     icon: Linkedin,
-                    color: "hover:bg-blue-600",
+                    color: "hover:bg-primary-600",
                   },
                   {
                     name: "Facebook",
                     icon: Facebook,
-                    color: "hover:bg-blue-700",
+                    color: "hover:bg-primary-700",
                   },
                   {
                     name: "Instagram",
                     icon: Instagram,
-                    color: "hover:bg-pink-500",
+                    color: "hover:bg-accent-500",
                   },
                 ].map((social, index) => {
                   const IconComponent = social.icon;
                   return (
                     <button
                       key={index}
-                      className={`relative w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center ${social.color} transition-all duration-300 hover:scale-110 hover:shadow-lg group overflow-hidden`}
+                      className={`relative w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center ${social.color} transition-all duration-300 hover:scale-110 hover:shadow-lg group overflow-hidden cursor-pointer`}
                     >
                       {/* Hover effect background */}
                       <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -262,7 +262,7 @@ const Footer: React.FC<FooterProps> = ({
                     <li key={linkIndex}>
                       <a
                         href={link.href}
-                        className="text-gray-400 hover:text-primary transition-colors duration-300"
+                        className="text-gray-400 hover:text-primary transition-colors duration-300 cursor-pointer"
                       >
                         {link.label}
                       </a>
@@ -283,7 +283,7 @@ const Footer: React.FC<FooterProps> = ({
                   <a
                     key={index}
                     href={item.href}
-                    className="text-gray-400 hover:text-primary text-sm transition-colors duration-300"
+                    className="text-gray-400 hover:text-primary text-sm transition-colors duration-300 cursor-pointer"
                   >
                     {item.label}
                   </a>

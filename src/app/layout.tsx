@@ -185,8 +185,8 @@ export default function RootLayout({
         />
 
         {/* Additional meta tags for better SEO */}
-        <meta name="theme-color" content="#10b981" />
-        <meta name="msapplication-TileColor" content="#10b981" />
+        <meta name="theme-color" content="var(--accent)" />
+        <meta name="msapplication-TileColor" content="var(--accent)" />
         <meta name="application-name" content="ME Mi Trading PLC" />
         <meta name="apple-mobile-web-app-title" content="ME Mi Trading PLC" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

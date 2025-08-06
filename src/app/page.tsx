@@ -8,6 +8,7 @@ import BenefitSection from "@/components/BenefitSection";
 import PricingSection from "@/components/PricingSection";
 import TestimonialSection from "@/components/TestimonialSection";
 import Footer from "@/components/Footer";
+import ColorShowcase from "@/components/ColorShowcase";
 
 export default function Home() {
   // Header data
@@ -292,7 +293,6 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <Header {...headerData} />
       <HeroSection {...heroData} />
-      <TrustedSection {...trustedData} />
       <SupportSection {...supportData} />
       <FeaturesSection {...featuresData} />
       <BenefitSection {...benefitsData} />

@@ -52,11 +52,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? "bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-100/50"
-            : "bg-white/80 backdrop-blur-md border-b border-gray-100"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/10 backdrop-blur-md border-b border-white/20`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 lg:h-20">
@@ -77,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
                 <a
                   key={index}
                   href={link.href}
-                  className="relative px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium rounded-lg group overflow-hidden"
+                  className="relative px-4 py-2 text-black hover:text-primary transition-all duration-300 font-medium rounded-lg group overflow-hidden"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {/* Hover background effect */}
@@ -100,7 +96,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
                   className={`relative px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 overflow-hidden ${
                     button.variant === "primary"
                       ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl hover:shadow-primary/25"
-                      : "text-gray-700 hover:text-primary border-2 border-gray-200 hover:border-primary/30 hover:bg-primary/5"
+                      : "text-black hover:text-primary border-2 border-secondary-200 hover:border-primary/30 hover:bg-primary/5"
                   }`}
                 >
                   {/* Button background animation */}
@@ -134,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
             <div className="lg:hidden">
               <button
                 onClick={handleMenuToggle}
-                className={`relative p-3 text-gray-700 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-xl transition-all duration-300 group overflow-hidden ${
+                className={`relative p-3 text-black hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-xl transition-all duration-300 group overflow-hidden ${
                   isButtonPressed
                     ? "scale-95 bg-primary/10"
                     : "hover:bg-primary/5"
@@ -236,7 +232,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
           }}
         >
           {/* Menu Header with animation */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <div className="flex items-center justify-between p-6 border-b border-secondary-100">
             <span
               className={`text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-all duration-700 ${
                 isMenuOpen
@@ -249,7 +245,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
             </span>
             <button
               onClick={() => setIsMenuOpen(false)}
-              className={`p-2 text-gray-500 hover:text-primary rounded-lg transition-all duration-300 hover:bg-gray-100 ${
+              className={`p-2 text-black hover:text-primary rounded-lg transition-all duration-300 hover:bg-secondary-100 ${
                 isMenuOpen ? "opacity-100 scale-100" : "opacity-0 scale-75"
               }`}
               style={{ transitionDelay: "300ms" }}
@@ -279,7 +275,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
                   <a
                     key={index}
                     href={link.href}
-                    className={`block px-4 py-3 text-lg text-gray-700 hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-300 font-medium transform ${
+                    className={`block px-4 py-3 text-lg text-black hover:text-primary hover:bg-primary/5 rounded-xl transition-all duration-300 font-medium transform ${
                       isMenuOpen
                         ? "opacity-100 translate-x-0"
                         : "opacity-0 translate-x-8"
@@ -301,7 +297,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
             </nav>
 
             {/* CTA Buttons with animation */}
-            <div className="p-6 border-t border-gray-100 space-y-3">
+            <div className="p-6 border-t border-secondary-100 space-y-3">
               {ctaButtons.map((button, index) => (
                 <button
                   key={index}
@@ -312,7 +308,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
                   className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] ${
                     button.variant === "primary"
                       ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl hover:shadow-primary/25"
-                      : "text-gray-700 hover:text-primary border-2 border-gray-200 hover:border-primary/30 hover:bg-primary/5"
+                      : "text-black hover:text-primary border-2 border-secondary-200 hover:border-primary/30 hover:bg-primary/5"
                   } ${
                     isMenuOpen
                       ? "opacity-100 translate-y-0"
