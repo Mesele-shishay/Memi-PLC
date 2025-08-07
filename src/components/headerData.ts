@@ -6,7 +6,7 @@ const headerData: HeaderProps = {
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blog" },
     { label: "Products", href: "/#products" },
-    { label: "Contact", href: "/#contact" },
+    { label: "Contact", href: "/contact" },
   ],
   ctaButtons: [
     { label: "Join Us", variant: "secondary" },

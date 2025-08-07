@@ -207,7 +207,7 @@ const FeaturesSection: React.FC<FeaturesSectionProps> = ({
           <div className="relative inline-block">
             <div className="absolute inset-0 gradient-primary-dark rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
             <button className="relative gradient-primary-dark text-white px-10 py-5 rounded-2xl font-bold text-lg hover:from-primary-700 hover:to-accent-700 transition-all duration-300 shadow-xl shadow-accent hover:shadow-accent-hover hover:scale-105 transform cursor-pointer">
-              Explore All Memi PLC Courses
+              Explore All Memi PLC Services
             </button>
           </div>
         </div>

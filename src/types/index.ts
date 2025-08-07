@@ -142,6 +142,32 @@ export interface TestimonialSectionProps {
   avatars: string[];
 }
 
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  instructor: string;
+  duration: string;
+  level: "Beginner" | "Intermediate" | "Advanced";
+  category: string;
+  rating: number;
+  students: number;
+  price: string;
+  originalPrice?: string;
+  image: string;
+  features: string[];
+  isPopular?: boolean;
+  isNew?: boolean;
+}
+
+export interface FeaturedCoursesSectionProps {
+  title: string;
+  subtitle?: string;
+  courses: Course[];
+  viewAllText?: string;
+  viewAllHref?: string;
+}
+
 export interface FooterProps {
   newsletter: NewsletterForm;
   sections: FooterSection[];

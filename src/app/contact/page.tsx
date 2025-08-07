@@ -181,7 +181,7 @@ export default function ContactPage() {
                 allowFullScreen
               ></iframe>
               {/* Glassy overlay with pin icon */}
-              <div className="absolute top-6 left-6 bg-white/80 rounded-xl px-5 py-3 shadow text-primary font-bold text-base flex items-center gap-2 backdrop-blur-md">
+              <div className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-white/80 rounded-xl px-5 py-3 shadow text-primary font-bold text-base flex items-center gap-2 backdrop-blur-md">
                 <svg
                   className="w-5 h-5 text-primary"
                   fill="none"

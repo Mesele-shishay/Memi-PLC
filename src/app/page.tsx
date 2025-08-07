@@ -7,6 +7,7 @@ import FeaturesSection from "@/components/FeaturesSection";
 import BenefitSection from "@/components/BenefitSection";
 import PricingSection from "@/components/PricingSection";
 import TestimonialSection from "@/components/TestimonialSection";
+import FeaturedCourses from "@/components/FeaturedCourses";
 import Footer from "@/components/Footer";
 import ColorShowcase from "@/components/ColorShowcase";
 import headerData from "@/components/headerData";
@@ -107,19 +108,19 @@ export default function Home() {
       "Discover how MEMi Trading PLC is creating sustainable economic opportunities through local product transformation and youth empowerment programs.",
     features: [
       {
-        title: "Local Product Transformation",
+        title: "Technology Development",
         description:
-          "Transforming Tigray's local products and services into globally competitive offerings, creating market access and sustainable economic growth for local communities.",
+          "Custom software solutions, mobile app development, and digital transformation services for businesses of all sizes.",
       },
       {
-        title: "Youth Job Creation",
+        title: "Talent Development",
         description:
-          "Empowering Tigray's youth with access to meaningful, tech-driven job opportunities, with a goal of creating over 300,000 youth jobs by 2033.",
+          "Professional training programs and skill development initiatives to empower youth and build local capacity.",
       },
       {
-        title: "Global Market Access",
+        title: "Real Estate & Construction",
         description:
-          "Building international partnerships and market access for Tigray's products and services, promoting sustainable development through private-sector growth.",
+          "Property development, construction management, and investment opportunities in Tigray's growing real estate market.",
       },
     ],
   };
@@ -232,26 +233,92 @@ export default function Home() {
     avatars: ["person1", "person2", "person3", "person4", "person5"],
   };
 
+  // Featured courses data
+  const featuredCoursesData = {
+    title: "Featured Training Programs",
+    subtitle:
+      "Empower yourself with our comprehensive training programs designed to transform Tigray's youth into global professionals.",
+    courses: [
+      {
+        id: "1",
+        title: "Digital Marketing & E-commerce",
+        description:
+          "Learn modern digital marketing strategies and e-commerce platforms to help local businesses reach global markets.",
+        instructor: "Abebe Kebede",
+        duration: "8 weeks",
+        level: "Beginner" as const,
+        category: "Marketing",
+        rating: 4.8,
+        students: 1247,
+        price: "ብር 2,500",
+        originalPrice: "ብር 3,500",
+        image: "/course-digital-marketing.jpg",
+        features: [
+          "Live Projects",
+          "Certificate",
+          "Job Support",
+          "Mobile Access",
+        ],
+        isPopular: true,
+      },
+      {
+        id: "2",
+        title: "Software Development Fundamentals",
+        description:
+          "Master the basics of programming and software development to create innovative solutions for local challenges.",
+        instructor: "Kidist Haile",
+        duration: "12 weeks",
+        level: "Intermediate" as const,
+        category: "Technology",
+        rating: 4.9,
+        students: 892,
+        price: "ብር 4,200",
+        image: "/course-software-dev.jpg",
+        features: [
+          "Hands-on Coding",
+          "Portfolio Building",
+          "Mentorship",
+          "Career Guidance",
+        ],
+        isNew: true,
+      },
+      {
+        id: "3",
+        title: "Business Entrepreneurship",
+        description:
+          "Develop entrepreneurial skills and business acumen to start and scale successful ventures in Tigray.",
+        instructor: "Martha Teklu",
+        duration: "10 weeks",
+        level: "Advanced" as const,
+        category: "Business",
+        rating: 4.7,
+        students: 567,
+        price: "ብር 3,800",
+        originalPrice: "ብር 5,000",
+        image: "/course-entrepreneurship.jpg",
+        features: [
+          "Business Plan",
+          "Funding Access",
+          "Network Building",
+          "Market Research",
+        ],
+      },
+    ],
+    viewAllText: "View All Training Programs",
+    viewAllHref: "/training-programs",
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header {...headerData} />
       <HeroSection {...heroData} />
       <SupportSection {...supportData} />
       <FeaturesSection {...featuresData} />
+      <FeaturedCourses {...featuredCoursesData} />
       <BenefitSection {...benefitsData} />
       <PricingSection {...pricingData} />
       <TestimonialSection {...testimonialData} />
       <Footer {...footerData} />
-
-      {/* Blog Link */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <a
-          href="/blog"
-          className="bg-primary text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-lg hover:bg-primary-dark transition-colors text-sm sm:text-base"
-        >
-          View Blog
-        </a>
-      </div>
     </div>
   );
 }
