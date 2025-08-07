@@ -5,7 +5,7 @@ const headerData: HeaderProps = {
   navLinks: [
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blog" },
-    { label: "Products", href: "/#products" },
+    { label: "Courses", href: "/courses" },
     { label: "Contact", href: "/contact" },
   ],
   ctaButtons: [

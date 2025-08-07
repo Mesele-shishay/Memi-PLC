@@ -8,6 +8,7 @@ import BenefitSection from "@/components/BenefitSection";
 import PricingSection from "@/components/PricingSection";
 import TestimonialSection from "@/components/TestimonialSection";
 import FeaturedCourses from "@/components/FeaturedCourses";
+import GetInvolvedSection from "@/components/GetInvolvedSection";
 import Footer from "@/components/Footer";
 import ColorShowcase from "@/components/ColorShowcase";
 import headerData from "@/components/headerData";
@@ -235,7 +236,7 @@ export default function Home() {
 
   // Featured courses data
   const featuredCoursesData = {
-    title: "Featured Training Programs",
+    title: "Featured Training Courses",
     subtitle:
       "Empower yourself with our comprehensive training programs designed to transform Tigray's youth into global professionals.",
     courses: [
@@ -304,8 +305,41 @@ export default function Home() {
         ],
       },
     ],
-    viewAllText: "View All Training Programs",
-    viewAllHref: "/training-programs",
+    viewAllText: "View All Courses",
+    viewAllHref: "/courses",
+  };
+
+  // Get Involved section data
+  const getInvolvedData = {
+    title: "Get Involved",
+    subtitle:
+      "Join us in our mission to rebuild and empower Tigray. There are multiple ways to be part of our journey.",
+    involvementOptions: [
+      {
+        icon: "🎓",
+        title: "Join Our Training Programs",
+        description:
+          "Enroll in our comprehensive training programs to develop skills in technology, business, and entrepreneurship.",
+        ctaText: "Explore Programs",
+        ctaHref: "/courses",
+      },
+      {
+        icon: "🤝",
+        title: "Partner With Us",
+        description:
+          "Collaborate with MEMi Trading PLC to support local businesses and create sustainable economic opportunities.",
+        ctaText: "Become a Partner",
+        ctaHref: "/contact",
+      },
+      {
+        icon: "💼",
+        title: "Career Opportunities",
+        description:
+          "Join our team and contribute to Tigray's economic transformation through meaningful, tech-driven employment.",
+        ctaText: "View Openings",
+        ctaHref: "/careers",
+      },
+    ],
   };
 
   return (
@@ -315,6 +349,8 @@ export default function Home() {
       <SupportSection {...supportData} />
       <FeaturesSection {...featuresData} />
       <FeaturedCourses {...featuredCoursesData} />
+      <GetInvolvedSection {...getInvolvedData} />
+
       <BenefitSection {...benefitsData} />
       <PricingSection {...pricingData} />
       <TestimonialSection {...testimonialData} />

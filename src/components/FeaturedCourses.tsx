@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FeaturedCoursesSectionProps, Course } from "@/types";
+import Link from "next/link";
 
 const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
   title,
@@ -45,7 +46,10 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
   };
 
   const CourseCard: React.FC<{ course: Course }> = ({ course }) => (
-    <div className="group relative bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer">
+    <Link
+      href={`/courses/${course.id}`}
+      className="group relative bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg  hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+    >
       {/* Popular/New Badge */}
       {(course.isPopular || course.isNew) && (
         <div className="absolute top-4 left-4 z-10">
@@ -168,12 +172,12 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
               </span>
             )}
           </div>
-          <button className="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 hover:scale-105 transition-all duration-200 cursor-pointer">
+          <span className="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium group-hover:bg-primary-700 group-hover:scale-105 transition-all duration-200 cursor-pointer">
             Enroll Now
-          </button>
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 
   return (
