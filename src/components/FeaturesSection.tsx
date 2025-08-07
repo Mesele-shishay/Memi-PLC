@@ -8,110 +8,44 @@ const FeaturesSection: React.FC<FeaturesSectionProps> = ({
   subtitle,
   features,
 }) => {
-  // Icons for each feature type
-  const getFeatureIcon = (title: string) => {
-    if (title.includes("Interactive") || title.includes("Learning"))
-      return "🎓";
-    if (title.includes("Certificate") || title.includes("Certification"))
-      return "📜";
-    if (title.includes("Progress") || title.includes("Tracking")) return "📈";
-    if (title.includes("Community") || title.includes("Discussion"))
-      return "💬";
-    if (title.includes("Mobile") || title.includes("Access")) return "📱";
-    if (title.includes("Support") || title.includes("Mentorship")) return "🤝";
-    return "✨";
-  };
-
-  const getFeatureIllustration = (title: string) => {
-    if (title.includes("Interactive") || title.includes("Learning")) {
+  // Get feature image or fallback to icon
+  const getFeatureImage = (feature: any) => {
+    if (feature.image?.src) {
       return (
         <div className="gradient-bg-medium rounded-2xl p-6 h-48 flex items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-accent-400/10 to-primary-400/10"></div>
-          <div className="text-center relative z-10">
-            <div className="text-4xl mb-3">🎓</div>
-            <div className="grid grid-cols-2 gap-3">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-12 h-8 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm flex items-center justify-center border border-accent-200/50"
-                >
-                  <div className="w-6 h-1 bg-accent-500 rounded"></div>
-                </div>
-              ))}
+          <div className="relative z-10 w-full h-full flex items-center justify-center">
+            <img
+              src={feature.image.src}
+              alt={feature.image.alt}
+              className="w-full h-full object-cover rounded-xl shadow-lg"
+              onError={(e) => {
+                // Fallback to emoji if image fails to load
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const fallbackDiv = target.nextElementSibling as HTMLElement;
+                if (fallbackDiv) {
+                  fallbackDiv.style.display = 'flex';
+                }
+              }}
+            />
+            {/* Fallback emoji */}
+            <div 
+              className="absolute inset-0 flex items-center justify-center text-6xl bg-gradient-to-br from-accent-100 to-primary-100 rounded-xl"
+              style={{ display: 'none' }}
+            >
+              {feature.image.fallback}
             </div>
           </div>
         </div>
       );
     }
-
-    if (title.includes("Certificate") || title.includes("Certification")) {
-      return (
-        <div className="gradient-bg-medium rounded-2xl p-6 h-48 flex items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-400/10 to-primary-400/10"></div>
-          <div className="text-center space-y-3 relative z-10">
-            <div className="text-4xl">📜</div>
-            <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-accent-200/50">
-              <div className="space-y-2">
-                <div className="h-2 bg-accent-500 rounded w-20 mx-auto"></div>
-                <div className="h-1 bg-accent-300 rounded w-16 mx-auto"></div>
-                <div className="h-1 bg-accent-300 rounded w-12 mx-auto"></div>
-                <div className="w-8 h-8 gradient-accent-to-primary rounded-full mx-auto mt-3 flex items-center justify-center">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (title.includes("Progress") || title.includes("Tracking")) {
-      return (
-        <div className="gradient-bg-medium rounded-2xl p-6 h-48 flex items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-400/10 to-accent-400/10"></div>
-          <div className="text-center space-y-3 relative z-10">
-            <div className="text-4xl">📈</div>
-            <div className="flex items-end space-x-2 justify-center">
-              <div className="w-3 h-8 bg-accent-500 rounded-t shadow-sm"></div>
-              <div className="w-3 h-12 bg-primary-500 rounded-t shadow-sm"></div>
-              <div className="w-3 h-6 bg-accent-400 rounded-t shadow-sm"></div>
-              <div className="w-3 h-10 bg-accent-600 rounded-t shadow-sm"></div>
-              <div className="w-3 h-14 bg-primary-600 rounded-t shadow-sm"></div>
-            </div>
-            <div className="text-xs text-accent-700 font-medium">
-              92% Complete
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (title.includes("Community") || title.includes("Discussion")) {
-      return (
-        <div className="gradient-bg-medium rounded-2xl p-6 h-48 flex items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-400/10 to-primary-400/10"></div>
-          <div className="text-center space-y-3 relative z-10">
-            <div className="text-4xl">💬</div>
-            <div className="space-y-2">
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-sm border border-accent-200/50 text-left">
-                <div className="h-1.5 bg-accent-400 rounded w-16"></div>
-              </div>
-              <div className="bg-accent-100/60 backdrop-blur-sm rounded-lg p-2 shadow-sm border border-accent-200/50 text-right">
-                <div className="h-1.5 bg-primary-500 rounded w-12 ml-auto"></div>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-sm border border-accent-200/50 text-left">
-                <div className="h-1.5 bg-primary-400 rounded w-20"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
+    
+    // Fallback to icon-based illustration if no image
     return (
       <div className="gradient-bg-medium rounded-2xl p-6 h-48 flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-accent-400/10 to-primary-400/10"></div>
-        <div className="text-4xl relative z-10">✨</div>
+        <div className="text-4xl relative z-10">{feature.icon || "✨"}</div>
       </div>
     );
   };
@@ -148,9 +82,9 @@ const FeaturesSection: React.FC<FeaturesSectionProps> = ({
               <div className="absolute inset-0 bg-gradient-to-br from-white/90 to-white/60 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl shadow-accent/5 group-hover:shadow-accent/15 transition-all duration-500"></div>
 
               <div className="relative p-8 lg:p-10 rounded-3xl flex flex-col h-full">
-                {/* Feature illustration */}
+                {/* Feature image */}
                 <div className="mb-8 transform group-hover:scale-105 group-hover:-translate-y-2 transition-all duration-500 cursor-pointer">
-                  {getFeatureIllustration(feature.title)}
+                  {getFeatureImage(feature)}
                 </div>
 
                 {/* Feature content */}
@@ -158,7 +92,7 @@ const FeaturesSection: React.FC<FeaturesSectionProps> = ({
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 w-12 h-12 gradient-primary-to-accent rounded-2xl flex items-center justify-center shadow-lg shadow-accent group-hover:shadow-accent-hover group-hover:scale-110 transition-all duration-300 cursor-pointer">
                       <span className="text-2xl">
-                        {getFeatureIcon(feature.title)}
+                        {feature.image?.fallback || feature.icon || "✨"}
                       </span>
                     </div>
                     <div className="flex-1">

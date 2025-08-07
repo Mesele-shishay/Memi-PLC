@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { Calendar, MessageCircle, Tag, Bookmark } from "lucide-react";
 import Header from "@/components/Header";
@@ -7,79 +7,82 @@ import headerData from "@/components/headerData";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "@/components/Pagination";
 
-export default function BlogPage() {
+function BlogPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pageParam = searchParams.get("page");
   const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
   const blogPosts = [
     {
-      slug: "how-to-spend-perfect-day-croatia",
+      slug: "ethiopian-coffee-ceremony-guide",
       image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "How to Spend the Perfect Day on Croatia's Most Magical Island",
+        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      title:
+        "The Complete Guide to Ethiopian Coffee Ceremony: A Cultural Journey",
       excerpt:
-        "Discover the ultimate guide to experiencing the most magical island in Croatia. From hidden beaches to local cuisine, this comprehensive guide will help you plan the perfect day.",
-      author: "Schloss",
-      date: "July 14, 2022",
-      category: "Travel",
+        "Discover the ancient tradition of Ethiopian coffee ceremony, from the roasting process to the three rounds of serving. Learn about its cultural significance and how to host your own ceremony.",
+      author: "Tigist Alemu",
+      date: "December 15, 2023",
+      category: "Culture",
       readTime: "8 min read",
       authorImage:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
     },
     {
-      slug: "house-boating-lake-shasta",
+      slug: "addis-ababa-tech-startup-scene",
       image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "House Boating On Lake Shasta",
+        "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      title:
+        "Addis Ababa's Thriving Tech Startup Ecosystem: What You Need to Know",
       excerpt:
-        "The Best Way To Spend A Long 4th of July Weekend. Wake Boarding, Swimming, Barbecues and unforgettable memories on the water.",
-      author: "James",
-      date: "July 14, 2022",
-      category: "Adventure",
-      readTime: "6 min read",
-      authorImage:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "choose-right-laptop",
-      image:
-        "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "How To Choose The Right Laptop For Remote Work",
-      excerpt:
-        "Choosing The Right Laptop For Programming Can Be A Tough Process. It's Easy To Get Confused with all the options available.",
-      author: "Robert",
-      date: "July 14, 2022",
+        "Explore the growing technology scene in Ethiopia's capital, from innovative startups to digital transformation initiatives that are shaping the country's future.",
+      author: "Samuel Getachew",
+      date: "December 12, 2023",
       category: "Technology",
       readTime: "10 min read",
       authorImage:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
     },
     {
-      slug: "buying-new-car-sense",
+      slug: "ethiopian-cuisine-beginners-guide",
       image:
-        "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "Why Buying A New Car Makes More Sense Than Ever",
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+
+      title: "Ethiopian Cuisine for Beginners: Essential Dishes and Flavors",
       excerpt:
-        "Many Experts Will Tell You Buying Cars Used Is Best For Your Long Term Financial Health. Here's why that might be changing.",
-      author: "Mary",
-      date: "July 14, 2022",
-      category: "Finance",
-      readTime: "7 min read",
+        "From Injera to Doro Wat, discover the essential dishes that make Ethiopian cuisine unique. Learn about spices, cooking techniques, and where to find authentic Ethiopian food.",
+      author: "Sara Abebe",
+      date: "December 10, 2023",
+      category: "Food",
+      readTime: "12 min read",
       authorImage:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
     },
     {
-      slug: "lasagne-pasta-cake",
+      slug: "amharic-language-learning-tips",
       image:
-        "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "Lasagne Is But A Pasta Cake",
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      title: "Learning Amharic: Practical Tips for Beginners and Travelers",
       excerpt:
-        "We Discuss The Decoration Of A Common Food From A Different Perspective - A... Pasta Cake that will change how you think about Italian cuisine.",
-      author: "Jon Karrther",
-      date: "July 14, 2022",
-      category: "Food",
-      readTime: "5 min read",
+        "Master the basics of Ethiopia's official language with practical phrases, pronunciation guides, and cultural context that will help you connect with locals.",
+      author: "Mulugeta Bekele",
+      date: "December 8, 2023",
+      category: "Language",
+      readTime: "7 min read",
+      authorImage:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
+    },
+    {
+      slug: "ethiopian-business-opportunities",
+      image:
+        "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      title: "Business Opportunities in Ethiopia: A Guide for Entrepreneurs",
+      excerpt:
+        "Discover emerging business opportunities in Ethiopia's growing economy, from agriculture to technology, and learn about the regulatory environment for foreign investors.",
+      author: "Hanna Mekonnen",
+      date: "December 5, 2023",
+      category: "Business",
+      readTime: "9 min read",
       authorImage:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
     },
@@ -109,8 +112,8 @@ export default function BlogPage() {
         {/* Blog Section Header */}
         <div className="text-center mb-12">
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover stories, tips, and insights from our team of writers and
-            contributors.
+            Explore our latest blog posts and stay updated on the latest news
+            and insights from Memi Place.
           </p>
         </div>
 
@@ -185,5 +188,27 @@ export default function BlogPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function BlogPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100">
+          <Header {...headerData} />
+          <div className="pt-24 lg:pt-32 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-7xl">
+            <div className="text-center">
+              <div className="animate-pulse">
+                <div className="h-4 bg-gray-200 rounded w-1/4 mx-auto mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <BlogPageContent />
+    </Suspense>
   );
 }

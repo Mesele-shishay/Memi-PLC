@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import TrustedSection from "@/components/TrustedSection";
 import SupportSection from "@/components/SupportSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import BenefitSection from "@/components/BenefitSection";
@@ -9,8 +8,8 @@ import PricingSection from "@/components/PricingSection";
 import TestimonialSection from "@/components/TestimonialSection";
 import FeaturedCourses from "@/components/FeaturedCourses";
 import GetInvolvedSection from "@/components/GetInvolvedSection";
+import TeamSection from "@/components/TeamSection";
 import Footer from "@/components/Footer";
-import ColorShowcase from "@/components/ColorShowcase";
 import headerData from "@/components/headerData";
 import footerData from "@/components/footerData";
 
@@ -112,16 +111,31 @@ export default function Home() {
         title: "Technology Development",
         description:
           "Custom software solutions, mobile app development, and digital transformation services for businesses of all sizes.",
+        image: {
+          src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop&crop=center",
+          alt: "Technology Development - Software and mobile app development",
+          fallback: "💻",
+        },
       },
       {
         title: "Talent Development",
         description:
           "Professional training programs and skill development initiatives to empower youth and build local capacity.",
+        image: {
+          src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop&crop=center",
+          alt: "Talent Development - Professional training and skill development",
+          fallback: "🎓",
+        },
       },
       {
         title: "Real Estate & Construction",
         description:
           "Property development, construction management, and investment opportunities in Tigray's growing real estate market.",
+        image: {
+          src: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=600&fit=crop&crop=center",
+          alt: "Real Estate & Construction - Property development and construction",
+          fallback: "🏗️",
+        },
       },
     ],
   };
@@ -322,6 +336,11 @@ export default function Home() {
           "Enroll in our comprehensive training programs to develop skills in technology, business, and entrepreneurship.",
         ctaText: "Explore Programs",
         ctaHref: "/courses",
+        image: {
+          src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop&crop=center",
+          alt: "Training Programs - Students learning and developing skills",
+          fallback: "🎓",
+        },
       },
       {
         icon: "🤝",
@@ -330,6 +349,11 @@ export default function Home() {
           "Collaborate with MEMi Trading PLC to support local businesses and create sustainable economic opportunities.",
         ctaText: "Become a Partner",
         ctaHref: "/contact",
+        image: {
+          src: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=400&fit=crop&crop=center",
+          alt: "Partnership - Business collaboration and networking",
+          fallback: "🤝",
+        },
       },
       {
         icon: "💼",
@@ -338,6 +362,73 @@ export default function Home() {
           "Join our team and contribute to Tigray's economic transformation through meaningful, tech-driven employment.",
         ctaText: "View Openings",
         ctaHref: "/careers",
+        image: {
+          src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&h=400&fit=crop&crop=center",
+          alt: "Career Opportunities - Professional development and job opportunities",
+          fallback: "💼",
+        },
+      },
+    ],
+  };
+
+  // Team section data
+  const teamData = {
+    title: "Meet Our Team",
+    subtitle:
+      "Our diverse team of experts is passionate about creating innovative solutions and delivering exceptional experiences.",
+    team: [
+      {
+        id: "1",
+        name: "Abebe Kebede",
+        role: "Chief Executive Officer",
+        description:
+          "Visionary leader with 15+ years of experience in business development and youth empowerment programs across East Africa.",
+        image: {
+          src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+          alt: "Abebe Kebede - CEO of MEMi Trading PLC",
+          fallback: "👨‍💼",
+        },
+        expertise: ["Strategic Planning", "Business Development", "Leadership"],
+        linkedin: "https://linkedin.com/in/abebe-kebede",
+        email: "abebe@memitrading.com",
+      },
+      {
+        id: "2",
+        name: "Kidist Haile",
+        role: "Chief Technology Officer",
+        description:
+          "Tech innovator specializing in digital transformation and software development with expertise in scaling technology solutions.",
+        image: {
+          src: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
+          alt: "Kidist Haile - CTO of MEMi Trading PLC",
+          fallback: "👩‍💻",
+        },
+        expertise: [
+          "Software Development",
+          "Digital Transformation",
+          "Innovation",
+        ],
+        linkedin: "https://linkedin.com/in/kidist-haile",
+        email: "kidist@memitrading.com",
+      },
+      {
+        id: "3",
+        name: "Martha Teklu",
+        role: "Head of Youth Programs",
+        description:
+          "Dedicated professional focused on creating sustainable employment opportunities and skill development for Tigray's youth.",
+        image: {
+          src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+          alt: "Martha Teklu - Head of Youth Programs at MEMi Trading PLC",
+          fallback: "👩‍🎓",
+        },
+        expertise: [
+          "Youth Development",
+          "Training Programs",
+          "Community Outreach",
+        ],
+        linkedin: "https://linkedin.com/in/martha-teklu",
+        email: "martha@memitrading.com",
       },
     ],
   };
@@ -348,12 +439,12 @@ export default function Home() {
       <HeroSection {...heroData} />
       <SupportSection {...supportData} />
       <FeaturesSection {...featuresData} />
-      <FeaturedCourses {...featuredCoursesData} />
-      <GetInvolvedSection {...getInvolvedData} />
-
       <BenefitSection {...benefitsData} />
+      <FeaturedCourses {...featuredCoursesData} />
       <PricingSection {...pricingData} />
       <TestimonialSection {...testimonialData} />
+      <TeamSection {...teamData} />
+      <GetInvolvedSection {...getInvolvedData} />
       <Footer {...footerData} />
     </div>
   );

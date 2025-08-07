@@ -34,7 +34,11 @@ export interface FeatureCard {
   title: string;
   description: string;
   icon?: string;
-  image?: string;
+  image?: {
+    src: string;
+    alt: string;
+    fallback: string;
+  };
 }
 
 export interface BenefitItem {

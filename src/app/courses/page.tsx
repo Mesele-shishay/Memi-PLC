@@ -9,30 +9,149 @@ import { Course } from "@/types";
 // Mock data for demonstration
 const courses: Course[] = [
   {
-    id: "react-101",
-    title: "React for Beginners",
+    id: "amharic-beginners",
+    title: "Amharic for Beginners",
     description:
-      "Learn the basics of React, including components, state, and props, to build interactive UIs.",
-    instructor: "Jane Doe",
-    duration: "6h 30m",
+      "Master the basics of Amharic, Ethiopia's official language, with practical lessons and cultural insights.",
+    instructor: "Mulugeta Bekele",
+    duration: "8h 00m",
     level: "Beginner",
-    category: "Web Development",
-    rating: 4.7,
-    students: 1200,
-    price: "$49",
-    originalPrice: "$99",
+    category: "Language",
+    rating: 4.8,
+    students: 950,
+    price: "ETB 350",
+    originalPrice: "ETB 700",
     image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&h=400&fit=crop&crop=center",
     features: [
-      "Hands-on Projects",
+      "Native Instructors",
+      "Cultural Context",
       "Certificate of Completion",
       "Lifetime Access",
+    ],
+    isPopular: true,
+    isNew: true,
+  },
+  {
+    id: "ethiopian-cuisine",
+    title: "Ethiopian Cuisine: Cooking Injera & More",
+    description:
+      "Learn to cook traditional Ethiopian dishes like Injera, Doro Wat, and Shiro with step-by-step video guides.",
+    instructor: "Sara Abebe",
+    duration: "5h 15m",
+    level: "Beginner",
+    category: "Cooking",
+    rating: 4.9,
+    students: 1200,
+    price: "ETB 400",
+    originalPrice: "ETB 800",
+    image:
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop&crop=center",
+    features: [
+      "Recipe Book Included",
+      "Video Tutorials",
       "Community Support",
+      "Certificate of Completion",
     ],
     isPopular: true,
     isNew: false,
   },
-  // Add more mock courses as needed
+  {
+    id: "addis-tech-bootcamp",
+    title: "Addis Ababa Tech Bootcamp",
+    description:
+      "Kickstart your tech career with hands-on training in web development, mobile apps, and digital skills tailored for Ethiopia.",
+    instructor: "Samuel Getachew",
+    duration: "10h 30m",
+    level: "Intermediate",
+    category: "Technology",
+    rating: 4.7,
+    students: 800,
+    price: "ETB 600",
+    originalPrice: "ETB 1200",
+    image:
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop&crop=center",
+    features: [
+      "Project-Based Learning",
+      "Mentorship",
+      "Job Readiness",
+      "Certificate of Completion",
+    ],
+    isPopular: false,
+    isNew: true,
+  },
+  {
+    id: "ethiopian-history",
+    title: "Ethiopian History & Heritage",
+    description:
+      "Explore Ethiopia's rich history, from ancient Axum to modern times, with engaging lectures and visuals.",
+    instructor: "Dr. Almaz Tadesse",
+    duration: "7h 45m",
+    level: "Beginner",
+    category: "History",
+    rating: 4.6,
+    students: 670,
+    price: "ETB 300",
+    originalPrice: "ETB 600",
+    image:
+      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&h=400&fit=crop&crop=center",
+    features: [
+      "Expert Lectures",
+      "Downloadable Resources",
+      "Certificate of Completion",
+      "Lifetime Access",
+    ],
+    isPopular: false,
+    isNew: false,
+  },
+  {
+    id: "entrepreneurship-ethiopia",
+    title: "Entrepreneurship in Ethiopia",
+    description:
+      "Learn how to start and grow a business in Ethiopia, covering local regulations, funding, and market strategies.",
+    instructor: "Hanna Mekonnen",
+    duration: "9h 20m",
+    level: "Advanced",
+    category: "Business",
+    rating: 4.9,
+    students: 540,
+    price: "ETB 750",
+    originalPrice: "ETB 1500",
+    image:
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=400&fit=crop&crop=center",
+    features: [
+      "Local Case Studies",
+      "Business Plan Templates",
+      "Mentorship",
+      "Certificate of Completion",
+    ],
+    isPopular: true,
+    isNew: false,
+  },
+  {
+    id: "coffee-culture",
+    title: "Ethiopian Coffee Culture & Ceremony",
+    description:
+      "Discover the art and tradition of Ethiopian coffee, from bean to cup, including the famous coffee ceremony.",
+    instructor: "Tigist Alemu",
+    duration: "3h 40m",
+    level: "Beginner",
+    category: "Culture",
+    rating: 4.8,
+    students: 1100,
+    price: "ETB 250",
+    originalPrice: "ETB 500",
+    image:
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop&crop=center",
+    features: [
+      "Live Demonstrations",
+      "Cultural Insights",
+      "Certificate of Completion",
+      "Community Access",
+    ],
+    isPopular: false,
+    isNew: true,
+  },
 ];
 
 const postsPerPage = 6;
@@ -72,12 +191,29 @@ export default function CoursesPage() {
             >
               {/* Course Image */}
               <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden group-hover:bg-gradient-to-br group-hover:from-primary-100 group-hover:to-accent-100 transition-all duration-300">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-accent-400/20 group-hover:from-primary-400/30 group-hover:to-accent-400/30 transition-all duration-300"></div>
-                <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <div className="text-6xl opacity-20 group-hover:opacity-30 transition-opacity duration-300">
-                    📚
-                  </div>
+                <img
+                  src={course.image}
+                  alt={course.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={(e) => {
+                    // Fallback to emoji if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                    const fallbackDiv =
+                      target.nextElementSibling as HTMLElement;
+                    if (fallbackDiv) {
+                      fallbackDiv.style.display = "flex";
+                    }
+                  }}
+                />
+                {/* Fallback emoji */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center text-6xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                  style={{ display: "none" }}
+                >
+                  📚
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-accent-400/20 group-hover:from-primary-400/30 group-hover:to-accent-400/30 transition-all duration-300"></div>
                 <div className="absolute bottom-4 right-4">
                   <span className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-white/90 backdrop-blur-sm border border-gray-200">
                     {course.category}

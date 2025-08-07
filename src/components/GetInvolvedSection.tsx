@@ -11,6 +11,11 @@ interface GetInvolvedSectionProps {
     description: string;
     ctaText: string;
     ctaHref: string;
+    image?: {
+      src: string;
+      alt: string;
+      fallback: string;
+    };
   }[];
 }
 
@@ -49,11 +54,40 @@ export default function GetInvolvedSection({
               <div className="absolute inset-0 bg-gradient-to-br from-white/90 to-white/60 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl shadow-accent/5 group-hover:shadow-accent/15 transition-all duration-500"></div>
 
               <div className="relative p-8 lg:p-10 rounded-3xl flex flex-col h-full">
-                {/* Icon with gradient background */}
+                {/* Image with gradient background */}
                 <div className="mb-8 transform group-hover:scale-105 group-hover:-translate-y-2 transition-all duration-500 cursor-pointer">
                   <div className="gradient-bg-medium rounded-2xl p-6 h-48 flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-accent-400/10 to-primary-400/10"></div>
-                    <div className="text-6xl relative z-10">{option.icon}</div>
+                    {option.image?.src ? (
+                      <div className="relative z-10 w-full h-full flex items-center justify-center">
+                        <img
+                          src={option.image.src}
+                          alt={option.image.alt}
+                          className="w-full h-full object-cover rounded-xl shadow-lg"
+                          onError={(e) => {
+                            // Fallback to emoji if image fails to load
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const fallbackDiv =
+                              target.nextElementSibling as HTMLElement;
+                            if (fallbackDiv) {
+                              fallbackDiv.style.display = "flex";
+                            }
+                          }}
+                        />
+                        {/* Fallback emoji */}
+                        <div
+                          className="absolute inset-0 flex items-center justify-center text-6xl bg-gradient-to-br from-accent-100 to-primary-100 rounded-xl"
+                          style={{ display: "none" }}
+                        >
+                          {option.image.fallback}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-6xl relative z-10">
+                        {option.icon}
+                      </div>
+                    )}
                   </div>
                 </div>
 
