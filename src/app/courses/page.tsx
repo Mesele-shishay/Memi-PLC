@@ -5,154 +5,10 @@ import headerData from "@/components/headerData";
 import Pagination from "@/components/Pagination";
 import Link from "next/link";
 import { Course } from "@/types";
+import { getAllCourses } from "@/lib/mockApi";
 
-// Mock data for demonstration
-const courses: Course[] = [
-  {
-    id: "amharic-beginners",
-    title: "Amharic for Beginners",
-    description:
-      "Master the basics of Amharic, Ethiopia's official language, with practical lessons and cultural insights.",
-    instructor: "Mulugeta Bekele",
-    duration: "8h 00m",
-    level: "Beginner",
-    category: "Language",
-    rating: 4.8,
-    students: 950,
-    price: "ETB 350",
-    originalPrice: "ETB 700",
-    image:
-      "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Native Instructors",
-      "Cultural Context",
-      "Certificate of Completion",
-      "Lifetime Access",
-    ],
-    isPopular: true,
-    isNew: true,
-  },
-  {
-    id: "ethiopian-cuisine",
-    title: "Ethiopian Cuisine: Cooking Injera & More",
-    description:
-      "Learn to cook traditional Ethiopian dishes like Injera, Doro Wat, and Shiro with step-by-step video guides.",
-    instructor: "Sara Abebe",
-    duration: "5h 15m",
-    level: "Beginner",
-    category: "Cooking",
-    rating: 4.9,
-    students: 1200,
-    price: "ETB 400",
-    originalPrice: "ETB 800",
-    image:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Recipe Book Included",
-      "Video Tutorials",
-      "Community Support",
-      "Certificate of Completion",
-    ],
-    isPopular: true,
-    isNew: false,
-  },
-  {
-    id: "addis-tech-bootcamp",
-    title: "Addis Ababa Tech Bootcamp",
-    description:
-      "Kickstart your tech career with hands-on training in web development, mobile apps, and digital skills tailored for Ethiopia.",
-    instructor: "Samuel Getachew",
-    duration: "10h 30m",
-    level: "Intermediate",
-    category: "Technology",
-    rating: 4.7,
-    students: 800,
-    price: "ETB 600",
-    originalPrice: "ETB 1200",
-    image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Project-Based Learning",
-      "Mentorship",
-      "Job Readiness",
-      "Certificate of Completion",
-    ],
-    isPopular: false,
-    isNew: true,
-  },
-  {
-    id: "ethiopian-history",
-    title: "Ethiopian History & Heritage",
-    description:
-      "Explore Ethiopia's rich history, from ancient Axum to modern times, with engaging lectures and visuals.",
-    instructor: "Dr. Almaz Tadesse",
-    duration: "7h 45m",
-    level: "Beginner",
-    category: "History",
-    rating: 4.6,
-    students: 670,
-    price: "ETB 300",
-    originalPrice: "ETB 600",
-    image:
-      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Expert Lectures",
-      "Downloadable Resources",
-      "Certificate of Completion",
-      "Lifetime Access",
-    ],
-    isPopular: false,
-    isNew: false,
-  },
-  {
-    id: "entrepreneurship-ethiopia",
-    title: "Entrepreneurship in Ethiopia",
-    description:
-      "Learn how to start and grow a business in Ethiopia, covering local regulations, funding, and market strategies.",
-    instructor: "Hanna Mekonnen",
-    duration: "9h 20m",
-    level: "Advanced",
-    category: "Business",
-    rating: 4.9,
-    students: 540,
-    price: "ETB 750",
-    originalPrice: "ETB 1500",
-    image:
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Local Case Studies",
-      "Business Plan Templates",
-      "Mentorship",
-      "Certificate of Completion",
-    ],
-    isPopular: true,
-    isNew: false,
-  },
-  {
-    id: "coffee-culture",
-    title: "Ethiopian Coffee Culture & Ceremony",
-    description:
-      "Discover the art and tradition of Ethiopian coffee, from bean to cup, including the famous coffee ceremony.",
-    instructor: "Tigist Alemu",
-    duration: "3h 40m",
-    level: "Beginner",
-    category: "Culture",
-    rating: 4.8,
-    students: 1100,
-    price: "ETB 250",
-    originalPrice: "ETB 500",
-    image:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Live Demonstrations",
-      "Cultural Insights",
-      "Certificate of Completion",
-      "Community Access",
-    ],
-    isPopular: false,
-    isNew: true,
-  },
-];
+// Get courses from mock API
+const courses: Course[] = getAllCourses();
 
 const postsPerPage = 6;
 
@@ -220,72 +76,111 @@ export default function CoursesPage() {
                   </span>
                 </div>
               </div>
+
               {/* Course Content */}
               <div className="p-6">
-                <div className="mb-3">
-                  <span
-                    className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium border bg-primary-100 text-primary-700 border-primary-200`}
-                  >
-                    {course.level}
-                  </span>
+                {/* Course Header */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                      {course.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      by {course.instructor}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end space-y-1">
+                    <div className="flex items-center space-x-1">
+                      <span className="text-yellow-400">★</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {course.rating}
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      ({course.students} students)
+                    </span>
+                  </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors cursor-pointer">
-                  {course.title}
-                </h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+
+                {/* Course Description */}
+                <p className="text-gray-600 text-sm line-clamp-2 mb-4">
                   {course.description}
                 </p>
-                <div className="flex items-center mb-3">
-                  <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white text-xs font-medium group-hover:scale-110 transition-transform duration-200">
-                    {course.instructor.charAt(0)}
-                  </div>
-                  <span className="text-sm text-gray-700 ml-2 group-hover:text-primary-600 transition-colors duration-200">
-                    {course.instructor}
-                  </span>
-                </div>
+
+                {/* Course Meta */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-yellow-500 font-semibold">
-                    ★ {course.rating}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    {course.students.toLocaleString()} students
-                  </span>
+                  <div className="flex items-center space-x-4 text-xs text-gray-500">
+                    <span className="flex items-center">
+                      <span className="mr-1">⏱️</span>
+                      {course.duration}
+                    </span>
+                    <span className="flex items-center">
+                      <span className="mr-1">📊</span>
+                      {course.level}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {course.isPopular && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        Popular
+                      </span>
+                    )}
+                    {course.isNew && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        New
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {course.features.slice(0, 3).map((feature, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-50 text-gray-600 border border-gray-200 group-hover:bg-primary-50 group-hover:text-primary-700 group-hover:border-primary-200 transition-all duration-200"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                  {course.features.length > 3 && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-50 text-gray-600 border border-gray-200 group-hover:bg-primary-50 group-hover:text-primary-700 group-hover:border-primary-200 transition-all duration-200">
-                      +{course.features.length - 3} more
-                    </span>
-                  )}
+
+                {/* Course Features */}
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-1">
+                    {course.features.slice(0, 2).map((feature, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                    {course.features.length > 2 && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
+                        +{course.features.length - 2} more
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors duration-200">
-                    {course.price}
-                  </span>
-                  {course.originalPrice && (
-                    <span className="text-sm text-gray-500 line-through group-hover:text-gray-400 transition-colors duration-200">
-                      {course.originalPrice}
+
+                {/* Course Price */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg font-bold text-gray-900">
+                      {course.price}
                     </span>
-                  )}
+                    {course.originalPrice && (
+                      <span className="text-sm text-gray-500 line-through">
+                        {course.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-sm text-primary font-medium">
+                    View Course →
+                  </span>
                 </div>
               </div>
             </Link>
           ))}
         </div>
+
         {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        <div className="mt-12">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );

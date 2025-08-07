@@ -2,6 +2,7 @@
 import React from "react";
 import Header from "@/components/Header";
 import headerData from "@/components/headerData";
+import { getCourseById } from "@/lib/mockApi";
 import { Course } from "@/types";
 import { useParams } from "next/navigation";
 

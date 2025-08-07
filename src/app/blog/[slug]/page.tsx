@@ -3,6 +3,7 @@ import BlogPost from "@/components/BlogPost";
 import RelatedPosts from "@/components/RelatedPosts";
 import Header from "@/components/Header";
 import headerData from "@/components/headerData";
+import { getBlogPostBySlug } from "@/lib/mockApi";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -13,7 +14,7 @@ interface BlogDetailPageProps {
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   // Await the params promise in Next.js 15
   const { slug } = await params;
-  
+
   // In a real app, you would fetch the blog post data based on the slug
   // For now, we'll use the existing data structure
 

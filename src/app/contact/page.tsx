@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import headerData from "@/components/headerData";
-import footerData from "@/components/footerData";
+import { getFooterData } from "@/lib/mockApi";
 
 export default function ContactPage() {
+  const footerData = getFooterData();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",

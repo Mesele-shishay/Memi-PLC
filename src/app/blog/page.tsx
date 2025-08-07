@@ -6,87 +6,14 @@ import Header from "@/components/Header";
 import headerData from "@/components/headerData";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "@/components/Pagination";
+import { getAllBlogPosts } from "@/lib/mockApi";
 
 function BlogPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pageParam = searchParams.get("page");
   const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
-  const blogPosts = [
-    {
-      slug: "ethiopian-coffee-ceremony-guide",
-      image:
-        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title:
-        "The Complete Guide to Ethiopian Coffee Ceremony: A Cultural Journey",
-      excerpt:
-        "Discover the ancient tradition of Ethiopian coffee ceremony, from the roasting process to the three rounds of serving. Learn about its cultural significance and how to host your own ceremony.",
-      author: "Tigist Alemu",
-      date: "December 15, 2023",
-      category: "Culture",
-      readTime: "8 min read",
-      authorImage:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "addis-ababa-tech-startup-scene",
-      image:
-        "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title:
-        "Addis Ababa's Thriving Tech Startup Ecosystem: What You Need to Know",
-      excerpt:
-        "Explore the growing technology scene in Ethiopia's capital, from innovative startups to digital transformation initiatives that are shaping the country's future.",
-      author: "Samuel Getachew",
-      date: "December 12, 2023",
-      category: "Technology",
-      readTime: "10 min read",
-      authorImage:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "ethiopian-cuisine-beginners-guide",
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-
-      title: "Ethiopian Cuisine for Beginners: Essential Dishes and Flavors",
-      excerpt:
-        "From Injera to Doro Wat, discover the essential dishes that make Ethiopian cuisine unique. Learn about spices, cooking techniques, and where to find authentic Ethiopian food.",
-      author: "Sara Abebe",
-      date: "December 10, 2023",
-      category: "Food",
-      readTime: "12 min read",
-      authorImage:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "amharic-language-learning-tips",
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "Learning Amharic: Practical Tips for Beginners and Travelers",
-      excerpt:
-        "Master the basics of Ethiopia's official language with practical phrases, pronunciation guides, and cultural context that will help you connect with locals.",
-      author: "Mulugeta Bekele",
-      date: "December 8, 2023",
-      category: "Language",
-      readTime: "7 min read",
-      authorImage:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "ethiopian-business-opportunities",
-      image:
-        "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "Business Opportunities in Ethiopia: A Guide for Entrepreneurs",
-      excerpt:
-        "Discover emerging business opportunities in Ethiopia's growing economy, from agriculture to technology, and learn about the regulatory environment for foreign investors.",
-      author: "Hanna Mekonnen",
-      date: "December 5, 2023",
-      category: "Business",
-      readTime: "9 min read",
-      authorImage:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-  ];
+  const blogPosts = getAllBlogPosts();
 
   const postsPerPage = 3;
   const totalPages = Math.ceil(blogPosts.length / postsPerPage);
@@ -111,69 +38,128 @@ function BlogPageContent() {
       <div className="pt-24 lg:pt-32 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-7xl">
         {/* Blog Section Header */}
         <div className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-2">
+            Blog
+          </h1>
+          <div className="flex justify-center mb-4">
+            <span className="inline-block w-16 h-1 rounded bg-gradient-to-r from-primary to-accent"></span>
+          </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Explore our latest blog posts and stay updated on the latest news
-            and insights from Memi Place.
+            Discover insights, stories, and updates from our community and
+            industry experts.
           </p>
         </div>
 
         {/* Blog Posts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {paginatedPosts.map((post, index) => (
+          {paginatedPosts.map((post) => (
             <Link
-              key={index}
+              key={post.slug}
               href={`/blog/${post.slug}`}
-              className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 block group"
+              className="group relative bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
             >
-              {/* Post Image */}
-              <div className="relative">
+              {/* Blog Post Image */}
+              <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden group-hover:bg-gradient-to-br group-hover:from-primary-100 group-hover:to-accent-100 transition-all duration-300">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  onError={(e) => {
+                    // Fallback to emoji if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                    const fallbackDiv =
+                      target.nextElementSibling as HTMLElement;
+                    if (fallbackDiv) {
+                      fallbackDiv.style.display = "flex";
+                    }
+                  }}
                 />
-                <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow hover:bg-gray-100 transition-colors">
-                  <Bookmark className="w-4 h-4 text-gray-600" />
-                </button>
-                <div className="absolute bottom-3 left-3">
-                  <span className="px-2 py-1 bg-white/90 text-xs font-medium text-gray-700 rounded shadow">
+                {/* Fallback emoji */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center text-6xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                  style={{ display: "none" }}
+                >
+                  📝
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-accent-400/20 group-hover:from-primary-400/30 group-hover:to-accent-400/30 transition-all duration-300"></div>
+                <div className="absolute top-4 right-4">
+                  <span className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-white/90 backdrop-blur-sm border border-gray-200">
                     {post.category}
                   </span>
                 </div>
               </div>
 
-              {/* Post Content */}
+              {/* Blog Post Content */}
               <div className="p-6">
-                <h2 className="font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors text-lg lg:text-xl">
-                  {post.title}
-                </h2>
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                  {post.excerpt}
-                </p>
-
-                {/* Metadata */}
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>{post.date}</span>
-                    </div>
-                    <span>{post.readTime}</span>
+                {/* Blog Post Header */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      by {post.author}
+                    </p>
                   </div>
                 </div>
 
-                {/* Author */}
-                <div className="flex items-center gap-3">
-                  <img
-                    src={post.authorImage}
-                    alt={post.author}
-                    className="w-8 h-8 rounded-full object-cover border border-gray-200"
-                  />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      {post.author}
-                    </p>
+                {/* Blog Post Description */}
+                <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                  {post.excerpt}
+                </p>
+
+                {/* Blog Post Meta */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4 text-xs text-gray-500">
+                    <span className="flex items-center">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {post.date}
+                    </span>
+                    <span className="flex items-center">
+                      <MessageCircle className="w-3 h-3 mr-1" />
+                      {post.readTime}
+                    </span>
                   </div>
+                  <div className="flex items-center space-x-2">
+                    <Tag className="w-3 h-3 text-gray-400" />
+                    <span className="text-xs text-gray-500">{post.category}</span>
+                  </div>
+                </div>
+
+                {/* Author Info */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <img
+                      src={post.authorImage}
+                      alt={post.author}
+                      className="w-8 h-8 rounded-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = "none";
+                        const fallbackDiv =
+                          target.nextElementSibling as HTMLElement;
+                        if (fallbackDiv) {
+                          fallbackDiv.style.display = "flex";
+                        }
+                      }}
+                    />
+                    <div
+                      className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600"
+                      style={{ display: "none" }}
+                    >
+                      {post.author.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {post.author}
+                      </p>
+                      <p className="text-xs text-gray-500">{post.date}</p>
+                    </div>
+                  </div>
+                  <span className="text-sm text-primary font-medium">
+                    Read More →
+                  </span>
                 </div>
               </div>
             </Link>
@@ -181,11 +167,13 @@ function BlogPageContent() {
         </div>
 
         {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        <div className="mt-12">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     </div>
   );
@@ -193,21 +181,7 @@ function BlogPageContent() {
 
 export default function BlogPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100">
-          <Header {...headerData} />
-          <div className="pt-24 lg:pt-32 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-7xl">
-            <div className="text-center">
-              <div className="animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-1/4 mx-auto mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={<div>Loading...</div>}>
       <BlogPageContent />
     </Suspense>
   );
