@@ -734,3 +734,35 @@ export const getCourseById = (id: string): Course | undefined => {
 export const getBlogPostBySlug = (slug: string): BlogPost | undefined => {
   return getAllBlogPosts().find((post) => post.slug === slug);
 };
+
+// Get related posts (excluding current post)
+export const getRelatedPosts = (
+  currentSlug: string,
+  limit: number = 4
+): BlogPost[] => {
+  return getAllBlogPosts()
+    .filter((post) => post.slug !== currentSlug)
+    .slice(0, limit);
+};
+
+// Get top posts (excluding current post)
+export const getTopPosts = (
+  currentSlug: string,
+  limit: number = 5
+): BlogPost[] => {
+  return getAllBlogPosts()
+    .filter((post) => post.slug !== currentSlug)
+    .slice(0, limit);
+};
+
+// Get unique categories for tags
+export const getUniqueCategories = (): string[] => {
+  return [...new Set(getAllBlogPosts().map((post) => post.category))];
+};
+
+// Get blog posts by category
+export const getBlogPostsByCategory = (category: string): BlogPost[] => {
+  return getAllBlogPosts().filter(
+    (post) => post.category.toLowerCase() === category.toLowerCase()
+  );
+};

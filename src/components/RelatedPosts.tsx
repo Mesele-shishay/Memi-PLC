@@ -1,62 +1,15 @@
 import React from "react";
 import { ChevronLeft, ChevronRight, Bookmark } from "lucide-react";
 import Link from "next/link";
+import { getRelatedPosts } from "@/lib/mockApi";
 
 interface RelatedPostsProps {
   currentSlug: string;
 }
 
 export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
-  const relatedPosts = [
-    {
-      slug: "house-boating-lake-shasta",
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "House Boating On Lake Shasta",
-      subtitle:
-        "The Best Way To Spend A Long 4th of July Weekend. Wake Boarding, Swimming, Barbecues...",
-      author: "James",
-      date: "July 14, 2022",
-      authorImage:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "choose-right-laptop",
-      image:
-        "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "How To Choose The Right Laptop For...",
-      subtitle:
-        "Choosing The Right Laptop For Programming Can Be A Tough Process. It's Easy To Get Confused...",
-      author: "Robert",
-      date: "July 14, 2022",
-      authorImage:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "buying-new-car-sense",
-      image:
-        "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "Why Buying A New Car Makes More Sense...",
-      subtitle:
-        "Many Experts Will Tell You Buying Cars Used Is Best For Your Long Term Financial Health. Here's...",
-      author: "Mary",
-      date: "July 14, 2022",
-      authorImage:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-    {
-      slug: "lasagne-pasta-cake",
-      image:
-        "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      title: "Lasagne Is But A Pasta Cake",
-      subtitle:
-        "We Discuss The Decoration Of A Common Food From A Different Perspective - A... Pasta Cake",
-      author: "Jon Karrther",
-      date: "July 14, 2022",
-      authorImage:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80",
-    },
-  ];
+  // Get related posts from API, excluding current post
+  const relatedPosts = getRelatedPosts(currentSlug, 4);
 
   return (
     <div>
@@ -76,16 +29,14 @@ export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
         </div>
       </div>
 
-             {/* Related Posts Grid */}
-       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-         {relatedPosts
-           .filter(post => post.slug !== currentSlug) // Exclude current post
-           .map((post, index) => (
-           <Link
-             key={index}
-             href={`/blog/${post.slug}`}
-             className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow block"
-           >
+      {/* Related Posts Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        {relatedPosts.map((post) => (
+          <Link
+            key={post.slug}
+            href={`/blog/${post.slug}`}
+            className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow block"
+          >
             {/* Post Image */}
             <div className="relative">
               <img
@@ -104,7 +55,7 @@ export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
                 {post.title}
               </h4>
               <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-3">
-                {post.subtitle}
+                {post.excerpt}
               </p>
 
               {/* Author and Date */}
@@ -120,11 +71,11 @@ export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
                   </span>
                 </div>
                 <span className="text-xs text-gray-500">{post.date}</span>
-                             </div>
-             </div>
-           </Link>
-         ))}
-       </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

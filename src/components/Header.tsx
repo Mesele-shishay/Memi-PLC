@@ -56,14 +56,44 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 lg:h-20">
-            {/* Enhanced Logo */}
+            {/* Enhanced Logo with Modern Animations */}
             <div className="flex-shrink-0">
-              <div className="relative group">
-                <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">
+              <div className="relative group cursor-pointer">
+                {/* Main logo text with enhanced gradient and animations */}
+                <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 via-gray-900 to-black bg-clip-text text-transparent transition-all duration-700 group-hover:scale-110 group-hover:rotate-1 relative z-10 block">
                   {logo}
                 </span>
-                {/* Logo glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500 -z-10"></div>
+
+                {/* Animated background glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-400/30 via-gray-600/30 to-gray-800/30 blur-xl opacity-0 group-hover:opacity-100 transition-all duration-700 -z-10 animate-pulse"></div>
+
+                {/* Floating particles effect */}
+                <div className="absolute inset-0 -z-20 overflow-hidden">
+                  <div
+                    className="absolute top-0 left-1/4 w-1 h-1 bg-gray-600 rounded-full opacity-0 group-hover:opacity-100 animate-bounce"
+                    style={{ animationDelay: "0ms", animationDuration: "2s" }}
+                  ></div>
+                  <div
+                    className="absolute top-2 right-1/3 w-0.5 h-0.5 bg-gray-500 rounded-full opacity-0 group-hover:opacity-100 animate-bounce"
+                    style={{
+                      animationDelay: "300ms",
+                      animationDuration: "2.5s",
+                    }}
+                  ></div>
+                  <div
+                    className="absolute bottom-1 left-1/2 w-0.5 h-0.5 bg-gray-700 rounded-full opacity-0 group-hover:opacity-100 animate-bounce"
+                    style={{
+                      animationDelay: "600ms",
+                      animationDuration: "1.8s",
+                    }}
+                  ></div>
+                </div>
+
+                {/* Ripple effect on click */}
+                <div className="absolute inset-0 rounded-lg opacity-0 group-active:opacity-100 group-active:animate-ping bg-gray-400/20 transition-all duration-300"></div>
+
+                {/* Subtle border animation */}
+                <div className="absolute inset-0 border border-transparent group-hover:border-gray-300/20 rounded-lg transition-all duration-500 group-hover:scale-105"></div>
               </div>
             </div>
 
@@ -234,7 +264,7 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
           {/* Menu Header with animation */}
           <div className="flex items-center justify-between p-6 border-b border-secondary-100">
             <span
-              className={`text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-all duration-700 ${
+              className={`text-xl font-bold bg-gradient-to-r from-gray-800 to-black bg-clip-text text-transparent transition-all duration-700 hover:scale-105 hover:rotate-1 ${
                 isMenuOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"

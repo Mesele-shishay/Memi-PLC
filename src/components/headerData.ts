@@ -1,7 +1,7 @@
 import { HeaderProps } from "@/types";
 
 const headerData: HeaderProps = {
-  logo: "MEMi Trading PLC",
+  logo: "MEMi",
   navLinks: [
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blog" },
