@@ -9,24 +9,10 @@ import PricingSection from "@/components/PricingSection";
 import TestimonialSection from "@/components/TestimonialSection";
 import Footer from "@/components/Footer";
 import ColorShowcase from "@/components/ColorShowcase";
+import headerData from "@/components/headerData";
+import footerData from "@/components/footerData";
 
 export default function Home() {
-  // Header data
-  const headerData = {
-    logo: "MEMi Trading PLC",
-    navLinks: [
-      { label: "Home", href: "#home" },
-      { label: "About", href: "#about" },
-      { label: "Products", href: "#products" },
-      { label: "Youth Programs", href: "#youth" },
-      { label: "Contact", href: "#contact" },
-    ],
-    ctaButtons: [
-      { label: "Join Us", variant: "secondary" as const },
-      { label: "Partner With Us", variant: "primary" as const },
-    ],
-  };
-
   // Hero section data
   const heroData = {
     title: "Transforming Tigray's Potential into Global Opportunities",
@@ -246,49 +232,6 @@ export default function Home() {
     avatars: ["person1", "person2", "person3", "person4", "person5"],
   };
 
-  // Footer data
-  const footerData = {
-    newsletter: {
-      title: "Stay Updated with MEMi Trading PLC's Growth Journey",
-      placeholder: "Enter your email address",
-      buttonText: "Subscribe",
-    },
-    sections: [
-      {
-        title: "Programs",
-        links: [
-          { label: "Youth Empowerment", href: "#youth" },
-          { label: "Product Transformation", href: "#products" },
-          { label: "Market Access", href: "#market" },
-          { label: "Training Programs", href: "#training" },
-        ],
-      },
-      {
-        title: "Services",
-        links: [
-          { label: "Local Product Development", href: "#development" },
-          { label: "Global Market Access", href: "#global" },
-          { label: "Youth Training", href: "#training" },
-          { label: "Partnership Programs", href: "#partnerships" },
-        ],
-      },
-      {
-        title: "Company",
-        links: [
-          { label: "About MEMi Trading PLC", href: "#about" },
-          { label: "Our Vision 2033", href: "#vision" },
-          { label: "Tigray Focus", href: "#tigray" },
-          { label: "News & Updates", href: "#news" },
-        ],
-      },
-    ],
-    legal: [
-      { label: "Terms of Service", href: "#terms" },
-      { label: "Privacy Policy", href: "#privacy" },
-    ],
-    copyright: "© 2025 MEMi Trading PLC. All rights reserved. Tigray, Ethiopia",
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header {...headerData} />
@@ -299,6 +242,16 @@ export default function Home() {
       <PricingSection {...pricingData} />
       <TestimonialSection {...testimonialData} />
       <Footer {...footerData} />
+
+      {/* Blog Link */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <a
+          href="/blog"
+          className="bg-primary text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-lg hover:bg-primary-dark transition-colors text-sm sm:text-base"
+        >
+          View Blog
+        </a>
+      </div>
     </div>
   );
 }
