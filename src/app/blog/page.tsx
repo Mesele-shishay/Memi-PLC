@@ -13,6 +13,7 @@ import Header from "@/components/Header";
 import headerData from "@/components/headerData";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "@/components/Pagination";
+import LoadingOverlay from "@/components/LoadingOverlay";
 import {
   getAllBlogPosts,
   getBlogPostsByCategory,
@@ -347,7 +348,7 @@ function BlogPageContent() {
 
 export default function BlogPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingOverlay fullScreen />}>
       <BlogPageContent />
     </Suspense>
   );

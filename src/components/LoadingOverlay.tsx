@@ -1,6 +1,25 @@
-export default function Loading() {
+"use client";
+
+import React from "react";
+
+type LoadingOverlayProps = {
+  fullScreen?: boolean;
+};
+
+export default function LoadingOverlay({
+  fullScreen = true,
+}: LoadingOverlayProps) {
   return (
-    <div className="relative min-h-screen flex items-center justify-center gradient-bg-light overflow-hidden">
+    <div
+      className={
+        fullScreen
+          ? "relative min-h-screen flex items-center justify-center gradient-bg-light overflow-hidden"
+          : "relative flex items-center justify-center overflow-hidden"
+      }
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
       {/* Aurora background */}
       <div className="pointer-events-none absolute inset-0">
         <div className="aurora-blob aurora-blob--blue -top-28 -left-28 w-[28rem] h-[28rem] sm:w-[32rem] sm:h-[32rem]" />
@@ -9,12 +28,7 @@ export default function Loading() {
         <div className="absolute inset-0 grid-overlay opacity-40" />
       </div>
 
-      <div
-        className="relative z-10 flex flex-col items-center justify-center text-center"
-        role="status"
-        aria-live="polite"
-        aria-busy="true"
-      >
+      <div className="relative z-10 flex flex-col items-center justify-center text-center">
         {/* Main Spinner */}
         <div className="relative flex items-center justify-center mx-auto">
           {/* Outer ring */}
