@@ -9,11 +9,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title:
-    "ME Mi Trading PLC - Tigray's Global Platform for Youth Empowerment & Local Products",
+    "MEMI Trading PLC - Tigray's Global Platform for Youth Empowerment & Local Products",
   description:
-    "ME Mi Trading PLC is a fast-growing company based in Tigray, Ethiopia, creating a global platform for transforming local products, services, and youth potential into sustainable economic opportunities. Empowering 300,000+ youth jobs by 2033.",
+    "MEMI Trading PLC is a fast-growing company based in Tigray, Ethiopia, creating a global platform for transforming local products, services, and youth potential into sustainable economic opportunities. Empowering 300,000+ youth jobs by 2033.",
   keywords: [
-    "ME Mi Trading PLC",
+    "MEMI Trading PLC",
     "Tigray Ethiopia",
     "youth empowerment",
     "local products",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     "Ethiopian exports",
     "Tigray development",
   ],
-  authors: [{ name: "ME Mi Trading PLC" }],
-  creator: "ME Mi Trading PLC",
-  publisher: "ME Mi Trading PLC",
+  authors: [{ name: "MEMI Trading PLC" }],
+  creator: "MEMI Trading PLC",
+  publisher: "MEMI Trading PLC",
   formatDetection: {
     email: false,
     address: false,
@@ -42,11 +42,11 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "ME Mi Trading PLC - Tigray's Global Platform for Youth Empowerment",
+    title: "MEMI Trading PLC - Tigray's Global Platform for Youth Empowerment",
     description:
       "Empowering Tigray's youth and transforming local products into global opportunities. Creating 300,000+ jobs by 2033.",
     url: "https://www.memiplc.com",
-    siteName: "ME Mi Trading PLC",
+    siteName: "MEMI Trading PLC",
     locale: "en_US",
     type: "website",
     images: [
@@ -54,13 +54,13 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "ME Mi Trading PLC - Tigray's Global Platform",
+        alt: "MEMI Trading PLC - Tigray's Global Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ME Mi Trading PLC - Tigray's Global Platform",
+    title: "MEMI Trading PLC - Tigray's Global Platform",
     description:
       "Empowering Tigray's youth and transforming local products into global opportunities.",
     images: ["/twitter-image.jpg"],
@@ -78,9 +78,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
-    yahoo: "your-yahoo-verification-code",
+    google: "google-verification-code",
+    yandex: "yandex-verification-code",
+    yahoo: "yahoo-verification-code",
   },
   category: "Business",
   classification: "Business Services",
@@ -96,11 +96,11 @@ export const metadata: Metadata = {
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "ME Mi Trading PLC",
+  name: "MEMI Trading PLC",
   url: "https://www.memiplc.com",
   logo: "https://www.memiplc.com/logo.png",
   description:
-    "ME Mi Trading PLC is a fast-growing company based in Tigray, Ethiopia, creating a global platform for transforming local products, services, and youth potential into sustainable economic opportunities.",
+    "MEMI Trading PLC is a fast-growing company based in Tigray, Ethiopia, creating a global platform for transforming local products, services, and youth potential into sustainable economic opportunities.",
   foundingDate: "2000",
   address: {
     "@type": "PostalAddress",
@@ -187,8 +187,8 @@ export default function RootLayout({
         {/* Additional meta tags for better SEO */}
         <meta name="theme-color" content="var(--accent)" />
         <meta name="msapplication-TileColor" content="var(--accent)" />
-        <meta name="application-name" content="ME Mi Trading PLC" />
-        <meta name="apple-mobile-web-app-title" content="ME Mi Trading PLC" />
+        <meta name="application-name" content="MEMI Trading PLC" />
+        <meta name="apple-mobile-web-app-title" content="MEMI Trading PLC" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="mobile-web-app-capable" content="yes" />
