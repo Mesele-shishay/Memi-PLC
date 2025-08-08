@@ -9,7 +9,7 @@ const BenefitSection: React.FC<BenefitSectionProps> = ({
   testimonial,
 }) => {
   return (
-    <section className="relative py-16 lg:py-20 overflow-hidden">
+    <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden">
       {/* Modern background with gradient mesh */}
       <div className="absolute inset-0 bg-gradient-to-br from-secondary-50 via-accent-50/30 to-primary-50/50"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_50%)]"></div>
@@ -24,17 +24,17 @@ const BenefitSection: React.FC<BenefitSectionProps> = ({
         </div>
 
         {/* Benefits and Dashboard side by side */}
-        <div className="grid lg:grid-cols-2 gap-12 xl:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 xl:gap-16 items-start">
           {/* Left content - Benefits */}
           <div className="space-y-6">
             {benefits.map((benefit, index) => (
               <div
                 key={benefit.id}
-                className="group flex items-start space-x-3 p-4 rounded-xl transition-all duration-300 hover:bg-white/60 hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-1 bg-white/40 backdrop-blur-sm border border-white/20 cursor-pointer"
+                className="group flex items-start space-x-3 p-3 sm:p-4 rounded-xl transition-all duration-300 hover:bg-white/60 hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-1 bg-white/40 backdrop-blur-sm border border-white/20 cursor-pointer"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="flex-shrink-0 relative">
-                  <div className="w-8 h-8 bg-gradient-to-r from-accent-600 to-primary-600 rounded-lg flex items-center justify-center shadow-md shadow-accent/25 group-hover:shadow-accent/40 group-hover:scale-110 transition-all duration-300">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-accent-600 to-primary-600 rounded-lg flex items-center justify-center shadow-md shadow-accent/25 group-hover:shadow-accent/40 group-hover:scale-110 transition-all duration-300">
                     <svg
                       className="w-4 h-4 text-white"
                       fill="none"
@@ -65,11 +65,11 @@ const BenefitSection: React.FC<BenefitSectionProps> = ({
             {/* Main dashboard container */}
             <div className="relative group">
               {/* Modern glassmorphism card */}
-              <div className="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-2xl shadow-xl shadow-secondary-900/10 p-6 border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-2xl shadow-xl shadow-secondary-900/10 p-4 sm:p-6 border border-white/20 overflow-hidden">
                 {/* Dashboard header */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
                   <div className="flex items-center space-x-3">
-                    <div className="w-7 h-7 bg-gradient-to-r from-accent-600 to-primary-600 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 bg-gradient-to-r from-accent-600 to-primary-600 rounded-lg flex items-center justify-center">
                       <svg
                         className="w-4 h-4 text-white"
                         fill="currentColor"
@@ -93,7 +93,7 @@ const BenefitSection: React.FC<BenefitSectionProps> = ({
                 </div>
 
                 {/* Stats grid */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                   <div className="p-3 bg-gradient-to-br from-accent-50 to-primary-50 rounded-xl">
                     <div className="text-xl font-bold text-accent-600">92%</div>
                     <div className="text-xs text-accent-600/70">
@@ -146,31 +146,45 @@ const BenefitSection: React.FC<BenefitSectionProps> = ({
               </div>
 
               {/* Floating elements with modern design */}
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r from-accent-400 to-primary-500 rounded-xl flex items-center justify-center shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:scale-110 transition-all duration-300 group/icon cursor-pointer">
+              <div
+                aria-hidden="true"
+                className="hidden md:flex absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r from-accent-400 to-primary-500 rounded-xl items-center justify-center shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:scale-110 transition-all duration-300 group/icon cursor-pointer"
+              >
                 <span className="text-lg group-hover/icon:scale-110 transition-transform duration-200">
                   📚
                 </span>
               </div>
 
-              <div className="absolute top-1/3 -right-6 bg-gradient-to-r from-primary-500 to-accent-600 rounded-xl p-3 shadow-lg shadow-primary/30 text-white hover:shadow-primary/50 hover:scale-105 transition-all duration-300 cursor-pointer">
+              <div
+                aria-hidden="true"
+                className="hidden md:block absolute top-1/3 -right-6 bg-gradient-to-r from-primary-500 to-accent-600 rounded-xl p-3 shadow-lg shadow-primary/30 text-white hover:shadow-primary/50 hover:scale-105 transition-all duration-300 cursor-pointer"
+              >
                 <div className="text-center">
                   <div className="text-lg font-bold">94%</div>
                   <div className="text-xs opacity-90">Success Rate</div>
                 </div>
               </div>
 
-              <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg shadow-secondary-900/10 border-4 border-accent-200 hover:border-accent-300 hover:scale-110 transition-all duration-300 cursor-pointer">
+              <div
+                aria-hidden="true"
+                className="hidden md:flex absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-12 h-12 bg-white rounded-xl items-center justify-center shadow-lg shadow-secondary-900/10 border-4 border-accent-200 hover:border-accent-300 hover:scale-110 transition-all duration-300 cursor-pointer"
+              >
                 <span className="text-lg">🎓</span>
               </div>
 
               {/* Animated background elements */}
-              <div className="absolute top-8 right-8 w-1.5 h-1.5 bg-accent-400 rounded-full animate-pulse"></div>
               <div
-                className="absolute bottom-16 left-8 w-1 h-1 bg-primary-400 rounded-full animate-bounce"
+                aria-hidden="true"
+                className="hidden sm:block absolute top-8 right-8 w-1.5 h-1.5 bg-accent-400 rounded-full motion-safe:animate-pulse"
+              ></div>
+              <div
+                aria-hidden="true"
+                className="hidden sm:block absolute bottom-16 left-8 w-1 h-1 bg-primary-400 rounded-full motion-safe:animate-bounce"
                 style={{ animationDelay: "1s" }}
               ></div>
               <div
-                className="absolute top-1/2 left-4 w-1 h-1 bg-primary-400 rounded-full animate-pulse"
+                aria-hidden="true"
+                className="hidden sm:block absolute top-1/2 left-4 w-1 h-1 bg-primary-400 rounded-full motion-safe:animate-pulse"
                 style={{ animationDelay: "2s" }}
               ></div>
             </div>

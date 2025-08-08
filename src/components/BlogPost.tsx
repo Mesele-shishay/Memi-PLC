@@ -59,75 +59,59 @@ export default function BlogPost({ slug, post }: BlogPostProps) {
 
   return (
     <div className="mb-8">
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 mb-12">
-        {/* Main Content Area - 70% width on desktop, full width on mobile */}
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mb-12">
+        {/* Main Content */}
         <div className="w-full lg:w-[70%]">
-          {/* Main Title */}
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 lg:mb-6">
-            {postData.title}
-          </h1>
+          <div className="mb-6 lg:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 mb-3">
+              {postData.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+              <span className="inline-flex items-center gap-2">
+                <Calendar className="w-4 h-4" /> {postData.date}
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <MessageCircle className="w-4 h-4" /> Comments: 18
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Tag className="w-4 h-4" /> {postData.category}
+              </span>
+            </div>
+          </div>
 
-          {/* Featured Image */}
-          <div className="mb-4 lg:mb-6">
+          <div className="relative overflow-hidden rounded-2xl shadow-sm border border-gray-200">
             <img
               src={postData.image}
               alt={postData.title}
-              className="w-full h-48 sm:h-64 lg:h-96 object-cover rounded-lg"
+              className="w-full h-56 sm:h-72 lg:h-[28rem] object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
           </div>
 
-          {/* Metadata */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 mb-4 lg:mb-6 text-gray-600 text-sm sm:text-base">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              <span>{postData.date}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MessageCircle className="w-4 h-4" />
-              <span>Comments: 18</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Tag className="w-4 h-4" />
-              <span>Category: {postData.category}</span>
-            </div>
-          </div>
-
-          {/* Article Heading */}
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 lg:mb-4">
-            Don't Wait. The Purpose Of Our Lives Is To Be Happy!
-          </h3>
-
-          {/* Article Text */}
-          <p className="text-gray-700 leading-relaxed mb-4 lg:mb-6 text-sm sm:text-base">
-            {postData.excerpt}
-          </p>
-          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-            {postData.excerpt}
-          </p>
+          <article className="prose prose-slate max-w-none mt-6 prose-headings:tracking-tight prose-a:text-primary">
+            <h3>Don't Wait. The Purpose Of Our Lives Is To Be Happy!</h3>
+            <p>{postData.excerpt}</p>
+            <p>{postData.excerpt}</p>
+          </article>
         </div>
 
-        {/* Sidebar - 30% width on desktop, full width on mobile */}
-        <div className="w-full lg:w-[30%]">
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-2 mb-6 lg:mb-8">
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm sm:text-base">
-              <Share2 className="w-4 h-4" />
-              Share
+        {/* Sidebar */}
+        <aside className="w-full lg:w-[30%] space-y-8">
+          <div className="grid grid-cols-3 sm:flex sm:flex-wrap gap-2">
+            <button className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition">
+              <Share2 className="w-4 h-4" /> Share
             </button>
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm sm:text-base">
-              <Bookmark className="w-4 h-4" />
-              Marking
+            <button className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition">
+              <Bookmark className="w-4 h-4" /> Save
             </button>
-            <button className="flex items-center gap-2 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm sm:text-base">
-              <MessageCircle className="w-4 h-4" />
-              Comment
+            <button className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition">
+              <MessageCircle className="w-4 h-4" /> Comment
             </button>
           </div>
 
-          {/* Tags Section */}
-          <div className="mb-6 lg:mb-8">
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3 lg:mb-4 flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500"></div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-primary" />{" "}
               Tags
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -135,7 +119,7 @@ export default function BlogPost({ slug, post }: BlogPostProps) {
                 <Link
                   key={tag}
                   href={`/blog?tag=${encodeURIComponent(tag)}`}
-                  className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm hover:bg-gray-200 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 bg-white text-gray-700 rounded-full text-xs sm:text-sm border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   {tag}
                 </Link>
@@ -143,26 +127,25 @@ export default function BlogPost({ slug, post }: BlogPostProps) {
             </div>
           </div>
 
-          {/* Top Posts Section */}
           <div>
-            <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3 lg:mb-4 flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500"></div>
-              Top Post
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-primary" />{" "}
+              Top Posts
             </h3>
             <div className="space-y-3 lg:space-y-4">
-              {topPosts.map((post, index) => (
+              {topPosts.map((post) => (
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="flex gap-2 sm:gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200"
+                  className="flex gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200 border border-transparent hover:border-gray-200"
                 >
                   <img
                     src={post.image}
                     alt={post.title}
-                    className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded"
+                    className="w-16 h-16 object-cover rounded-md"
                   />
                   <div className="flex-1">
-                    <h4 className="text-xs sm:text-sm font-medium text-gray-900 line-clamp-2 hover:text-primary transition-colors duration-200">
+                    <h4 className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-primary transition-colors duration-200">
                       {post.title}
                     </h4>
                     <p className="text-xs text-gray-600 mt-1">{post.author}</p>
@@ -171,7 +154,7 @@ export default function BlogPost({ slug, post }: BlogPostProps) {
               ))}
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );

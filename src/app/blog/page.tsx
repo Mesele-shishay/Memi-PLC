@@ -1,12 +1,23 @@
 "use client";
-import React, { Suspense, useMemo } from "react";
+import React, { Suspense, useMemo, useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Calendar, MessageCircle, Tag, Bookmark, X } from "lucide-react";
+import {
+  Calendar,
+  MessageCircle,
+  Tag,
+  Bookmark,
+  X,
+  Search,
+} from "lucide-react";
 import Header from "@/components/Header";
 import headerData from "@/components/headerData";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "@/components/Pagination";
-import { getAllBlogPosts, getBlogPostsByCategory, getUniqueCategories } from "@/lib/mockApi";
+import {
+  getAllBlogPosts,
+  getBlogPostsByCategory,
+  getUniqueCategories,
+} from "@/lib/mockApi";
 
 function BlogPageContent() {
   const searchParams = useSearchParams();
@@ -15,12 +26,38 @@ function BlogPageContent() {
   const tagParam = searchParams.get("tag");
   const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
   const allBlogPosts = getAllBlogPosts();
+  const [query, setQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Filter posts by tag if tag parameter is present
+  // Keyboard shortcut: Ctrl+K / Cmd+K to focus search
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const isK = event.key.toLowerCase() === "k";
+      if (isK && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        const input = searchInputRef.current;
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  // Filter posts by tag and search query
   const filteredPosts = useMemo(() => {
-    if (!tagParam) return allBlogPosts;
-    return getBlogPostsByCategory(tagParam);
-  }, [allBlogPosts, tagParam]);
+    const base = tagParam ? getBlogPostsByCategory(tagParam) : allBlogPosts;
+    if (!query.trim()) return base;
+    const q = query.toLowerCase();
+    return base.filter((post) =>
+      [post.title, post.excerpt, post.author, post.category]
+        .join(" ")
+        .toLowerCase()
+        .includes(q)
+    );
+  }, [allBlogPosts, tagParam, query]);
 
   const postsPerPage = 3;
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -69,43 +106,83 @@ function BlogPageContent() {
           </p>
         </div>
 
-        {/* Tag Filter Section */}
+        {/* Search + Filters */}
         <div className="mb-8">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm font-medium text-gray-700">
-              Filter by:
-            </span>
-            {categories.map((category) => (
-              <Link
-                key={category}
-                href={`/blog?tag=${encodeURIComponent(category)}`}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200 ${
-                  tagParam === category
-                    ? "bg-primary text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {category}
-              </Link>
-            ))}
-            {tagParam && (
-              <button
-                onClick={clearTagFilter}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors duration-200"
-              >
-                <X className="w-3 h-3" />
-                Clear Filter
-              </button>
-            )}
+          <div className="flex flex-col gap-4 items-start">
+            {/* Search */}
+            <div className="relative w-full md:max-w-md lg:max-w-lg self-start md:self-end">
+              <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+                placeholder="Search articles, authors, topics..."
+                aria-label="Search blog posts"
+                className="w-full pl-11 pr-14 h-12 rounded-2xl bg-white/70 backdrop-blur-sm border border-gray-200 shadow-sm hover:shadow transition focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none"
+                ref={searchInputRef}
+              />
+              {/* Right accessories: clear + hint */}
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                {query && (
+                  <button
+                    onClick={() => setQuery("")}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100"
+                    aria-label="Clear search"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+                <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-1 rounded-md border border-gray-200 bg-gray-50 text-xs text-gray-600">
+                  Ctrl K
+                </kbd>
+              </div>
+            </div>
+
+            {/* Tag Filter Section */}
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-medium text-gray-700">
+                Filter by:
+              </span>
+              {categories.map((category) => (
+                <Link
+                  key={category}
+                  href={`/blog?tag=${encodeURIComponent(category)}`}
+                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
+                    tagParam === category
+                      ? "bg-primary/10 text-primary border-primary/30"
+                      : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
+                  }`}
+                >
+                  <Tag className="w-3.5 h-3.5" />
+                  {category}
+                </Link>
+              ))}
+              {tagParam && (
+                <button
+                  onClick={clearTagFilter}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white text-gray-700 rounded-full text-sm font-medium border border-gray-200 hover:bg-gray-50 transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                  Clear Filter
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Results Summary */}
-        {tagParam && (
+        {(tagParam || query) && (
           <div className="mb-6">
             <p className="text-gray-600">
-              Showing {filteredPosts.length} post
-              {filteredPosts.length !== 1 ? "s" : ""} for "{tagParam}"
+              Showing {filteredPosts.length} result
+              {filteredPosts.length !== 1 ? "s" : ""}
+              {tagParam && <> for tag "{tagParam}"</>}
+              {query && (
+                <>
+                  {tagParam ? ", " : " for "}search "{query}"
+                </>
+              )}
             </p>
           </div>
         )}
@@ -235,8 +312,10 @@ function BlogPageContent() {
               No posts found
             </h3>
             <p className="text-gray-600 mb-4">
-              {tagParam
-                ? `No posts found for "${tagParam}". Try a different filter.`
+              {tagParam || query
+                ? `No posts match your ${tagParam ? `tag "${tagParam}"` : ""}${
+                    tagParam && query ? " and " : ""
+                  }${query ? `search "${query}"` : ""}. Try adjusting filters.`
                 : "No blog posts available at the moment."}
             </p>
             {tagParam && (

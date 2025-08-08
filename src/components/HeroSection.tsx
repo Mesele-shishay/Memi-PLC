@@ -1,76 +1,118 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { HeroSectionProps } from "@/types";
+
+const MAX_TILT_DEG = 8;
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   title,
   subtitle,
   ctaButtons,
   badges,
+  image,
 }) => {
+  const [tiltStyle, setTiltStyle] = React.useState<React.CSSProperties>({});
+  const cardRef = React.useRef<HTMLDivElement | null>(null);
+
+  const handleMouseMove = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const element = cardRef.current;
+    if (!element) return;
+    const rect = element.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const offsetY = event.clientY - rect.top;
+    const percentX = (offsetX / rect.width) * 2 - 1; // -1 to 1
+    const percentY = (offsetY / rect.height) * 2 - 1; // -1 to 1
+    const rotateY = percentX * MAX_TILT_DEG;
+    const rotateX = -percentY * MAX_TILT_DEG;
+    setTiltStyle({
+      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTiltStyle({
+      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
+      transition: "transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+    });
+  };
+
   return (
-    <section className="relative min-h-screen flex flex-col justify-center py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_25%_25%,rgba(24,118,226,0.08),transparent_50%)]"></div>
-        <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_75%_75%,rgba(24,118,226,0.06),transparent_50%)]"></div>
-        <div className="absolute bottom-0 left-1/4 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(24,118,226,0.04),transparent_50%)]"></div>
+    <section className="relative min-h-screen flex flex-col justify-center py-20 lg:py-32 overflow-hidden gradient-bg-light">
+      {/* Aurora background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="aurora-blob aurora-blob--blue -top-24 -left-24 w-[36rem] h-[36rem]" />
+        <div className="aurora-blob aurora-blob--violet top-1/3 -right-24 w-[30rem] h-[30rem] animation-delay-2000" />
+        <div className="aurora-blob aurora-blob--indigo bottom-[-10rem] left-1/3 w-[40rem] h-[40rem] animation-delay-4000" />
+        <div className="absolute inset-0 grid-overlay opacity-50" />
       </div>
 
-      {/* Floating Elements */}
-      <div className="absolute top-32 left-20 w-6 h-6 bg-blue-400/20 rounded-full animate-pulse"></div>
-      <div
-        className="absolute top-48 right-32 w-4 h-4 bg-blue-400/30 rounded-full animate-bounce"
-        style={{ animationDelay: "1s" }}
-      ></div>
-      <div
-        className="absolute bottom-40 left-32 w-5 h-5 bg-blue-400/25 rounded-full animate-pulse"
-        style={{ animationDelay: "2s" }}
-      ></div>
-      <div
-        className="absolute top-1/2 right-16 w-3 h-3 bg-blue-400/20 rounded-full animate-ping"
-        style={{ animationDelay: "0.5s" }}
-      ></div>
+      {/* Floating orbs */}
+      <div className="absolute top-24 left-10 w-3 h-3 rounded-full bg-primary-400/40 animate-float-y" />
+      <div className="absolute top-40 right-24 w-4 h-4 rounded-full bg-primary-500/40 animate-float-x" />
+      <div className="absolute bottom-32 left-24 w-2.5 h-2.5 rounded-full bg-accent-500/40 animate-float-y" />
 
       {/* Main Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* First Row - Title */}
-        <div className="text-center mb-16 lg:mb-20">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-black leading-tight tracking-tight">
-            <span className="block bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+        {/* Title */}
+        <div className="text-center mb-10 lg:mb-16">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 via-accent-500 to-primary-700 animate-gradient-x inline-block">
               {title}
             </span>
           </h1>
+          <p className="mt-6 text-xl sm:text-2xl lg:text-3xl text-gray-800 leading-relaxed max-w-3xl mx-auto font-light">
+            {subtitle}
+          </p>
         </div>
 
-        {/* Second Row - Content */}
-        <div className="grid lg:grid-cols-2 gap-16 xl:gap-20 items-center">
-          {/* Left Column - Text Content */}
+        <div className="grid lg:grid-cols-2 gap-12 xl:gap-16 items-center">
+          {/* Left Column - CTAs and badges */}
           <div className="text-center lg:text-left space-y-8">
-            {/* Subtitle */}
-            <div className="space-y-6">
-              <p className="text-xl sm:text-2xl lg:text-3xl text-black leading-relaxed max-w-3xl mx-auto lg:mx-0 font-light">
-                {subtitle}
-              </p>
-            </div>
+            {/* Badges */}
+            {badges?.length ? (
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                {badges.map((badge, idx) => (
+                  <div
+                    key={`${badge.label}-${idx}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-white/70 backdrop-blur px-4 py-2 text-sm text-primary-700 shadow-sm hover:shadow-primary transition-shadow animate-fade-in"
+                    style={{ animationDelay: `${idx * 100}ms` }}
+                  >
+                    <span className="text-primary-500">
+                      {badge.type === "rating" && "⭐"}
+                      {badge.type === "price" && "💸"}
+                      {badge.type === "discount" && "🎯"}
+                    </span>
+                    <span className="font-medium">{badge.label}</span>
+                    {badge.value ? (
+                      <span className="ml-1 text-primary-600/80">
+                        {badge.value}
+                      </span>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            ) : null}
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start pt-8">
+            <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start pt-3">
               {ctaButtons.map((button, index) => (
                 <div key={index} className="relative group">
                   {button.variant === "primary" ? (
                     <button
                       onClick={button.onClick}
-                      className="relative bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-5 rounded-2xl font-semibold text-lg shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105 transition-all duration-300 transform cursor-pointer border-0"
+                      className="relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg shadow-primary hover:shadow-primary-hover transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-300"
                     >
                       <span className="relative z-10">{button.label}</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                      <span className="pointer-events-none absolute inset-0 -translate-x-full bg-white/25 mix-blend-overlay skew-x-12 group-hover:translate-x-full transition-transform duration-700" />
                     </button>
                   ) : (
                     <button
                       onClick={button.onClick}
-                      className="relative bg-white/90 backdrop-blur-xl text-black px-10 py-5 rounded-2xl font-semibold text-lg border-2 border-gray-200/50 hover:border-blue-300 hover:bg-white hover:text-black transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform cursor-pointer"
+                      className="relative bg-white/90 backdrop-blur-xl text-gray-900 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg border border-gray-200/70 hover:border-primary-300 hover:bg-white transition-all duration-300 shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-200"
                     >
                       {button.label}
                     </button>
@@ -80,128 +122,35 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
 
-          {/* Right Column - Visual Element */}
+          {/* Right Column - Visual with parallax tilt */}
           <div className="relative">
-            <div className="relative group perspective-1000">
-              {/* Main Card */}
-              <div className="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-gray-900/10 p-8 border border-white/20 overflow-hidden cursor-pointer transform hover:rotate-y-2 transition-all duration-700">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-xl">🎓</span>
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-black">
-                        Learning Platform
-                      </h3>
-                      <p className="text-sm text-gray-600">Premium Access</p>
-                    </div>
-                  </div>
-                  <div className="flex space-x-1">
-                    <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-                    <div
-                      className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"
-                      style={{ animationDelay: "0.5s" }}
-                    ></div>
-                    <div
-                      className="w-3 h-3 bg-blue-600 rounded-full animate-pulse"
-                      style={{ animationDelay: "1s" }}
-                    ></div>
-                  </div>
-                </div>
+            <div
+              ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="relative rounded-3xl p-2 bg-white/60 backdrop-blur-xl border border-white/40 shadow-2xl"
+              style={tiltStyle}
+            >
+              <div className="relative overflow-hidden rounded-2xl">
+                <Image
+                  src={image?.src ?? "/next.svg"}
+                  alt={image?.alt ?? "Hero image"}
+                  width={1200}
+                  height={900}
+                  priority
+                  className="h-[320px] sm:h-[420px] w-full object-cover"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-900/40 via-primary-900/10 to-transparent" />
 
-                {/* Course Progress */}
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 mb-6 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-blue-600/5"></div>
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <h4 className="font-bold text-black text-lg">
-                          Ethiopian Business Development
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          Advanced Course Module
-                        </p>
-                      </div>
-                      <div className="text-2xl">📊</div>
-                    </div>
-                    <div className="bg-white/80 rounded-full h-3 mb-3 overflow-hidden shadow-inner">
-                      <div
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full shadow-sm transition-all duration-1000"
-                        style={{ width: "87%" }}
-                      ></div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-semibold text-black">
-                        87% Complete
-                      </span>
-                      <span className="text-xs text-gray-600">
-                        3 of 4 modules
-                      </span>
-                    </div>
-                  </div>
+                {/* Floating labels */}
+                <div className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-xl bg-white/85 backdrop-blur px-3 py-2 text-sm text-gray-900 shadow animate-float-y">
+                  <span className="text-primary-600">🎓</span>
+                  <span className="font-semibold">Learning Platform</span>
                 </div>
-
-                {/* Achievement Card */}
-                <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-6 text-white relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-10 translate-x-10"></div>
-                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8"></div>
-                  <div className="relative">
-                    <div className="flex items-center space-x-4 mb-3">
-                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                        <span className="text-xl">🏆</span>
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">
-                          Certificate Earned!
-                        </h4>
-                        <p className="text-blue-100 text-sm">
-                          by Hanan Tadesse
-                        </p>
-                      </div>
-                    </div>
-                    <p className="text-blue-100 text-sm leading-relaxed">
-                      Advanced Ethiopian Business Development Certificate
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Achievement Badge */}
-              <div className="absolute -top-6 -right-6 transform rotate-12">
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white px-4 py-3 rounded-2xl shadow-2xl shadow-blue-500/30 transform hover:scale-110 transition-all duration-300 cursor-pointer">
-                  <div className="text-center">
-                    <div className="text-sm font-bold">NEW</div>
-                    <div className="text-xs opacity-90">Achievement</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Notification */}
-              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white rounded-2xl shadow-2xl p-5 border border-gray-100 hover:border-gray-200 transition-colors duration-300 cursor-pointer max-w-xs">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <svg
-                      className="w-5 h-5 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-black">
-                      Lesson Completed
-                    </p>
-                    <p className="text-xs text-gray-600">
-                      +50 learning points earned
-                    </p>
-                  </div>
+                <div className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-xl bg-primary-600/90 text-white px-3 py-2 text-sm shadow animate-float-x">
+                  <span>✨</span>
+                  <span className="font-semibold">Premium Access</span>
                 </div>
               </div>
             </div>

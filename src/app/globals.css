@@ -205,6 +205,137 @@ body {
   animation: fade-in 0.5s ease-out forwards;
 }
 
+/* Modern hero animations */
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float-y {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes float-x {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes aurora-sway {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    filter: blur(40px);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate3d(10%, -5%, 0) rotate(15deg) scale(1.05);
+    filter: blur(48px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    filter: blur(40px);
+    opacity: 0.8;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 8s ease-in-out infinite;
+}
+
+.animate-float-y {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+.animate-float-x {
+  animation: float-x 7s ease-in-out infinite;
+}
+
+.aurora-blob {
+  position: absolute;
+  filter: blur(45px);
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+  animation: aurora-sway 14s ease-in-out infinite;
+}
+
+.aurora-blob--blue {
+  background: radial-gradient(
+    60% 60% at 50% 50%,
+    var(--primary-300),
+    transparent 60%
+  );
+}
+
+.aurora-blob--indigo {
+  background: radial-gradient(
+    60% 60% at 50% 50%,
+    var(--primary-500),
+    transparent 60%
+  );
+}
+
+.aurora-blob--violet {
+  background: radial-gradient(
+    60% 60% at 50% 50%,
+    var(--accent-400),
+    transparent 60%
+  );
+}
+
+.grid-overlay {
+  pointer-events: none;
+  background-image: linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px, 28px 28px;
+  mask-image: radial-gradient(circle at center, black 60%, transparent 75%);
+}
+
+/* Animation delay utilities */
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+.animation-delay-1500 {
+  animation-delay: 1.5s;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-2500 {
+  animation-delay: 2.5s;
+}
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+.animation-delay-3500 {
+  animation-delay: 3.5s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
 /* Utility Classes for Colors */
 
 /* Text Color Utilities */
@@ -544,6 +675,7 @@ body {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 1;
   -webkit-line-clamp: 1;
 }
 
@@ -551,6 +683,7 @@ body {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
 }
 
@@ -558,6 +691,7 @@ body {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
 }
 
@@ -565,5 +699,63 @@ body {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-clamp: 4;
   -webkit-line-clamp: 4;
+}
+
+/* Additional modern animations & helpers */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.is-visible {
+  animation: fade-in-up 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Card shine hover effect */
+.card-shine {
+  position: absolute;
+  top: -20%;
+  left: -40%;
+  width: 60%;
+  height: 140%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg) translateX(-150%);
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.group:hover .card-shine {
+  transform: rotate(25deg) translateX(180%);
+  opacity: 0.6;
+}
+
+/* Subtle tilt on hover */
+.hover-tilt {
+  transform-style: preserve-3d;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 400ms ease;
+}
+
+.group:hover .hover-tilt {
+  transform: translateY(-6px) rotateX(1deg) rotateY(-1deg);
 }

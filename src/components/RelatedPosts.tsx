@@ -16,15 +16,15 @@ export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
       {/* Section Header with Navigation */}
       <div className="flex items-center justify-between mb-6 lg:mb-8">
         <h3 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500"></div>
+          <div className="w-2 h-2 sm:w-3 sm:h-3 bg-primary"></div>
           Related Posts
         </h3>
         <div className="flex gap-2">
-          <button className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+          <button className="w-8 h-8 rounded-full border border-gray-200 bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
+            <ChevronLeft className="w-4 h-4" />
           </button>
-          <button className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+          <button className="w-8 h-8 rounded-full border border-gray-200 bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
+            <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -35,23 +35,23 @@ export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow block"
+            className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all block"
           >
             {/* Post Image */}
             <div className="relative">
               <img
                 src={post.image}
                 alt={post.title}
-                className="w-full h-40 sm:h-48 object-cover"
+                className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
               />
-              <button className="absolute top-2 right-2 sm:top-3 sm:right-3 w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors">
-                <Bookmark className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
+              <button className="absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors">
+                <Bookmark className="w-4 h-4 text-gray-600" />
               </button>
             </div>
 
             {/* Post Content */}
             <div className="p-3 sm:p-4">
-              <h4 className="font-bold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base">
+              <h4 className="font-bold text-gray-900 mb-2 line-clamp-2 text-sm sm:text-base group-hover:text-primary transition-colors">
                 {post.title}
               </h4>
               <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-3">

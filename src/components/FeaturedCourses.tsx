@@ -48,7 +48,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
   const CourseCard: React.FC<{ course: Course }> = ({ course }) => (
     <Link
       href={`/courses/${course.id}`}
-      className="group relative bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg  hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      className="group relative bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 motion-reduce:transform-none motion-reduce:transition-none"
     >
       {/* Popular/New Badge */}
       {(course.isPopular || course.isNew) && (
@@ -66,10 +66,13 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
       )}
 
       {/* Course Image */}
-      <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden group-hover:bg-gradient-to-br group-hover:from-primary-100 group-hover:to-accent-100 transition-all duration-300">
+      <div className="relative h-40 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden group-hover:bg-gradient-to-br group-hover:from-primary-100 group-hover:to-accent-100 transition-colors duration-300">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-accent-400/20 group-hover:from-primary-400/30 group-hover:to-accent-400/30 transition-all duration-300"></div>
-        <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-          <div className="text-6xl opacity-20 group-hover:opacity-30 transition-opacity duration-300">
+        <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 motion-reduce:transform-none">
+          <div
+            aria-hidden="true"
+            className="text-6xl opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+          >
             📚
           </div>
         </div>
@@ -81,7 +84,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
       </div>
 
       {/* Course Content */}
-      <div className="p-6">
+      <div className="p-5 sm:p-6">
         {/* Level Badge */}
         <div className="mb-3">
           <span
@@ -94,7 +97,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors cursor-pointer">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors cursor-pointer line-clamp-2">
           {course.title}
         </h3>
 
@@ -104,11 +107,11 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
         </p>
 
         {/* Instructor */}
-        <div className="flex items-center mb-3 group-hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
-          <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white text-xs font-medium group-hover:scale-110 transition-transform duration-200">
+        <div className="flex items-center mb-3 group-hover:bg-gray-50 p-1.5 sm:p-2 rounded-lg transition-colors duration-200">
+          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs font-medium group-hover:scale-110 transition-transform duration-200 motion-reduce:transform-none">
             {course.instructor.charAt(0)}
           </div>
-          <span className="text-sm text-gray-700 ml-2 group-hover:text-primary-600 transition-colors duration-200">
+          <span className="text-xs sm:text-sm text-gray-700 ml-2 group-hover:text-primary-600 transition-colors duration-200">
             {course.instructor}
           </span>
         </div>
@@ -116,7 +119,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
         {/* Rating and Students */}
         <div className="flex items-center justify-between mb-4">
           {renderStars(course.rating)}
-          <span className="text-sm text-gray-500">
+          <span className="text-xs sm:text-sm text-gray-500">
             {course.students.toLocaleString()} students
           </span>
         </div>
@@ -155,7 +158,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span className="text-sm text-gray-600 group-hover:text-primary-600 transition-colors duration-200">
+          <span className="text-xs sm:text-sm text-gray-600 group-hover:text-primary-600 transition-colors duration-200">
             {course.duration}
           </span>
         </div>
@@ -163,7 +166,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
         {/* Price and CTA */}
         <div className="flex items-center justify-between group-hover:bg-gray-50 p-3 rounded-lg transition-colors duration-200">
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors duration-200">
+            <span className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors duration-200">
               {course.price}
             </span>
             {course.originalPrice && (
@@ -172,7 +175,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
               </span>
             )}
           </div>
-          <span className="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium group-hover:bg-primary-700 group-hover:scale-105 transition-all duration-200 cursor-pointer">
+          <span className="inline-flex items-center px-3.5 py-2 sm:px-4 sm:py-2 rounded-lg bg-primary-600 text-white text-sm font-medium group-hover:bg-primary-700 group-hover:scale-105 transition-all duration-200 cursor-pointer motion-reduce:transform-none">
             Enroll Now
           </span>
         </div>
@@ -181,7 +184,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
   );
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-12 sm:py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -196,7 +199,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
         </div>
 
         {/* Courses Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
           {courses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}
@@ -206,7 +209,7 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
         <div className="text-center">
           <a
             href={viewAllHref}
-            className="inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary-600 font-medium border border-primary-200 hover:bg-primary-50 hover:border-primary-300 hover:scale-105 transition-all duration-200 shadow-sm cursor-pointer"
+            className="inline-flex items-center px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg bg-white text-primary-600 font-medium border border-primary-200 hover:bg-primary-50 hover:border-primary-300 hover:scale-105 transition-all duration-200 shadow-sm cursor-pointer motion-reduce:transform-none motion-reduce:transition-none"
           >
             {viewAllText}
             <svg

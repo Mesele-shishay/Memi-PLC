@@ -9,17 +9,35 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
   avatars,
 }) => {
   return (
-    <section className="relative py-20 lg:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
+    <section className="relative py-16 sm:py-20 lg:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div
+          aria-hidden="true"
+          className="hidden sm:block absolute -top-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl motion-safe:animate-pulse"
+        ></div>
+        <div
+          aria-hidden="true"
+          className="hidden sm:block absolute -bottom-40 -right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl motion-safe:animate-pulse delay-1000"
+        ></div>
+        <div
+          aria-hidden="true"
+          className="hidden md:block absolute top-1/4 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl motion-safe:animate-pulse delay-500"
+        ></div>
 
         {/* Floating particles - responsive positioning */}
-        <div className="hidden sm:block absolute top-20 left-1/4 w-2 h-2 bg-primary/30 rounded-full animate-bounce delay-300"></div>
-        <div className="hidden sm:block absolute bottom-32 right-1/3 w-3 h-3 bg-accent/40 rounded-full animate-bounce delay-700"></div>
-        <div className="hidden lg:block absolute top-1/2 left-1/6 w-1 h-1 bg-white/20 rounded-full animate-pulse delay-1200"></div>
+        <div
+          aria-hidden="true"
+          className="hidden sm:block absolute top-20 left-1/4 w-2 h-2 bg-primary/30 rounded-full motion-safe:animate-bounce delay-300"
+        ></div>
+        <div
+          aria-hidden="true"
+          className="hidden sm:block absolute bottom-32 right-1/3 w-3 h-3 bg-accent/40 rounded-full motion-safe:animate-bounce delay-700"
+        ></div>
+        <div
+          aria-hidden="true"
+          className="hidden lg:block absolute top-1/2 left-1/6 w-1 h-1 bg-white/20 rounded-full motion-safe:animate-pulse delay-1200"
+        ></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -42,7 +60,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
               "
             </div>
 
-            <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 border border-white/10 shadow-2xl mx-2 sm:mx-0">
+            <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 border border-white/10 shadow-2xl mx-2 sm:mx-0">
               <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-light leading-relaxed mb-8 sm:mb-10 text-gray-100 italic text-center">
                 "{testimonial.quote}"
               </div>
@@ -51,12 +69,12 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
               <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
-                  <div className="relative w-16 sm:w-20 lg:w-24 h-16 sm:h-20 lg:h-24 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+                  <div className="relative w-16 sm:w-20 lg:w-24 h-16 sm:h-20 lg:h-24 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300 motion-reduce:transform-none">
                     <span className="text-white font-bold text-lg sm:text-xl lg:text-2xl">
                       {testimonial.name.charAt(0)}
                     </span>
                     {/* Subtle animation ring */}
-                    <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-pulse"></div>
+                    <div className="absolute inset-0 rounded-full border-2 border-white/20 motion-safe:animate-pulse"></div>
                   </div>
                 </div>
 
@@ -108,7 +126,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                   ></div>
 
                   <div
-                    className="relative w-12 sm:w-14 h-12 sm:h-14 rounded-full border-2 sm:border-4 border-gray-700 flex items-center justify-center transform group-hover:scale-110 group-hover:border-white/20 transition-all duration-300 shadow-xl"
+                    className="relative w-12 sm:w-14 h-12 sm:h-14 rounded-full border-2 sm:border-4 border-gray-700 flex items-center justify-center transform group-hover:scale-110 group-hover:border-white/20 transition-all duration-300 shadow-xl motion-reduce:transform-none"
                     style={{
                       background: `linear-gradient(135deg, hsl(${
                         index * 60
@@ -125,7 +143,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
               {avatars.length > 4 && (
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gray-600 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
-                  <div className="relative w-12 sm:w-14 h-12 sm:h-14 bg-gray-700 rounded-full border-2 sm:border-4 border-gray-600 flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-xl">
+                  <div className="relative w-12 sm:w-14 h-12 sm:h-14 bg-gray-700 rounded-full border-2 sm:border-4 border-gray-600 flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-xl motion-reduce:transform-none">
                     <span className="text-white text-xs font-bold">
                       +{avatars.length - 4}
                     </span>
@@ -157,7 +175,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className="w-4 sm:w-5 h-4 sm:h-5 text-yellow-400 hover:scale-125 transition-transform duration-200"
+                        className="w-4 sm:w-5 h-4 sm:h-5 text-yellow-400 hover:scale-125 transition-transform duration-200 motion-reduce:transform-none"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                         style={{ animationDelay: `${i * 100}ms` }}
@@ -182,7 +200,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
               },
             ].map((stat, index) => (
               <div key={index} className="group sm:col-span-1 lg:col-span-1">
-                <div className="relative bg-white/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 h-full">
+                <div className="relative bg-white/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-white/10 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 h-full motion-reduce:transform-none motion-reduce:transition-none">
                   {/* Gradient glow effect */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-r ${stat.color} rounded-xl sm:rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10`}
@@ -209,14 +227,14 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 
           {/* Enhanced CTA with multiple buttons - responsive stacking */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4 sm:px-0">
-            <button className="w-full sm:w-auto relative group px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-primary to-accent text-white rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden">
+            <button className="w-full sm:w-auto relative group px-7 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-primary to-accent text-white rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden motion-reduce:transform-none motion-reduce:transition-none">
               {/* Button glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
               <span className="relative z-10 flex items-center justify-center space-x-2 sm:space-x-3">
                 <span>Get Started Today</span>
                 <svg
-                  className="w-5 sm:w-6 h-5 sm:h-6 transform group-hover:translate-x-1 transition-transform duration-300"
+                  className="w-5 sm:w-6 h-5 sm:h-6 transform group-hover:translate-x-1 transition-transform duration-300 motion-reduce:transform-none"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -231,7 +249,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
               </span>
             </button>
 
-            <button className="w-full sm:w-auto relative group px-8 sm:px-10 py-4 sm:py-5 bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg hover:bg-white/20 hover:border-primary transition-all duration-300">
+            <button className="w-full sm:w-auto relative group px-7 sm:px-10 py-4 sm:py-5 bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg hover:bg-white/20 hover:border-primary transition-all duration-300 motion-reduce:transition-none">
               <span className="flex items-center justify-center space-x-2 sm:space-x-3">
                 <svg
                   className="w-5 sm:w-6 h-5 sm:h-6"
