@@ -148,18 +148,19 @@ export interface TestimonialSectionProps {
 
 export interface Course {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   instructor: string;
   duration: string;
   level: "Beginner" | "Intermediate" | "Advanced";
   category: string;
-  rating: number;
   students: number;
   price: string;
   originalPrice?: string;
   image: string;
   features: string[];
+  rating?: number;
   isPopular?: boolean;
   isNew?: boolean;
 }
@@ -177,4 +178,73 @@ export interface FooterProps {
   sections: FooterSection[];
   legal: FooterLink[];
   copyright: string;
+}
+
+// Contact/Inbox
+export interface ContactMessage {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  inquiryType?: string;
+  subject: string;
+  message: string;
+  createdAt: string; // ISO date string
+  read: boolean;
+}
+
+// Added: Team and Get Involved section types to align with mock data
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  description: string;
+  image: {
+    src: string;
+    alt: string;
+    fallback: string;
+  };
+  expertise: string[];
+  linkedin?: string;
+  email?: string;
+}
+
+export interface TeamSectionProps {
+  title: string;
+  subtitle: string;
+  team: TeamMember[];
+}
+
+export interface GetInvolvedSectionProps {
+  title: string;
+  subtitle: string;
+  involvementOptions: {
+    icon: string;
+    title: string;
+    description: string;
+    ctaText: string;
+    ctaHref: string;
+    image?: {
+      src: string;
+      alt: string;
+      fallback: string;
+    };
+  }[];
+}
+
+// Aggregated home content type for editable dashboard
+export interface HomeContent {
+  hero: HeroSectionProps;
+  support: SupportSectionProps;
+  features: FeaturesSectionProps;
+  benefits: BenefitSectionProps;
+  pricing: PricingSectionProps;
+  testimonial: TestimonialSectionProps;
+  featuredCourses: FeaturedCoursesSectionProps;
+  getInvolved: GetInvolvedSectionProps;
+  team: TeamSectionProps;
+  footer: FooterProps;
+  trustedBrands?: TrustedSectionProps;
 }

@@ -447,6 +447,19 @@ export const getTeamData = (): TeamSectionProps => ({
   ],
 });
 
+// Trusted Brands Data
+export const getTrustedBrandsData = () => ({
+  title: "Trusted By Leading Organizations",
+  brands: [
+    { name: "Ethiopian Ministry of Trade", logo: "🏛️", alt: "Ethiopian Ministry of Trade" },
+    { name: "Tigray Chamber of Commerce", logo: "🏢", alt: "Tigray Chamber of Commerce" },
+    { name: "Addis Ababa University", logo: "🎓", alt: "Addis Ababa University" },
+    { name: "Ethiopian Investment Commission", logo: "💼", alt: "Ethiopian Investment Commission" },
+    { name: "Tigray Development Association", logo: "🌱", alt: "Tigray Development Association" },
+    { name: "African Development Bank", logo: "🏦", alt: "African Development Bank" },
+  ],
+});
+
 // Footer Data
 export const getFooterData = () => ({
   newsletter: {

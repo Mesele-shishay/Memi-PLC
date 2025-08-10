@@ -31,17 +31,26 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setForm({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      company: "",
-      inquiryType: "",
-      subject: "",
-      message: "",
-    });
+    // Post to inbox API
+    fetch("/api/dashboard/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    })
+      .catch(() => {})
+      .finally(() => {
+        setSubmitted(false);
+        setForm({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          company: "",
+          inquiryType: "",
+          subject: "",
+          message: "",
+        });
+      });
   };
 
   return (
