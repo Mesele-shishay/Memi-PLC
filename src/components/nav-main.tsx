@@ -70,7 +70,9 @@ export function NavMain({
               : false;
             const isActive =
               childActive ||
-              (item.url === "/"
+              (item.title === "Dashboard"
+                ? pathname === "/dashboard" || pathname === "/dashboard/"
+                : item.url === "/"
                 ? pathname === "/"
                 : pathname.startsWith(item.url));
             const isExpanded =
