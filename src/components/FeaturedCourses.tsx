@@ -118,7 +118,13 @@ const FeaturedCourses: React.FC<FeaturedCoursesSectionProps> = ({
 
         {/* Rating and Students */}
         <div className="flex items-center justify-between mb-4">
-          {renderStars(course.rating)}
+          {course.rating ? (
+            renderStars(course.rating)
+          ) : (
+            <div className="flex items-center space-x-1">
+              <span className="text-sm text-gray-400">No rating</span>
+            </div>
+          )}
           <span className="text-xs sm:text-sm text-gray-500">
             {course.students.toLocaleString()} students
           </span>
