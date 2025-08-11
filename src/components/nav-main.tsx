@@ -27,6 +27,23 @@ export function NavMain({
   }[];
 }) {
   const pathname = usePathname();
+
+  // Returns the last non-empty path segment, ignoring trailing slashes
+  const getLastSegment = (path: string): string => {
+    if (!path) return "";
+    const segments = path.split("/").filter(Boolean); // remove empty segments
+    return segments.length ? segments[segments.length - 1] : "";
+  };
+
+  // Active if the last segment of both paths match, or the paths are exactly equal
+  const isActiveByLastSegment = (
+    itemUrl: string,
+    currentPath: string
+  ): boolean => {
+    if (!itemUrl || !currentPath) return false;
+    if (itemUrl === currentPath) return true;
+    return getLastSegment(itemUrl) === getLastSegment(currentPath);
+  };
   const [expandedItemTitles, setExpandedItemTitles] = React.useState<
     Set<string>
   >(new Set());
@@ -36,9 +53,7 @@ export function NavMain({
     for (const item of items) {
       if (
         item.items &&
-        item.items.some((child) =>
-          child.url === "/" ? pathname === "/" : pathname.startsWith(child.url)
-        )
+        item.items.some((child) => isActiveByLastSegment(child.url, pathname))
       ) {
         next.add(item.title);
       }
@@ -63,9 +78,7 @@ export function NavMain({
               Array.isArray(item.items) && item.items.length > 0;
             const childActive = hasChildren
               ? item.items!.some((child) =>
-                  child.url === "/"
-                    ? pathname === "/"
-                    : pathname.startsWith(child.url)
+                  isActiveByLastSegment(child.url, pathname)
                 )
               : false;
             const isActive =
@@ -127,10 +140,10 @@ export function NavMain({
                 {hasChildren && isExpanded && (
                   <SidebarMenuSub>
                     {item.items!.map((child) => {
-                      const subActive =
-                        child.url === "/"
-                          ? pathname === "/"
-                          : pathname.startsWith(child.url);
+                      const subActive = isActiveByLastSegment(
+                        child.url,
+                        pathname
+                      );
                       return (
                         <SidebarMenuSubItem key={child.title}>
                           <SidebarMenuSubButton asChild isActive={subActive}>

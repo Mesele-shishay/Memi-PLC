@@ -87,7 +87,6 @@ export const sidebarData: {
         { title: "Benefits", url: "/dashboard/home/benefits-testimonial" },
         { title: "Featured Courses", url: "/dashboard/home/featured-courses" },
         { title: "Pricing", url: "/dashboard/home/pricing" },
-        { title: "Testimonials", url: "/dashboard/home/benefits-testimonial" },
         { title: "Team", url: "/dashboard/home/team" },
         { title: "Get Involved", url: "/dashboard/home/get-involved" },
         { title: "Footer", url: "/dashboard/home/footer" },
