@@ -8,6 +8,9 @@ import {
   IconSearch,
   IconSettings,
   IconUsers,
+  IconHome,
+  IconBook,
+  IconMail,
   type Icon,
 } from "@tabler/icons-react";
 
@@ -61,7 +64,7 @@ export const sidebarData: {
     {
       title: "Courses",
       url: "/dashboard/courses",
-      icon: IconChartBar,
+      icon: IconBook,
       items: [
         { title: "All Courses", url: "/dashboard/courses" },
         { title: "Add Course", url: "/dashboard/courses/new" },
@@ -70,12 +73,25 @@ export const sidebarData: {
     {
       title: "Contact",
       url: "/dashboard/contact",
-      icon: IconFolder,
+      icon: IconMail,
     },
     {
       title: "Home",
       url: "/dashboard/home",
-      icon: IconUsers,
+      icon: IconHome,
+      items: [
+        { title: "Overview", url: "/dashboard/home" },
+        { title: "Hero Section", url: "/dashboard/home/hero" },
+        { title: "Support", url: "/dashboard/home/support" },
+        { title: "Features", url: "/dashboard/home/features" },
+        { title: "Benefits", url: "/dashboard/home/benefits-testimonial" },
+        { title: "Featured Courses", url: "/dashboard/home/featured-courses" },
+        { title: "Pricing", url: "/dashboard/home/pricing" },
+        { title: "Testimonials", url: "/dashboard/home/benefits-testimonial" },
+        { title: "Team", url: "/dashboard/home/team" },
+        { title: "Get Involved", url: "/dashboard/home/get-involved" },
+        { title: "Footer", url: "/dashboard/home/footer" },
+      ],
     },
   ],
   navSecondary: [
