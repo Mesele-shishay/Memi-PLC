@@ -1,15 +1,34 @@
+"use client";
 import React from "react";
 import { ChevronLeft, ChevronRight, Bookmark } from "lucide-react";
 import Link from "next/link";
-import { getRelatedPosts } from "@/lib/mockApi";
+import { api } from "@/lib/apiClient";
 
 interface RelatedPostsProps {
   currentSlug: string;
 }
 
 export default function RelatedPosts({ currentSlug }: RelatedPostsProps) {
-  // Get related posts from API, excluding current post
-  const relatedPosts = getRelatedPosts(currentSlug, 4);
+  const [relatedPosts, setRelatedPosts] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const all = await api.internal<any[]>("/api/blog", {
+          cache: "no-store",
+        });
+        const filtered = (all || [])
+          .filter((p: any) => p.slug !== currentSlug)
+          .slice(0, 4);
+        if (mounted) setRelatedPosts(filtered);
+      } catch (error) {
+        console.error("Failed to fetch related posts:", error);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [currentSlug]);
 
   return (
     <div>

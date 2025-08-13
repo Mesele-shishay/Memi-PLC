@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { FileDropzone } from "@/components/ui/file-dropzone";
+import { UploadProgress } from "@/components/ui/upload-progress";
 import {
   Select,
   SelectContent,
@@ -15,6 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { api } from "@/lib/apiClient";
+import { useFileUpload } from "@/hooks/useFileUpload";
 
 const courseSchema = z.object({
   slug: z.string().min(1, "Slug is required"),
@@ -61,6 +64,11 @@ export function CourseForm({
   const [title, setTitle] = React.useState<string>(initial?.title || "");
   const [slug, setSlug] = React.useState<string>((initial as any)?.slug || "");
   const [slugTouched, setSlugTouched] = React.useState<boolean>(false);
+  const { uploadSingleFile, isUploading, uploadProgress } = useFileUpload();
+  const [uploadStatus, setUploadStatus] = React.useState<{
+    status: "idle" | "uploading" | "success" | "error";
+    message: string;
+  }>({ status: "idle", message: "" });
 
   function slugify(input: string): string {
     return input
@@ -73,11 +81,14 @@ export function CourseForm({
 
   React.useEffect(() => {
     let mounted = true;
-    fetch("/api/categories", { cache: "no-store" })
-      .then((r) => r.json())
+    api
+      .internal<string[]>("/api/categories", { cache: "no-store" })
       .then((data) => {
         if (!mounted) return;
         setCategories(Array.isArray(data) ? data : []);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch categories:", error);
       });
     return () => {
       mounted = false;
@@ -122,21 +133,16 @@ export function CourseForm({
       const payload = { ...parsed, features };
 
       if (mode === "create") {
-        const res = await fetch("/api/courses", {
+        const created = await api.internal<{ id: string }>("/api/courses", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        if (!res.ok) throw new Error(await res.text());
-        const created = await res.json();
         router.push(`/dashboard/courses/${created.id}`);
       } else if (mode === "edit" && initial?.id) {
-        const res = await fetch(`/api/courses/${initial.id}`, {
+        await api.internal(`/api/courses/${initial.id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        if (!res.ok) throw new Error(await res.text());
         router.push(`/dashboard/courses/${initial.id}`);
       }
     } catch (e: any) {
@@ -276,18 +282,83 @@ export function CourseForm({
             <FileDropzone
               label="Course Image"
               previewUrl={imagePreview}
-              onFile={(file) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const result = reader.result as string;
-                  setImageDataUrl(result);
-                  setImagePreview(result);
-                };
-                reader.readAsDataURL(file);
+              onFile={async (file) => {
+                // Reset upload status
+                setUploadStatus({
+                  status: "uploading",
+                  message: "Uploading image...",
+                });
+                setError(null);
+
+                try {
+                  // Validate file size (5MB limit)
+                  if (file.size > 5 * 1024 * 1024) {
+                    throw new Error("File size must be less than 5MB");
+                  }
+
+                  // Validate file type
+                  const allowedTypes = [
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/png",
+                    "image/gif",
+                    "image/webp",
+                  ];
+                  if (!allowedTypes.includes(file.type)) {
+                    throw new Error(
+                      "Only JPEG, PNG, GIF, and WebP images are allowed"
+                    );
+                  }
+
+                  const result = await uploadSingleFile(file);
+                  if (result.success && result.data) {
+                    const uploadData = Array.isArray(result.data)
+                      ? result.data[0]
+                      : result.data;
+                    setImageDataUrl(uploadData.url);
+                    setImagePreview(uploadData.url);
+                    setUploadStatus({
+                      status: "success",
+                      message: "Image uploaded successfully!",
+                    });
+
+                    // Clear success message after 3 seconds
+                    setTimeout(() => {
+                      setUploadStatus({ status: "idle", message: "" });
+                    }, 3000);
+                  } else {
+                    throw new Error(result.error || "Upload failed");
+                  }
+                } catch (error) {
+                  const errorMessage =
+                    error instanceof Error ? error.message : "Upload failed";
+                  setUploadStatus({
+                    status: "error",
+                    message: errorMessage,
+                  });
+                  setError(errorMessage);
+
+                  // Clear error message after 5 seconds
+                  setTimeout(() => {
+                    setUploadStatus({ status: "idle", message: "" });
+                  }, 5000);
+                }
               }}
               shape="rect"
               rectHeightClass="h-48"
+              disabled={isUploading}
             />
+
+            {/* Upload Progress Bar */}
+            <UploadProgress
+              isUploading={isUploading}
+              uploadProgress={uploadProgress}
+              uploadStatus={uploadStatus}
+            />
+
+            <p className="text-xs text-gray-500 text-center mt-2">
+              Recommended: 800x600px, max 5MB
+            </p>
             {/* Keep a hidden input for backward compatibility */}
             <input
               type="hidden"

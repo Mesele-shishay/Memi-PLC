@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
+import { Category, CategoryResponse } from "@/types/api";
 
 export default function CategoriesPage() {
   const [items, setItems] = React.useState<string[] | null>(null);
@@ -15,9 +17,13 @@ export default function CategoriesPage() {
 
   React.useEffect(() => {
     let mounted = true;
-    fetch("/api/categories", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => mounted && setItems(Array.isArray(data) ? data : []))
+    api
+      .internal<Category[]>("/api/categories")
+      .then(
+        (data) =>
+          mounted &&
+          setItems(Array.isArray(data) ? data.map((cat) => cat.name) : [])
+      )
       .finally(() => mounted && setLoading(false));
     return () => {
       mounted = false;
@@ -29,22 +35,21 @@ export default function CategoriesPage() {
     if (!name) return;
     setSubmitting(true);
     try {
-      const res = await fetch("/api/categories", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name }),
-      });
-      if (res.ok) {
-        const { name: added } = await res.json();
-        setItems((prev) =>
-          prev
-            ? Array.from(new Set([...prev, added])).sort((a, b) =>
-                a.localeCompare(b)
-              )
-            : [added]
-        );
-        setNewName("");
-      }
+      const { name: added } = await api.internal<CategoryResponse>(
+        "/api/categories",
+        {
+          method: "POST",
+          body: JSON.stringify({ name }),
+        }
+      );
+      setItems((prev) =>
+        prev
+          ? Array.from(new Set([...prev, added])).sort((a, b) =>
+              a.localeCompare(b)
+            )
+          : [added]
+      );
+      setNewName("");
     } finally {
       setSubmitting(false);
     }

@@ -20,35 +20,11 @@ export default function GetInvolvedEditorPage() {
 
   const onInvolvedImage = React.useCallback(
     async (index: number, file: File) => {
-      const toDataUrl = (f: File) =>
-        new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(String(reader.result));
-          reader.onerror = reject;
-          reader.readAsDataURL(f);
-        });
-      const dataUrl = await toDataUrl(file);
-      setInvolvedPreviews((prev) => ({ ...prev, [index]: dataUrl }));
-      const next = {
-        involvementOptions: (data?.getInvolved.involvementOptions ?? []).map(
-          (opt, i) =>
-            i === index
-              ? {
-                  ...opt,
-                  image: {
-                    ...(opt.image ?? {
-                      alt: opt.title,
-                      fallback: opt.icon || "✨",
-                    }),
-                    src: dataUrl,
-                  },
-                }
-              : opt
-        ),
-      };
-      await save({ getInvolved: { ...data!.getInvolved, ...next } });
+      // The GetInvolvedEditor now handles image uploads directly
+      // This callback is kept for backward compatibility
+      setInvolvedPreviews((prev) => ({ ...prev, [index]: null }));
     },
-    [save, data]
+    []
   );
 
   if (loading || !data) {

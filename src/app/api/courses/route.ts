@@ -1,11 +1,22 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/inMemoryDb";
 import { z } from "zod";
+import { API_BASE } from "@/lib/apiBase";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const courses = db.getCourses();
-    return NextResponse.json(courses);
+    const authHeader = request.headers.get("authorization");
+    const headers: Record<string, string> = {};
+
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+    }
+
+    const res = await fetch(`${API_BASE}/courses`, {
+      cache: "no-store",
+      headers,
+    });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch courses" },
@@ -36,8 +47,23 @@ export async function POST(req: Request) {
   try {
     const json = await req.json();
     const parsed = courseCreateSchema.parse(json);
-    const created = db.createCourse(parsed as any);
-    return NextResponse.json(created, { status: 201 });
+
+    const authHeader = req.headers.get("authorization");
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+    }
+
+    const res = await fetch(`${API_BASE}/courses`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(parsed),
+    });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
   } catch (error: any) {
     return NextResponse.json(
       { error: error?.message || "Failed to create course" },

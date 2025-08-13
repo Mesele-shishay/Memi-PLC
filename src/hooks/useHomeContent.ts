@@ -1,5 +1,6 @@
 import React from "react";
 import { HomeContent } from "@/types";
+import { api } from "@/lib/apiClient";
 
 export function useHomeContent() {
   const [data, setData] = React.useState<HomeContent | null>(null);
@@ -11,8 +12,9 @@ export function useHomeContent() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/dashboard/home", { cache: "no-store" });
-      const json = await res.json();
+      const json = await api.internal<HomeContent>("/api/dashboard/home", {
+        cache: "no-store",
+      });
       setData(json);
     } catch (e: any) {
       setError(e?.message ?? "Failed to load");
@@ -25,12 +27,10 @@ export function useHomeContent() {
     setSaving(true);
     setError(null);
     try {
-      const res = await fetch("/api/dashboard/home", {
+      const json = await api.internal<HomeContent>("/api/dashboard/home", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(partial),
       });
-      const json = await res.json();
       setData(json);
       return json as HomeContent;
     } catch (e: any) {

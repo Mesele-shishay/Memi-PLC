@@ -11,12 +11,12 @@ import GetInvolvedSection from "@/components/GetInvolvedSection";
 import TeamSection from "@/components/TeamSection";
 import Footer from "@/components/Footer";
 import headerData from "@/components/headerData";
-import { db } from "@/lib/inMemoryDb";
+import { api } from "@/lib/apiClient";
 
 export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const home = db.getHomeContent();
+export default async function Home() {
+  const home = await api.get<any>("/dashboard/home");
 
   return (
     <div className="min-h-screen bg-background">
@@ -30,7 +30,7 @@ export default function Home() {
       <TestimonialSection {...home.testimonial} />
       <TeamSection {...home.team} />
       <GetInvolvedSection {...home.getInvolved} />
-      <Footer {...home.footer} />
+      <Footer />
     </div>
   );
 }

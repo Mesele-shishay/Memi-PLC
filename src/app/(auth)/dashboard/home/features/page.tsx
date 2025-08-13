@@ -20,33 +20,11 @@ export default function FeaturesEditorPage() {
 
   const onFeatureImage = React.useCallback(
     async (index: number, file: File) => {
-      const toDataUrl = (f: File) =>
-        new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(String(reader.result));
-          reader.onerror = reject;
-          reader.readAsDataURL(f);
-        });
-      const dataUrl = await toDataUrl(file);
-      setFeaturePreviews((prev) => ({ ...prev, [index]: dataUrl }));
-      const next = {
-        ...data?.features,
-        title: data?.features?.title ?? "Features",
-        features: (data?.features.features ?? []).map((f, i) =>
-          i === index
-            ? {
-                ...f,
-                image: {
-                  ...(f.image ?? { alt: f.title, fallback: "✨" }),
-                  src: dataUrl,
-                },
-              }
-            : f
-        ),
-      };
-      await save({ features: next });
+      // The FeaturesEditor now handles image uploads directly
+      // This callback is kept for backward compatibility
+      setFeaturePreviews((prev) => ({ ...prev, [index]: null }));
     },
-    [save, data?.features.features]
+    []
   );
 
   if (loading || !data) {

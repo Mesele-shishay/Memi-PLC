@@ -3,10 +3,9 @@ import React, { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import headerData from "@/components/headerData";
-import { getFooterData } from "@/lib/mockApi";
+import { api } from "@/lib/apiClient";
 
 export default function ContactPage() {
-  const footerData = getFooterData();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -17,7 +16,12 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [userName, setUserName] = useState<string>("");
   const [selectFocused, setSelectFocused] = useState(false);
 
   const handleChange = (
@@ -26,31 +30,90 @@ export default function ContactPage() {
     >
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    // Clear error when user starts typing
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Post to inbox API
-    fetch("/api/dashboard/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    })
-      .catch(() => {})
-      .finally(() => {
-        setSubmitted(false);
-        setForm({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          company: "",
-          inquiryType: "",
-          subject: "",
-          message: "",
-        });
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      // Prepare data according to backend DTO requirements
+      const messageData = {
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || undefined,
+        company: form.company.trim() || undefined,
+        inquiryType: form.inquiryType || undefined,
+        subject: form.subject.trim(),
+        message: form.message.trim(),
+      };
+
+      // Validate required fields
+      if (
+        !messageData.firstName ||
+        !messageData.lastName ||
+        !messageData.email ||
+        !messageData.subject ||
+        !messageData.message
+      ) {
+        throw new Error("Please fill in all required fields");
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(messageData.email)) {
+        throw new Error("Please enter a valid email address");
+      }
+
+      // Validate phone number if provided
+      if (messageData.phone) {
+        const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+        if (!phoneRegex.test(messageData.phone)) {
+          throw new Error("Please enter a valid phone number");
+        }
+      }
+
+      // Post to backend API
+      const response = await api.post("/contact", messageData);
+
+      // If we get here, the request was successful
+      setUserName(messageData.firstName);
+      setSuccess(true);
+      // Reset form
+      setForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        company: "",
+        inquiryType: "",
+        subject: "",
+        message: "",
       });
+
+      // Show success message for 5 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
+    } catch (err: any) {
+      console.error("Error submitting contact form:", err);
+
+      // Handle different types of errors
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError("Failed to send message. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -308,6 +371,7 @@ export default function ContactPage() {
                   className="w-full px-6 py-4 text-secondary bg-transparent border-0 rounded-xl focus:outline-none peer placeholder-transparent shadow-sm ring-1 ring-primary/20 focus:ring-2 focus:ring-primary/60 transition-all min-h-[120px] resize-none"
                   placeholder=" "
                   id="contact-message"
+                  maxLength={1000}
                 />
                 <label
                   htmlFor="contact-message"
@@ -321,29 +385,33 @@ export default function ContactPage() {
                   Your Message *
                 </label>
                 <div className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 peer-focus:scale-x-100 transition-transform duration-300 origin-left" />
+                {/* Character count */}
+                <div className="absolute bottom-2 right-4 text-xs text-gray-400">
+                  {form.message.length}/1000
+                </div>
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
                 className="relative px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group/btn overflow-hidden cursor-pointer"
-                disabled={submitted}
+                disabled={loading}
               >
                 <span className="relative z-10 flex items-center space-x-2">
-                  {submitted ? (
+                  {loading ? (
                     <>
                       <svg
-                        className="w-5 h-5 animate-bounce"
+                        className="w-5 h-5 animate-spin"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
                         <path
                           fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          d="M10 2a8 8 0 00-8 8c0 4.418 3.582 8 8 8a8 8 0 008-8c0-4.418-3.582-8-8-8zm0 14a6 6 0 100-12 6 6 0 000 12zm-3-5a1 1 0 11-2 0 1 1 0 012 0zm6 0a1 1 0 11-2 0 1 1 0 012 0z"
                           clipRule="evenodd"
                         />
                       </svg>
-                      <span>Sent!</span>
+                      <span>Sending...</span>
                     </>
                   ) : (
                     <>
@@ -365,9 +433,15 @@ export default function ContactPage() {
                   )}
                 </span>
               </button>
-              {submitted && (
-                <div className="mt-4 p-4 bg-white/20 backdrop-blur-sm rounded-xl border border-white/30 animate-fade-in text-center text-primary font-medium">
-                  Thank you for reaching out! We'll get back to you soon.
+              {error && (
+                <div className="mt-4 p-4 bg-red-100 border border-red-200 rounded-xl text-red-800 text-center font-medium">
+                  {error}
+                </div>
+              )}
+              {success && (
+                <div className="mt-4 p-4 bg-green-100 border border-green-200 rounded-xl text-green-800 text-center font-medium">
+                  Thank you {userName}! Your message has been sent successfully.
+                  We'll get back to you soon.
                 </div>
               )}
             </form>
@@ -510,7 +584,7 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-      <Footer {...footerData} />
+      <Footer />
     </div>
   );
 }

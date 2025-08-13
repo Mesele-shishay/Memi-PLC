@@ -2,7 +2,9 @@
 
 import React from "react";
 import { FileDropzone } from "@/components/ui/file-dropzone";
+import { UploadProgress } from "@/components/ui/upload-progress";
 import { FeaturesSectionProps } from "@/types";
+import { useFileUpload } from "@/hooks/useFileUpload";
 
 interface FeaturesEditorProps {
   features: FeaturesSectionProps;
@@ -17,6 +19,83 @@ export function FeaturesEditor({
   onFeatureImage,
   featurePreviews,
 }: FeaturesEditorProps) {
+  const { uploadSingleFile, isUploading, uploadProgress } = useFileUpload();
+  const [uploadStatus, setUploadStatus] = React.useState<{
+    status: "idle" | "uploading" | "success" | "error";
+    message: string;
+  }>({ status: "idle", message: "" });
+
+  const handleFeatureImageUpload = async (index: number, file: File) => {
+    // Reset upload status
+    setUploadStatus({ status: "uploading", message: "Uploading image..." });
+
+    try {
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error("File size must be less than 5MB");
+      }
+
+      // Validate file type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error("Only JPEG, PNG, GIF, and WebP images are allowed");
+      }
+
+      const result = await uploadSingleFile(file);
+      if (result.success && result.data) {
+        const uploadData = Array.isArray(result.data)
+          ? result.data[0]
+          : result.data;
+        await onFeatureImage(index, file);
+        // Update the feature image with the uploaded URL
+        const updatedFeatures = features.features.map((feature, i) =>
+          i === index
+            ? {
+                ...feature,
+                image: {
+                  ...feature.image,
+                  src: uploadData.url,
+                  alt: feature.image?.alt ?? feature.title,
+                },
+              }
+            : feature
+        );
+        await onSave({
+          features: { ...features, features: updatedFeatures },
+        });
+        setUploadStatus({
+          status: "success",
+          message: "Image uploaded successfully!",
+        });
+
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          setUploadStatus({ status: "idle", message: "" });
+        }, 3000);
+      } else {
+        throw new Error(result.error || "Upload failed");
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Upload failed";
+      setUploadStatus({
+        status: "error",
+        message: errorMessage,
+      });
+
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        setUploadStatus({ status: "idle", message: "" });
+      }, 5000);
+    }
+  };
+
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-white/30 bg-gradient-to-br from-white/90 via-white/80 to-white/70 backdrop-blur-xl shadow-xl p-6">
       {/* Header Section */}
@@ -43,32 +122,43 @@ export function FeaturesEditor({
         {features.features.map((feature, index) => (
           <div
             key={index}
-            className="group/feature relative overflow-hidden rounded-2xl border border-gray-200/50 bg-gradient-to-br from-white/95 to-gray-50/40 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-gray-300/50 hover:-translate-y-1"
+            className="group/card relative rounded-2xl border border-gray-200/50 bg-white/60 backdrop-blur-sm p-6 space-y-4 hover:shadow-xl hover:border-green-200/50 transition-all duration-300 hover:-translate-y-1"
           >
-            {/* Feature Header with Number */}
-            <div className="mb-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold">
-                    {index + 1}
-                  </div>
-                  <span className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                    Feature {index + 1}
-                  </span>
-                </div>
-                <div className="w-3 h-3 rounded-full bg-green-400 shadow-sm"></div>
-              </div>
-            </div>
+            {/* Remove Button */}
+            <button
+              className="absolute top-4 right-4 p-2 rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition-colors duration-200 opacity-0 group-hover/card:opacity-100"
+              onClick={async () => {
+                const next = features.features.filter((_, i) => i !== index);
+                await onSave({
+                  features: { ...features, features: next },
+                });
+              }}
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
 
             {/* Feature Title */}
-            <div className="mb-4">
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">
-                Title
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                Feature Title
               </label>
               <input
-                className="w-full rounded-xl border-2 border-gray-200 p-3 text-sm font-medium focus:outline-none focus:ring-3 focus:ring-blue-200 focus:border-blue-400 transition-all duration-200 bg-white/90 hover:bg-white"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                 defaultValue={feature.title}
-                placeholder="Enter feature title..."
+                placeholder="Enter feature title"
                 onBlur={async (e) => {
                   const next = features.features.map((f, i) =>
                     i === index ? { ...f, title: e.target.value } : f
@@ -81,15 +171,15 @@ export function FeaturesEditor({
             </div>
 
             {/* Feature Description */}
-            <div className="mb-5">
-              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-500"></span>
                 Description
               </label>
               <textarea
-                className="w-full rounded-xl border-2 border-gray-200 p-3 text-sm focus:outline-none focus:ring-3 focus:ring-blue-200 focus:border-blue-400 transition-all duration-200 bg-white/90 hover:bg-white resize-none"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 min-h-20 resize-none"
                 defaultValue={feature.description}
                 placeholder="Describe this feature..."
-                rows={3}
                 onBlur={async (e) => {
                   const next = features.features.map((f, i) =>
                     i === index ? { ...f, description: e.target.value } : f
@@ -108,12 +198,21 @@ export function FeaturesEditor({
               </label>
               <FileDropzone
                 label="Upload Image"
-                onFile={(file) => onFeatureImage(index, file)}
+                onFile={(file) => handleFeatureImageUpload(index, file)}
                 previewUrl={
                   featurePreviews[index] ?? feature.image?.src ?? null
                 }
                 rectHeightClass="h-32"
+                disabled={isUploading}
               />
+              <UploadProgress
+                isUploading={isUploading}
+                uploadProgress={uploadProgress}
+                uploadStatus={uploadStatus}
+              />
+              <p className="text-xs text-gray-500 text-center mt-2">
+                Recommended: 400x300px, max 5MB
+              </p>
             </div>
 
             {/* Feature Actions */}
@@ -144,12 +243,12 @@ export function FeaturesEditor({
       {/* Add Feature Button */}
       <div className="mt-8 text-center">
         <button
-          className="px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 text-white font-medium hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           onClick={async () => {
             const newFeature = {
               title: "New Feature",
-              description: "Describe this amazing feature...",
-              image: { src: "", alt: "" },
+              description: "Describe this feature...",
+              image: { src: "", alt: "New Feature", fallback: "✨" },
             };
             await onSave({
               features: {
@@ -159,7 +258,20 @@ export function FeaturesEditor({
             });
           }}
         >
-          + Add New Feature
+          <svg
+            className="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+          Add New Feature
         </button>
       </div>
     </div>

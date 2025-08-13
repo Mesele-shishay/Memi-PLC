@@ -1,165 +1,65 @@
 "use client";
+
 import React from "react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import headerData from "@/components/headerData";
-import { getCourseById } from "@/lib/mockApi";
-import { Course } from "@/types";
+import CourseDetailSkeleton from "@/components/CourseDetailSkeleton";
 import { useParams } from "next/navigation";
-
-// Mock data for demonstration - same as courses page
-const courses: Course[] = [
-  {
-    id: "amharic-beginners",
-    title: "Amharic for Beginners",
-    description:
-      "Master the basics of Amharic, Ethiopia's official language, with practical lessons and cultural insights.",
-    instructor: "Mulugeta Bekele",
-    duration: "8h 00m",
-    level: "Beginner",
-    category: "Language",
-    rating: 4.8,
-    students: 950,
-    price: "ETB 350",
-    originalPrice: "ETB 700",
-    image:
-      "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Native Instructors",
-      "Cultural Context",
-      "Certificate of Completion",
-      "Lifetime Access",
-    ],
-    isPopular: true,
-    isNew: true,
-  },
-  {
-    id: "ethiopian-cuisine",
-    title: "Ethiopian Cuisine: Cooking Injera & More",
-    description:
-      "Learn to cook traditional Ethiopian dishes like Injera, Doro Wat, and Shiro with step-by-step video guides.",
-    instructor: "Sara Abebe",
-    duration: "5h 15m",
-    level: "Beginner",
-    category: "Cooking",
-    rating: 4.9,
-    students: 1200,
-    price: "ETB 400",
-    originalPrice: "ETB 800",
-    image:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Recipe Book Included",
-      "Video Tutorials",
-      "Community Support",
-      "Certificate of Completion",
-    ],
-    isPopular: true,
-    isNew: false,
-  },
-  {
-    id: "addis-tech-bootcamp",
-    title: "Addis Ababa Tech Bootcamp",
-    description:
-      "Kickstart your tech career with hands-on training in web development, mobile apps, and digital skills tailored for Ethiopia.",
-    instructor: "Samuel Getachew",
-    duration: "10h 30m",
-    level: "Intermediate",
-    category: "Technology",
-    rating: 4.7,
-    students: 800,
-    price: "ETB 600",
-    originalPrice: "ETB 1200",
-    image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Project-Based Learning",
-      "Mentorship",
-      "Job Readiness",
-      "Certificate of Completion",
-    ],
-    isPopular: false,
-    isNew: true,
-  },
-  {
-    id: "ethiopian-history",
-    title: "Ethiopian History & Heritage",
-    description:
-      "Explore Ethiopia's rich history, from ancient Axum to modern times, with engaging lectures and visuals.",
-    instructor: "Dr. Almaz Tadesse",
-    duration: "7h 45m",
-    level: "Beginner",
-    category: "History",
-    rating: 4.6,
-    students: 670,
-    price: "ETB 300",
-    originalPrice: "ETB 600",
-    image:
-      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Expert Lectures",
-      "Downloadable Resources",
-      "Certificate of Completion",
-      "Lifetime Access",
-    ],
-    isPopular: false,
-    isNew: false,
-  },
-  {
-    id: "entrepreneurship-ethiopia",
-    title: "Entrepreneurship in Ethiopia",
-    description:
-      "Learn how to start and grow a business in Ethiopia, covering local regulations, funding, and market strategies.",
-    instructor: "Hanna Mekonnen",
-    duration: "9h 20m",
-    level: "Advanced",
-    category: "Business",
-    rating: 4.9,
-    students: 540,
-    price: "ETB 750",
-    originalPrice: "ETB 1500",
-    image:
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Local Case Studies",
-      "Business Plan Templates",
-      "Mentorship",
-      "Certificate of Completion",
-    ],
-    isPopular: true,
-    isNew: false,
-  },
-  {
-    id: "coffee-culture",
-    title: "Ethiopian Coffee Culture & Ceremony",
-    description:
-      "Discover the art and tradition of Ethiopian coffee, from bean to cup, including the famous coffee ceremony.",
-    instructor: "Tigist Alemu",
-    duration: "3h 40m",
-    level: "Beginner",
-    category: "Culture",
-    rating: 4.8,
-    students: 1100,
-    price: "ETB 250",
-    originalPrice: "ETB 500",
-    image:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop&crop=center",
-    features: [
-      "Live Demonstrations",
-      "Cultural Insights",
-      "Certificate of Completion",
-      "Community Access",
-    ],
-    isPopular: false,
-    isNew: true,
-  },
-];
+import { api } from "@/lib/apiClient";
 
 export default function CourseDetailPage() {
   const params = useParams();
-  const courseId = Array.isArray(params.id) ? params.id[0] : params.id;
-  const course = courses.find((c) => c.id === courseId);
+  const courseId = Array.isArray(params.id)
+    ? params.id[0]
+    : (params.id as string);
 
-  // If course not found, show 404
+  const [course, setCourse] = React.useState<any | null>(null);
+  const [relatedCourses, setRelatedCourses] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await api.internal<any>(`/api/courses/${courseId}`);
+        if (mounted) setCourse(data);
+
+        const all = await api.internal<any[]>("/api/courses");
+        if (mounted && all && Array.isArray(all)) {
+          const related = all
+            .filter(
+              (c: any) =>
+                dataSafe(c).id !== dataSafe(course).id &&
+                (c.category === dataSafe(course).category ||
+                  c.level === dataSafe(course).level)
+            )
+            .slice(0, 3);
+          setRelatedCourses(related);
+        }
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courseId]);
+
+  function dataSafe(c: any) {
+    return c || {};
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header {...headerData} />
+        <CourseDetailSkeleton />
+      </div>
+    );
+  }
+
   if (!course) {
     return (
       <div className="min-h-screen bg-white">
@@ -184,23 +84,11 @@ export default function CourseDetailPage() {
     );
   }
 
-  // Generate dynamic tags based on course category and features
-  const tags = [
+  const tags: string[] = [
     course.category,
     course.level,
-    ...course.features
-      .slice(0, 3)
-      .map((feature) => feature.replace(/\s+/g, "").replace(/[^a-zA-Z]/g, "")),
-  ];
-
-  // Get related courses (same category or level)
-  const relatedCourses = courses
-    .filter(
-      (c) =>
-        c.id !== course.id &&
-        (c.category === course.category || c.level === course.level)
-    )
-    .slice(0, 3);
+    ...(Array.isArray(course.features) ? course.features.slice(0, 3) : []),
+  ].filter(Boolean);
 
   return (
     <div className="min-h-screen bg-white">
@@ -242,7 +130,6 @@ export default function CourseDetailPage() {
                 alt={course.title}
                 className="w-full h-48 sm:h-64 lg:h-96 object-cover rounded-lg shadow-lg"
                 onError={(e) => {
-                  // Fallback to placeholder if image fails to load
                   const target = e.target as HTMLImageElement;
                   target.style.display = "none";
                   const fallbackDiv = target.nextElementSibling as HTMLElement;
@@ -288,7 +175,7 @@ export default function CourseDetailPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-semibold">Students:</span>
-                <span>{course.students.toLocaleString()}</span>
+                <span>{Number(course.students ?? 0).toLocaleString()}</span>
               </div>
             </div>
             {/* Section Heading */}
@@ -296,7 +183,7 @@ export default function CourseDetailPage() {
               What You'll Learn
             </h3>
             <ul className="list-disc pl-6 mb-6 text-gray-700">
-              {course.features.map((feature, i) => (
+              {(course.features || []).map((feature: string, i: number) => (
                 <li key={i}>{feature}</li>
               ))}
             </ul>
@@ -310,7 +197,7 @@ export default function CourseDetailPage() {
             {/* Instructor */}
             <div className="flex items-center gap-3 mt-8">
               <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center text-white text-lg font-bold">
-                {course.instructor.charAt(0)}
+                {course.instructor?.charAt(0)}
               </div>
               <div>
                 <p className="text-base font-semibold text-gray-900">
@@ -345,18 +232,6 @@ export default function CourseDetailPage() {
               </a>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-2 mb-6 lg:mb-8">
-              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm sm:text-base cursor-pointer">
-                Share
-              </button>
-              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm sm:text-base cursor-pointer">
-                Save
-              </button>
-              <button className="flex items-center gap-2 px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm sm:text-base cursor-pointer">
-                Enroll
-              </button>
-            </div>
             {/* Tags Section */}
             <div className="mb-6 lg:mb-8">
               <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3 lg:mb-4 flex items-center gap-2">
@@ -428,6 +303,7 @@ export default function CourseDetailPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

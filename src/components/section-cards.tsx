@@ -44,7 +44,7 @@ export function SectionCards({
           <div className="line-clamp-1 flex gap-2 font-medium">
             Courses available <IconTrendingUp className="size-4" />
           </div>
-          <div className="text-muted-foreground">Based on mock data</div>
+          <div className="text-muted-foreground">Live data from database</div>
         </CardFooter>
       </Card>
       <Card className="@container/card group relative overflow-hidden rounded-3xl border border-white/20 bg-white/70 backdrop-blur-xl shadow-2xl transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(59,130,246,0.25)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-primary/10 before:to-primary/0">
@@ -66,7 +66,7 @@ export function SectionCards({
           <div className="line-clamp-1 flex gap-2 font-medium">
             Posts published <IconTrendingUp className="size-4" />
           </div>
-          <div className="text-muted-foreground">From mock API</div>
+          <div className="text-muted-foreground">Live data from database</div>
         </CardFooter>
       </Card>
       <Card className="@container/card group relative overflow-hidden rounded-3xl border border-white/20 bg-white/70 backdrop-blur-xl shadow-2xl transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(59,130,246,0.25)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-primary/10 before:to-primary/0">

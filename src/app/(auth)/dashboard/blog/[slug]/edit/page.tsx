@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { BlogForm } from "@/components/forms/BlogForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
 
 export default function EditBlogPage() {
   const params = useParams<{ slug: string }>();
@@ -14,8 +15,7 @@ export default function EditBlogPage() {
 
   React.useEffect(() => {
     let mounted = true;
-    fetch(`/api/blog/${slug}`, { cache: "no-store" })
-      .then((r) => r.json())
+    api.internal<any>(`/api/blog/${slug}`)
       .then((data) => mounted && setInitial(data))
       .finally(() => mounted && setLoading(false));
     return () => {

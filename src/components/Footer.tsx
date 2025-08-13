@@ -1,15 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { FooterProps } from "@/types";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { useFooterData } from "@/hooks/useFooterData";
 
-const Footer: React.FC<FooterProps> = ({
-  newsletter,
-  sections,
-  legal,
-  copyright,
-}) => {
+const Footer: React.FC = () => {
+  const { data, loading, error } = useFooterData();
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -22,6 +18,44 @@ const Footer: React.FC<FooterProps> = ({
       setTimeout(() => setIsSubscribed(false), 3000);
     }
   };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <footer className="bg-gray-900 text-white">
+        <div className="py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="animate-pulse">
+              <div className="h-16 bg-gray-800 rounded mb-8"></div>
+              <div className="h-4 bg-gray-800 rounded mb-4"></div>
+              <div className="h-4 bg-gray-800 rounded w-3/4"></div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
+  // Show error state
+  if (error || !data) {
+    return (
+      <footer className="bg-gray-900 text-white">
+        <div className="py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-red-400 mb-4">Failed to load footer content</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/80 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
+  const { newsletter, sections, legal, copyright } = data;
 
   return (
     <footer className="bg-gray-900 text-white relative overflow-hidden">

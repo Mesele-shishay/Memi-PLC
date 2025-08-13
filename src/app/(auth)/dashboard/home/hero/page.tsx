@@ -17,25 +17,11 @@ export default function HeroEditorPage() {
     [save]
   );
 
-  const onHeroImage = React.useCallback(
-    async (file: File) => {
-      const toDataUrl = (f: File) =>
-        new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(String(reader.result));
-          reader.onerror = reject;
-          reader.readAsDataURL(f);
-        });
-      const dataUrl = await toDataUrl(file);
-      setHeroPreview(dataUrl);
-      await save({
-        hero: {
-          image: { src: dataUrl, alt: data?.hero.image.alt ?? "Hero" },
-        } as Partial<HeroSectionProps> as any,
-      });
-    },
-    [save, data?.hero.image.alt]
-  );
+  const onHeroImage = React.useCallback(async (file: File) => {
+    // The HeroEditor now handles image uploads directly
+    // This callback is kept for backward compatibility
+    setHeroPreview(null);
+  }, []);
 
   if (loading || !data) {
     return (

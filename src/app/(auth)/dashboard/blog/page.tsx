@@ -2,9 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
@@ -13,18 +12,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Loader2, Pencil, Trash2, Eye } from "lucide-react";
+import { api } from "@/lib/apiClient";
+import { BlogPost } from "@/types/api";
 
 type BlogItem = {
   slug: string;
-  image: string;
   title: string;
   description: string;
   author: string;
-  date: string;
   category: string;
-  readTime: string;
-  authorImage: string;
+  image: string;
+  readTime?: string;
+  date?: string;
 };
 
 export default function BlogListPage() {
@@ -34,8 +35,8 @@ export default function BlogListPage() {
 
   React.useEffect(() => {
     let mounted = true;
-    fetch("/api/blog", { cache: "no-store" })
-      .then((r) => r.json())
+    api
+      .internal<BlogItem[]>("/api/blog")
       .then((data) => {
         if (mounted) setItems(data);
       })
@@ -49,8 +50,7 @@ export default function BlogListPage() {
     if (!confirm("Delete this blog post?")) return;
     setDeleting(slug);
     try {
-      const res = await fetch(`/api/blog/${slug}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(await res.text());
+      await api.internal(`/api/blog/${slug}`, { method: "DELETE" });
       setItems((prev) => (prev ? prev.filter((b) => b.slug !== slug) : prev));
     } finally {
       setDeleting(null);
@@ -143,7 +143,6 @@ export default function BlogListPage() {
                 </p>
                 <div className="flex items-center gap-3 pt-1">
                   <Avatar>
-                    <AvatarImage src={b.authorImage} alt={b.author} />
                     <AvatarFallback>
                       {b.author?.slice(0, 2).toUpperCase() || "AU"}
                     </AvatarFallback>

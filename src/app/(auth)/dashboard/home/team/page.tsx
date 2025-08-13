@@ -20,31 +20,11 @@ export default function TeamEditorPage() {
 
   const onTeamImage = React.useCallback(
     async (index: number, file: File) => {
-      const toDataUrl = (f: File) =>
-        new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(String(reader.result));
-          reader.onerror = reject;
-          reader.readAsDataURL(f);
-        });
-      const dataUrl = await toDataUrl(file);
-      setTeamPreviews((prev) => ({ ...prev, [index]: dataUrl }));
-      const next = {
-        team: (data?.team.team ?? []).map((member, i) =>
-          i === index
-            ? {
-                ...member,
-                image: {
-                  ...(member.image ?? { alt: member.name, fallback: "👤" }),
-                  src: dataUrl,
-                },
-              }
-            : member
-        ),
-      };
-      await save({ team: { ...data!.team, ...next } });
+      // The TeamEditor now handles image uploads directly
+      // This callback is kept for backward compatibility
+      setTeamPreviews((prev) => ({ ...prev, [index]: null }));
     },
-    [save, data]
+    []
   );
 
   if (loading || !data) {

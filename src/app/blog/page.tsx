@@ -10,15 +10,13 @@ import {
   Search,
 } from "lucide-react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import headerData from "@/components/headerData";
 import { useSearchParams, useRouter } from "next/navigation";
 import Pagination from "@/components/Pagination";
-import LoadingOverlay from "@/components/LoadingOverlay";
-import {
-  getAllBlogPosts,
-  getBlogPostsByCategory,
-  getUniqueCategories,
-} from "@/lib/mockApi";
+import BlogPostSkeleton from "@/components/BlogPostSkeleton";
+
+import { api } from "@/lib/apiClient";
 
 function BlogPageContent() {
   const searchParams = useSearchParams();
@@ -26,9 +24,28 @@ function BlogPageContent() {
   const pageParam = searchParams.get("page");
   const tagParam = searchParams.get("tag");
   const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
-  const allBlogPosts = getAllBlogPosts();
+  const [allBlogPosts, setAllBlogPosts] = useState<any[]>([]);
   const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Load posts
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const data = await api.internal<any[]>("/api/blog");
+        if (mounted) setAllBlogPosts(data || []);
+      } catch (error) {
+        console.error("Failed to load blog posts:", error);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Keyboard shortcut: Ctrl+K / Cmd+K to focus search
   useEffect(() => {
@@ -49,11 +66,15 @@ function BlogPageContent() {
 
   // Filter posts by tag and search query
   const filteredPosts = useMemo(() => {
-    const base = tagParam ? getBlogPostsByCategory(tagParam) : allBlogPosts;
+    const base = tagParam
+      ? allBlogPosts.filter(
+          (p) => p.category?.toLowerCase() === tagParam?.toLowerCase()
+        )
+      : allBlogPosts;
     if (!query.trim()) return base;
     const q = query.toLowerCase();
     return base.filter((post) =>
-      [post.title, post.excerpt, post.author, post.category]
+      [post.title, post.description ?? post.excerpt, post.author, post.category]
         .join(" ")
         .toLowerCase()
         .includes(q)
@@ -86,8 +107,10 @@ function BlogPageContent() {
 
   // Get unique categories for tag filtering
   const categories = useMemo(() => {
-    return getUniqueCategories();
-  }, []);
+    return Array.from(
+      new Set((allBlogPosts || []).map((p) => p.category))
+    ).filter(Boolean);
+  }, [allBlogPosts]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100">
@@ -189,7 +212,9 @@ function BlogPageContent() {
         )}
 
         {/* Blog Posts Grid */}
-        {paginatedPosts.length > 0 ? (
+        {isLoading ? (
+          <BlogPostSkeleton count={6} />
+        ) : paginatedPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedPosts.map((post) => (
               <Link
@@ -245,7 +270,7 @@ function BlogPageContent() {
 
                   {/* Blog Post Description */}
                   <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                    {post.excerpt}
+                    {post.description ?? post.excerpt}
                   </p>
 
                   {/* Blog Post Meta */}
@@ -342,13 +367,14 @@ function BlogPageContent() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
 
 export default function BlogPage() {
   return (
-    <Suspense fallback={<LoadingOverlay fullScreen />}>
+    <Suspense fallback={<div>Loading...</div>}>
       <BlogPageContent />
     </Suspense>
   );

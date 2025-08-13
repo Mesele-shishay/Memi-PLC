@@ -195,7 +195,7 @@ export interface ContactMessage {
   read: boolean;
 }
 
-// Added: Team and Get Involved section types to align with mock data
+// Added: Team and Get Involved section types
 export interface TeamMember {
   id: string;
   name: string;

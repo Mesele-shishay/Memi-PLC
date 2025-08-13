@@ -15,6 +15,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Trash2 } from "lucide-react";
+import { api } from "@/lib/apiClient";
 
 export default function CourseDetailPage() {
   const params = useParams<{ id: string }>();
@@ -26,11 +27,8 @@ export default function CourseDetailPage() {
 
   React.useEffect(() => {
     let mounted = true;
-    fetch(`/api/courses/${id}`, { cache: "no-store" })
-      .then(async (r) => {
-        if (r.ok) return r.json();
-        throw new Error(await r.text());
-      })
+    api
+      .internal<any>(`/api/courses/${id}`)
       .then((data) => {
         if (mounted) setItem(data);
       })
@@ -45,8 +43,7 @@ export default function CourseDetailPage() {
     if (!confirm("Delete this course?")) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/courses/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(await res.text());
+      await api.internal(`/api/courses/${id}`, { method: "DELETE" });
       router.push("/dashboard/courses");
     } finally {
       setDeleting(false);

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/inMemoryDb";
 import { z } from "zod";
+import { API_BASE } from "@/lib/apiBase";
 
 export async function GET(
   request: Request,
@@ -8,16 +8,19 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    const blogPost = db.getBlogPostBySlug(slug);
+    const authHeader = request.headers.get("authorization");
+    const headers: Record<string, string> = {};
 
-    if (!blogPost) {
-      return NextResponse.json(
-        { error: "Blog post not found" },
-        { status: 404 }
-      );
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
     }
 
-    return NextResponse.json(blogPost);
+    const res = await fetch(`${API_BASE}/blog/${slug}`, {
+      cache: "no-store",
+      headers,
+    });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch blog post" },
@@ -26,34 +29,44 @@ export async function GET(
   }
 }
 
-const blogUpdateSchema = z.object({
-  slug: z.string(),
-  image: z.string().min(1).optional(),
-  title: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
+const blogPostUpdateSchema = z.object({
+  id: z.string().optional(),
+  slug: z.string().optional(),
+  title: z.string().min(1),
+  description: z.string().min(1),
   author: z.string().optional(),
   date: z.string().optional(),
-  category: z.string().min(1).optional(),
+  image: z.string().min(1),
+  category: z.string().min(1),
   readTime: z.string().optional(),
   authorImage: z.string().optional(),
 });
 
 export async function PUT(
-  req: Request,
+  request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params;
-    const json = await req.json();
-    const parsed = blogUpdateSchema.parse({ ...json, slug });
-    const updated = db.updateBlogPost(parsed);
-    if (!updated) {
-      return NextResponse.json(
-        { error: "Blog post not found" },
-        { status: 404 }
-      );
+    const json = await request.json();
+    const parsed = blogPostUpdateSchema.parse(json);
+
+    const authHeader = request.headers.get("authorization");
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
     }
-    return NextResponse.json(updated);
+
+    const res = await fetch(`${API_BASE}/blog/${slug}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(parsed),
+    });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
   } catch (error: any) {
     return NextResponse.json(
       { error: error?.message || "Failed to update blog post" },
@@ -63,23 +76,33 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _req: Request,
+  request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params;
-    const ok = db.deleteBlogPost(slug);
-    if (!ok) {
-      return NextResponse.json(
-        { error: "Blog post not found" },
-        { status: 404 }
-      );
+    const authHeader = request.headers.get("authorization");
+    const headers: Record<string, string> = {};
+
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
     }
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
+
+    const res = await fetch(`${API_BASE}/blog/${slug}`, {
+      method: "DELETE",
+      headers,
+    });
+
+    if (res.ok) {
+      return NextResponse.json({ success: true });
+    } else {
+      const data = await res.json();
+      return NextResponse.json(data, { status: res.status });
+    }
+  } catch (error) {
     return NextResponse.json(
-      { error: error?.message || "Failed to delete blog post" },
-      { status: 400 }
+      { error: "Failed to delete blog post" },
+      { status: 500 }
     );
   }
 }

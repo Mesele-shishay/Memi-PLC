@@ -7,10 +7,10 @@ import { HeroSectionProps } from "@/types";
 const MAX_TILT_DEG = 8;
 
 const HeroSection: React.FC<HeroSectionProps> = ({
-  title,
-  subtitle,
-  ctaButtons,
-  badges,
+  title = "Welcome",
+  subtitle = "Discover amazing possibilities",
+  ctaButtons = [],
+  badges = [],
   image,
 }) => {
   const [tiltStyle, setTiltStyle] = React.useState<React.CSSProperties>({});
@@ -98,28 +98,30 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             ) : null}
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start pt-3">
-              {ctaButtons.map((button, index) => (
-                <div key={index} className="relative group">
-                  {button.variant === "primary" ? (
-                    <button
-                      onClick={button.onClick}
-                      className="relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg shadow-primary hover:shadow-primary-hover transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-300"
-                    >
-                      <span className="relative z-10">{button.label}</span>
-                      <span className="pointer-events-none absolute inset-0 -translate-x-full bg-white/25 mix-blend-overlay skew-x-12 group-hover:translate-x-full transition-transform duration-700" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={button.onClick}
-                      className="relative bg-white/90 backdrop-blur-xl text-gray-900 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg border border-gray-200/70 hover:border-primary-300 hover:bg-white transition-all duration-300 shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-200"
-                    >
-                      {button.label}
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
+            {ctaButtons && ctaButtons.length > 0 ? (
+              <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start pt-3">
+                {ctaButtons.map((button, index) => (
+                  <div key={index} className="relative group">
+                    {button.variant === "primary" ? (
+                      <button
+                        onClick={button.onClick}
+                        className="relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-700 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg shadow-primary hover:shadow-primary-hover transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-300"
+                      >
+                        <span className="relative z-10">{button.label}</span>
+                        <span className="pointer-events-none absolute inset-0 -translate-x-full bg-white/25 mix-blend-overlay skew-x-12 group-hover:translate-x-full transition-transform duration-700" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={button.onClick}
+                        className="relative bg-white/90 backdrop-blur-xl text-gray-900 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg border border-gray-200/70 hover:border-primary-300 hover:bg-white transition-all duration-300 shadow hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-200"
+                      >
+                        {button.label}
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
 
           {/* Right Column - Visual with parallax tilt */}

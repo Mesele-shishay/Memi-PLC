@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -13,28 +12,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, Pencil, Trash2 } from "lucide-react";
-
-type CourseItem = {
-  id: string;
-  title: string;
-  instructor: string;
-  category: string;
-  students?: number;
-  image?: string;
-  level?: string;
-  duration?: string;
-};
+import { Button } from "@/components/ui/button";
+import { Loader2, Pencil, Trash2, Eye } from "lucide-react";
+import { api } from "@/lib/apiClient";
+import { Course } from "@/types";
 
 export default function CoursesListPage() {
-  const [items, setItems] = React.useState<CourseItem[] | null>(null);
+  const [items, setItems] = React.useState<Course[] | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [deleting, setDeleting] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let mounted = true;
-    fetch("/api/courses", { cache: "no-store" })
-      .then((r) => r.json())
+    api
+      .internal<Course[]>("/api/courses")
       .then((data) => {
         if (mounted) setItems(data);
       })
@@ -48,8 +39,7 @@ export default function CoursesListPage() {
     if (!confirm("Delete this course?")) return;
     setDeleting(id);
     try {
-      const res = await fetch(`/api/courses/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(await res.text());
+      await api.internal(`/api/courses/${id}`, { method: "DELETE" });
       setItems((prev) => (prev ? prev.filter((c) => c.id !== id) : prev));
     } finally {
       setDeleting(null);

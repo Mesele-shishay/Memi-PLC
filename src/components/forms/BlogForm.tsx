@@ -16,7 +16,13 @@ import {
 } from "@/components/ui/select";
 
 import { FileDropzone } from "@/components/ui/file-dropzone";
+import { UploadProgress } from "@/components/ui/upload-progress";
 import { TipTapEditor } from "@/components/ui/tiptap-editor";
+import { api } from "@/lib/apiClient";
+import { useFileUpload } from "@/hooks/useFileUpload";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, CheckCircle, XCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const blogSchema = z.object({
   slug: z.string().min(1, "Slug is required"),
@@ -53,6 +59,15 @@ export function BlogForm({
   const [title, setTitle] = React.useState<string>(initial?.title || "");
   const [slug, setSlug] = React.useState<string>(initial?.slug || "");
   const [slugTouched, setSlugTouched] = React.useState<boolean>(false);
+  const [description, setDescription] = React.useState<string>(
+    (initial as any)?.description || ""
+  );
+  const [uploadStatus, setUploadStatus] = React.useState<{
+    status: "idle" | "uploading" | "success" | "error";
+    message: string;
+  }>({ status: "idle", message: "" });
+
+  const { uploadSingleFile, isUploading, uploadProgress } = useFileUpload();
 
   function slugify(input: string): string {
     return input
@@ -65,11 +80,14 @@ export function BlogForm({
 
   React.useEffect(() => {
     let mounted = true;
-    fetch("/api/categories", { cache: "no-store" })
-      .then((r) => r.json())
+    api
+      .internal<string[]>("/api/categories", { cache: "no-store" })
       .then((data) => {
         if (!mounted) return;
         setCategories(Array.isArray(data) ? data : []);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch categories:", error);
       });
     if (initial?.image) setImagePreview(initial.image as string);
     // Initialize slug from title for create mode if not provided
@@ -84,35 +102,28 @@ export function BlogForm({
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
     setSubmitting(true);
     setError(null);
     try {
-      const raw = Object.fromEntries(formData.entries());
       const parsed = blogSchema.parse({
-        slug: (raw.slug as string) || slug,
+        slug: slug,
         image: imageDataUrl || (initial?.image as string) || "",
-        title: (raw.title as string) || title,
-        description: raw.description,
-        category: category || (raw.category as string),
+        title: title,
+        description: description,
+        category: category,
       });
 
       if (mode === "create") {
-        const res = await fetch("/api/blog", {
+        const created = await api.internal<{ slug: string }>("/api/blog", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(parsed),
         });
-        if (!res.ok) throw new Error(await res.text());
-        const created = await res.json();
         router.push(`/dashboard/blog/${created.slug}`);
       } else if (mode === "edit" && initial?.slug) {
-        const res = await fetch(`/api/blog/${initial.slug}`, {
+        await api.internal(`/api/blog/${initial.slug}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(parsed),
         });
-        if (!res.ok) throw new Error(await res.text());
         router.push(`/dashboard/blog/${initial.slug}`);
       }
     } catch (e: any) {
@@ -121,6 +132,66 @@ export function BlogForm({
       setSubmitting(false);
     }
   }
+
+  const handleImageUpload = async (file: File) => {
+    // Reset upload status
+    setUploadStatus({ status: "uploading", message: "Uploading image..." });
+    setError(null);
+
+    try {
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error("File size must be less than 5MB");
+      }
+
+      // Validate file type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error("Only JPEG, PNG, GIF, and WebP images are allowed");
+      }
+
+      const result = await uploadSingleFile(file);
+
+      if (result.success && result.data) {
+        const uploadData = Array.isArray(result.data)
+          ? result.data[0]
+          : result.data;
+
+        setImageDataUrl(uploadData.url);
+        setImagePreview(uploadData.url);
+        setUploadStatus({
+          status: "success",
+          message: "Image uploaded successfully!",
+        });
+
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          setUploadStatus({ status: "idle", message: "" });
+        }, 3000);
+      } else {
+        throw new Error(result.error || "Upload failed");
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Upload failed";
+      setUploadStatus({
+        status: "error",
+        message: errorMessage,
+      });
+      setError(errorMessage);
+
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        setUploadStatus({ status: "idle", message: "" });
+      }, 5000);
+    }
+  };
 
   return (
     <Card>
@@ -189,25 +260,29 @@ export function BlogForm({
             <FileDropzone
               label="Cover Image"
               previewUrl={imagePreview}
-              onFile={(file) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const result = reader.result as string;
-                  setImageDataUrl(result);
-                  setImagePreview(result);
-                };
-                reader.readAsDataURL(file);
-              }}
+              onFile={handleImageUpload}
               shape="rect"
               rectHeightClass="h-48"
+              disabled={isUploading}
             />
+
+            <UploadProgress
+              isUploading={isUploading}
+              uploadProgress={uploadProgress}
+              uploadStatus={uploadStatus}
+            />
+
+            <p className="text-xs text-gray-500 text-center mt-2">
+              Recommended: 1200x800px, max 5MB
+            </p>
           </div>
           <div className="md:col-span-2 space-y-2">
             <Label>Description</Label>
-            <input type="hidden" name="description" value="" />
+            <input type="hidden" name="description" value={description} />
             <TipTapEditor
-              value={(initial as any)?.description || ""}
+              value={description}
               onChange={(html) => {
+                setDescription(html);
                 const hidden = (document.querySelector(
                   'input[name="description"]'
                 ) as HTMLInputElement)!;

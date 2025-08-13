@@ -2,7 +2,7 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { IconUpload, IconPhoto } from "@tabler/icons-react";
+import { IconUpload, IconPhoto, IconLoader2 } from "@tabler/icons-react";
 
 type FileDropzoneProps = {
   label?: string;
@@ -13,6 +13,7 @@ type FileDropzoneProps = {
   shape?: "rect" | "circle";
   rectHeightClass?: string; // e.g., "h-40"
   circleSizeClass?: string; // e.g., "h-24 w-24"
+  disabled?: boolean;
 };
 
 export function FileDropzone({
@@ -24,17 +25,22 @@ export function FileDropzone({
   shape = "rect",
   rectHeightClass = "h-40",
   circleSizeClass = "h-24 w-24",
+  disabled = false,
 }: FileDropzoneProps) {
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
   const [dragActive, setDragActive] = React.useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   function openFileDialog() {
-    inputRef.current?.click();
+    if (!disabled) {
+      inputRef.current?.click();
+    }
   }
 
   function handleFiles(files: FileList | null) {
     const file = files?.[0];
-    if (file) onFile(file);
+    if (file && !disabled) {
+      onFile(file);
+    }
   }
 
   return (
@@ -54,17 +60,21 @@ export function FileDropzone({
         onClick={openFileDialog}
         onDragOver={(e) => {
           e.preventDefault();
-          setDragActive(true);
+          if (!disabled) setDragActive(true);
         }}
         onDragLeave={() => setDragActive(false)}
         onDrop={(e) => {
           e.preventDefault();
           setDragActive(false);
-          handleFiles(e.dataTransfer?.files ?? null);
+          if (!disabled) {
+            handleFiles(e.dataTransfer?.files ?? null);
+          }
         }}
         className={cn(
-          "relative group cursor-pointer rounded-lg border border-dashed border-primary/30 bg-primary-50/40 hover:bg-primary-50/60 transition-colors",
+          "relative group cursor-pointer rounded-lg border border-dashed transition-colors",
+          "bg-primary-50/40 hover:bg-primary-50/60",
           dragActive && "bg-primary-100/60 border-primary",
+          disabled && "opacity-50 cursor-not-allowed",
           shape === "rect" && cn("w-full overflow-hidden", rectHeightClass),
           shape === "circle" &&
             cn(
@@ -90,14 +100,20 @@ export function FileDropzone({
               shape === "circle" && "relative"
             )}
           >
-            {shape === "circle" ? (
+            {disabled ? (
+              <IconLoader2 className="text-primary animate-spin" />
+            ) : shape === "circle" ? (
               <IconPhoto className="text-primary" />
             ) : (
               <IconUpload className="text-primary" />
             )}
             <div className="text-center">
-              <div className="font-medium text-primary">Click to upload</div>
-              <div className="text-xs">or drag & drop</div>
+              <div className="font-medium text-primary">
+                {disabled ? "Uploading..." : "Click to upload"}
+              </div>
+              <div className="text-xs">
+                {disabled ? "Please wait..." : "or drag & drop"}
+              </div>
             </div>
           </div>
         )}
@@ -107,6 +123,7 @@ export function FileDropzone({
           accept={accept}
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
+          disabled={disabled}
         />
       </div>
     </div>

@@ -4,8 +4,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
@@ -14,7 +13,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { Loader2, Pencil, Trash2 } from "lucide-react";
+import { api } from "@/lib/apiClient";
 
 export default function BlogDetailPage() {
   const params = useParams<{ slug: string }>();
@@ -26,11 +27,8 @@ export default function BlogDetailPage() {
 
   React.useEffect(() => {
     let mounted = true;
-    fetch(`/api/blog/${slug}`, { cache: "no-store" })
-      .then(async (r) => {
-        if (r.ok) return r.json();
-        throw new Error(await r.text());
-      })
+    api
+      .internal<any>(`/api/blog/${slug}`)
       .then((data) => {
         if (mounted) setItem(data);
       })
@@ -45,8 +43,7 @@ export default function BlogDetailPage() {
     if (!confirm("Delete this blog post?")) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/blog/${slug}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(await res.text());
+      await api.internal(`/api/blog/${slug}`, { method: "DELETE" });
       router.push("/dashboard/blog");
     } finally {
       setDeleting(false);
@@ -146,7 +143,6 @@ export default function BlogDetailPage() {
         <CardContent className="space-y-4 pt-4">
           <div className="flex items-center gap-3">
             <Avatar>
-              <AvatarImage src={item.authorImage} alt={item.author} />
               <AvatarFallback>
                 {item.author?.slice(0, 2).toUpperCase() || "AU"}
               </AvatarFallback>

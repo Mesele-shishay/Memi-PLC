@@ -8,18 +8,13 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
-import {
-  getAllBlogPosts,
-  getTopPosts,
-  getUniqueCategories,
-} from "@/lib/mockApi";
 
-// Define the BlogPost interface locally since it's not exported from mockApi
+// Define the BlogPost interface locally
 interface BlogPostType {
   slug: string;
   image: string;
   title: string;
-  excerpt: string;
+  description: string;
   author: string;
   date: string;
   category: string;
@@ -29,33 +24,18 @@ interface BlogPostType {
 
 interface BlogPostProps {
   slug: string;
-  post?: BlogPostType;
+  post: BlogPostType;
+  topPosts?: { slug: string; image: string; title: string; author: string }[];
+  tags?: string[];
 }
 
-export default function BlogPost({ slug, post }: BlogPostProps) {
-  // If no post data is provided, we'll use default content
-  const postData: BlogPostType = post || {
-    slug,
-    image: "",
-    title: "",
-    excerpt: "",
-    author: "",
-    date: "",
-    category: "",
-    readTime: "",
-    authorImage: "",
-  };
-
-  // Get top posts from API, excluding current post
-  const topPosts = getTopPosts(slug, 5).map((post) => ({
-    slug: post.slug,
-    image: post.image,
-    title: post.title,
-    author: post.author,
-  }));
-
-  // Get unique categories from all blog posts for tags
-  const tags = getUniqueCategories();
+export default function BlogPost({
+  slug,
+  post,
+  topPosts = [],
+  tags = [],
+}: BlogPostProps) {
+  const postData: BlogPostType = post;
 
   return (
     <div className="mb-8">
@@ -70,9 +50,7 @@ export default function BlogPost({ slug, post }: BlogPostProps) {
               <span className="inline-flex items-center gap-2">
                 <Calendar className="w-4 h-4" /> {postData.date}
               </span>
-              <span className="inline-flex items-center gap-2">
-                <MessageCircle className="w-4 h-4" /> Comments: 18
-              </span>
+
               <span className="inline-flex items-center gap-2">
                 <Tag className="w-4 h-4" /> {postData.category}
               </span>
@@ -88,27 +66,14 @@ export default function BlogPost({ slug, post }: BlogPostProps) {
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
           </div>
 
-          <article className="prose prose-slate max-w-none mt-6 prose-headings:tracking-tight prose-a:text-primary">
-            <h3>Don't Wait. The Purpose Of Our Lives Is To Be Happy!</h3>
-            <p>{postData.excerpt}</p>
-            <p>{postData.excerpt}</p>
-          </article>
+          <article
+            className="prose prose-slate max-w-none mt-6 prose-headings:tracking-tight prose-a:text-primary"
+            dangerouslySetInnerHTML={{ __html: postData.description }}
+          />
         </div>
 
         {/* Sidebar */}
         <aside className="w-full lg:w-[30%] space-y-8">
-          <div className="grid grid-cols-3 sm:flex sm:flex-wrap gap-2">
-            <button className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition">
-              <Share2 className="w-4 h-4" /> Share
-            </button>
-            <button className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition">
-              <Bookmark className="w-4 h-4" /> Save
-            </button>
-            <button className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition">
-              <MessageCircle className="w-4 h-4" /> Comment
-            </button>
-          </div>
-
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
               <span className="inline-block w-2 h-2 rounded-full bg-primary" />{" "}

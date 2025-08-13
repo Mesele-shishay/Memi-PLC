@@ -5,15 +5,35 @@ import { DataTable } from "@/components/data-table";
 import { SectionCards } from "@/components/section-cards";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import { getAllCourses, getAllBlogPosts } from "@/lib/mockApi";
 import { ChartBar } from "@/components/chart-bar";
 import { ChartDonut } from "@/components/chart-donut";
 import { ChartRadial } from "@/components/chart-radial";
 import { ChartSparkline } from "@/components/chart-sparkline";
+import { api } from "@/lib/apiClient";
 
 export default function Page() {
-  const courses = getAllCourses();
-  const blogPosts = getAllBlogPosts();
+  const [courses, setCourses] = React.useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const [cData, bData] = await Promise.all([
+          api.internal<any[]>("/api/courses"),
+          api.internal<any[]>("/api/blog"),
+        ]);
+        if (mounted) {
+          setCourses(cData || []);
+          setBlogPosts(bData || []);
+        }
+      } catch (error) {
+        console.error("Failed to load dashboard data:", error);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const totalCourses = courses.length;
   const totalBlogPosts = blogPosts.length;

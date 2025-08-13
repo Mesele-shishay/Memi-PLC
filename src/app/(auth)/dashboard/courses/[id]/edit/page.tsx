@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { CourseForm } from "@/components/forms/CourseForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
 
 export default function EditCoursePage() {
   const params = useParams<{ id: string }>();
@@ -14,8 +15,7 @@ export default function EditCoursePage() {
 
   React.useEffect(() => {
     let mounted = true;
-    fetch(`/api/courses/${id}`, { cache: "no-store" })
-      .then((r) => r.json())
+    api.internal<any>(`/api/courses/${id}`)
       .then((data) => mounted && setInitial(data))
       .finally(() => mounted && setLoading(false));
     return () => {

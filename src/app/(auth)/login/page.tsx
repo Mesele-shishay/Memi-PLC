@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo and Header */}
-        <div className="text-center mb-8">
+        <div className="text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-lg mb-4">
             <Image
               src="/favicon-32x32.png"
@@ -86,12 +86,6 @@ export default function AdminLoginPage() {
               className="rounded-xl"
             />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">
-            Admin Login
-          </h1>
-          <p className="text-slate-600">
-            Access your MEMI Trading PLC dashboard
-          </p>
         </div>
 
         {/* Login Form */}

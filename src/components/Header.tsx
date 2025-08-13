@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { HeaderProps } from "@/types";
+import ComingSoonTooltip from "./ComingSoonTooltip";
 
 const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -120,39 +121,40 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
             {/* Enhanced Desktop CTA Buttons */}
             <div className="hidden lg:flex items-center space-x-3">
               {ctaButtons.map((button, index) => (
-                <button
-                  key={index}
-                  onClick={button.onClick}
-                  className={`relative px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 overflow-hidden ${
-                    button.variant === "primary"
-                      ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl hover:shadow-primary/25"
-                      : "text-black hover:text-primary border-2 border-secondary-200 hover:border-primary/30 hover:bg-primary/5"
-                  }`}
-                >
-                  {/* Button background animation */}
-                  {button.variant === "primary" && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-                  )}
-
-                  <span className="relative z-10 flex items-center space-x-2">
-                    <span>{button.label}</span>
+                <ComingSoonTooltip key={index}>
+                  <button
+                    onClick={button.onClick}
+                    className={`relative px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 overflow-hidden ${
+                      button.variant === "primary"
+                        ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl hover:shadow-primary/25"
+                        : "text-black hover:text-primary border-2 border-secondary-200 hover:border-primary/30 hover:bg-primary/5"
+                    }`}
+                  >
+                    {/* Button background animation */}
                     {button.variant === "primary" && (
-                      <svg
-                        className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                     )}
-                  </span>
-                </button>
+
+                    <span className="relative z-10 flex items-center space-x-2">
+                      <span>{button.label}</span>
+                      {button.variant === "primary" && (
+                        <svg
+                          className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                          />
+                        </svg>
+                      )}
+                    </span>
+                  </button>
+                </ComingSoonTooltip>
               ))}
             </div>
 
@@ -329,45 +331,46 @@ const Header: React.FC<HeaderProps> = ({ logo, navLinks, ctaButtons }) => {
             {/* CTA Buttons with animation */}
             <div className="p-6 border-t border-secondary-100 space-y-3">
               {ctaButtons.map((button, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    button.onClick?.();
-                    setIsMenuOpen(false);
-                  }}
-                  className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] ${
-                    button.variant === "primary"
-                      ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl hover:shadow-primary/25"
-                      : "text-black hover:text-primary border-2 border-secondary-200 hover:border-primary/30 hover:bg-primary/5"
-                  } ${
-                    isMenuOpen
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-4"
-                  }`}
-                  style={{
-                    transitionDelay: `${600 + index * 100}ms`,
-                    transitionDuration: "500ms",
-                  }}
-                >
-                  <span className="relative z-10 flex items-center justify-center space-x-2">
-                    <span>{button.label}</span>
-                    {button.variant === "primary" && (
-                      <svg
-                        className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
-                    )}
-                  </span>
-                </button>
+                <ComingSoonTooltip key={index}>
+                  <button
+                    onClick={() => {
+                      button.onClick?.();
+                      setIsMenuOpen(false);
+                    }}
+                    className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] ${
+                      button.variant === "primary"
+                        ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl hover:shadow-primary/25"
+                        : "text-black hover:text-primary border-2 border-secondary-200 hover:border-primary/30 hover:bg-primary/5"
+                    } ${
+                      isMenuOpen
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-4"
+                    }`}
+                    style={{
+                      transitionDelay: `${600 + index * 100}ms`,
+                      transitionDuration: "500ms",
+                    }}
+                  >
+                    <span className="relative z-10 flex items-center justify-center space-x-2">
+                      <span>{button.label}</span>
+                      {button.variant === "primary" && (
+                        <svg
+                          className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                          />
+                        </svg>
+                      )}
+                    </span>
+                  </button>
+                </ComingSoonTooltip>
               ))}
             </div>
           </div>

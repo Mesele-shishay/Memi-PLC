@@ -2,7 +2,9 @@
 
 import React from "react";
 import { FileDropzone } from "@/components/ui/file-dropzone";
+import { UploadProgress } from "@/components/ui/upload-progress";
 import { TeamSectionProps } from "@/types";
+import { useFileUpload } from "@/hooks/useFileUpload";
 import {
   Plus,
   Trash2,
@@ -26,6 +28,81 @@ export function TeamEditor({
   onTeamImage,
   teamPreviews,
 }: TeamEditorProps) {
+  const { uploadSingleFile, isUploading, uploadProgress } = useFileUpload();
+  const [uploadStatus, setUploadStatus] = React.useState<{
+    status: "idle" | "uploading" | "success" | "error";
+    message: string;
+  }>({ status: "idle", message: "" });
+
+  const handleTeamImageUpload = async (index: number, file: File) => {
+    // Reset upload status
+    setUploadStatus({ status: "uploading", message: "Uploading image..." });
+
+    try {
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error("File size must be less than 5MB");
+      }
+
+      // Validate file type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error("Only JPEG, PNG, GIF, and WebP images are allowed");
+      }
+
+      const result = await uploadSingleFile(file);
+      if (result.success && result.data) {
+        const uploadData = Array.isArray(result.data) ? result.data[0] : result.data;
+        await onTeamImage(index, file);
+        // Update the team member image with the uploaded URL
+        const updatedTeam = team.team.map((member, i) =>
+          i === index
+            ? {
+                ...member,
+                image: {
+                  ...member.image,
+                  src: uploadData.url,
+                  alt: member.image?.alt ?? member.name,
+                },
+              }
+            : member
+        );
+        await onSave({
+          team: { ...team, team: updatedTeam },
+        });
+        setUploadStatus({
+          status: "success",
+          message: "Image uploaded successfully!",
+        });
+
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          setUploadStatus({ status: "idle", message: "" });
+        }, 3000);
+      } else {
+        throw new Error(result.error || "Upload failed");
+      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Upload failed";
+      setUploadStatus({
+        status: "error",
+        message: errorMessage,
+      });
+
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        setUploadStatus({ status: "idle", message: "" });
+      }, 5000);
+    }
+  };
+
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/80 backdrop-blur-xl shadow-2xl p-8">
       {/* Header Section */}
@@ -90,12 +167,20 @@ export function TeamEditor({
             {/* Avatar Section */}
             <div className="flex flex-col items-center">
               <FileDropzone
-                label="Avatar"
-                shape="circle"
-                circleSizeClass="h-28 w-28"
-                onFile={(file) => onTeamImage(i, file)}
+                label="Upload Image"
+                onFile={(file) => handleTeamImageUpload(i, file)}
                 previewUrl={teamPreviews[i] ?? m.image?.src ?? null}
+                rectHeightClass="h-32"
+                disabled={isUploading}
               />
+              <UploadProgress
+                isUploading={isUploading}
+                uploadProgress={uploadProgress}
+                uploadStatus={uploadStatus}
+              />
+              <p className="text-xs text-gray-500 text-center mt-2">
+                Recommended: 400x300px, max 5MB
+              </p>
             </div>
 
             {/* Name Input */}
