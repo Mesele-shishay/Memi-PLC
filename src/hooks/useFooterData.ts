@@ -11,9 +11,12 @@ export function useFooterData() {
     setLoading(true);
     setError(null);
     try {
-      const homeContent = await api.internal<{ footer: FooterProps }>("/api/dashboard/home", {
-        cache: "no-store",
-      });
+      const homeContent = await api.get<{ footer: FooterProps }>(
+        "/api/dashboard/home",
+        {
+          cache: "no-store",
+        }
+      );
       setData(homeContent.footer);
     } catch (e: any) {
       setError(e?.message ?? "Failed to load footer data");
