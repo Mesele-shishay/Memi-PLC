@@ -4,11 +4,11 @@ import { getForwardedHeaders } from "@/lib/utils";
 
 export async function GET(request: Request) {
   try {
-    const headers = getForwardedHeaders(request);
+    // const headers = getForwardedHeaders(request);
 
     const res = await fetch(`${API_BASE}/dashboard/home`, {
       cache: "no-store",
-      headers,
+      // headers,
     });
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
