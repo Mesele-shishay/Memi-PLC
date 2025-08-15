@@ -79,7 +79,9 @@ export default function ContactPage() {
       }
 
       // Post to backend API
-      const response = await api.post("/contact", messageData);
+      const response = await api.post("/contact", messageData, {
+        skipAuth: true,
+      });
 
       // If we get here, the request was successful
       setUserName(messageData.firstName);
@@ -104,8 +106,12 @@ export default function ContactPage() {
       console.error("Error submitting contact form:", err);
 
       // Handle different types of errors
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
+      if (err?.status === 429) {
+        setError(
+          "You're sending messages too quickly. Please wait a moment and try again."
+        );
+      } else if (err?.data?.error) {
+        setError(err.data.error);
       } else if (err.message) {
         setError(err.message);
       } else {

@@ -29,15 +29,46 @@ export function GetInvolvedEditor({
   onInvolvedImage,
   involvedPreviews,
 }: GetInvolvedEditorProps) {
-  const { uploadSingleFile, isUploading, uploadProgress } = useFileUpload();
-  const [uploadStatus, setUploadStatus] = React.useState<{
-    status: "idle" | "uploading" | "success" | "error";
-    message: string;
-  }>({ status: "idle", message: "" });
+  const { uploadSingleFile } = useFileUpload();
+  const [perUpload, setPerUpload] = React.useState<
+    Record<
+      number,
+      {
+        isUploading: boolean;
+        progress: number;
+        status: "idle" | "uploading" | "success" | "error";
+        message: string;
+      }
+    >
+  >({});
 
   const handleInvolvedImageUpload = async (index: number, file: File) => {
-    // Reset upload status
-    setUploadStatus({ status: "uploading", message: "Uploading image..." });
+    setPerUpload((prev) => ({
+      ...prev,
+      [index]: {
+        isUploading: true,
+        progress: 0,
+        status: "uploading",
+        message: "Uploading image...",
+      },
+    }));
+
+    // Local progress simulation
+    const interval = window.setInterval(() => {
+      setPerUpload((prev) => {
+        const current = prev[index] || {
+          isUploading: true,
+          progress: 0,
+          status: "uploading",
+          message: "Uploading image...",
+        };
+        const next =
+          current.progress >= 90
+            ? current.progress
+            : current.progress + Math.random() * 10;
+        return { ...prev, [index]: { ...current, progress: next } };
+      });
+    }, 200);
 
     try {
       // Validate file size (5MB limit)
@@ -59,6 +90,19 @@ export function GetInvolvedEditor({
 
       const result = await uploadSingleFile(file);
       if (result.success && result.data) {
+        window.clearInterval(interval);
+        setPerUpload((prev) => ({
+          ...prev,
+          [index]: {
+            ...(prev[index] || {
+              isUploading: false,
+              progress: 0,
+              status: "idle",
+              message: "",
+            }),
+            progress: 100,
+          },
+        }));
         const uploadData = Array.isArray(result.data)
           ? result.data[0]
           : result.data;
@@ -79,14 +123,27 @@ export function GetInvolvedEditor({
         await onSave({
           getInvolved: { ...getInvolved, involvementOptions: updatedOptions },
         });
-        setUploadStatus({
-          status: "success",
-          message: "Image uploaded successfully!",
-        });
+        setPerUpload((prev) => ({
+          ...prev,
+          [index]: {
+            isUploading: false,
+            progress: 100,
+            status: "success",
+            message: "Image uploaded successfully!",
+          },
+        }));
 
         // Clear success message after 3 seconds
         setTimeout(() => {
-          setUploadStatus({ status: "idle", message: "" });
+          setPerUpload((prev) => ({
+            ...prev,
+            [index]: {
+              isUploading: false,
+              progress: 0,
+              status: "idle",
+              message: "",
+            },
+          }));
         }, 3000);
       } else {
         throw new Error(result.error || "Upload failed");
@@ -94,14 +151,27 @@ export function GetInvolvedEditor({
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Upload failed";
-      setUploadStatus({
-        status: "error",
-        message: errorMessage,
-      });
+      setPerUpload((prev) => ({
+        ...prev,
+        [index]: {
+          isUploading: false,
+          progress: 0,
+          status: "error",
+          message: errorMessage,
+        },
+      }));
 
       // Clear error message after 5 seconds
       setTimeout(() => {
-        setUploadStatus({ status: "idle", message: "" });
+        setPerUpload((prev) => ({
+          ...prev,
+          [index]: {
+            isUploading: false,
+            progress: 0,
+            status: "idle",
+            message: "",
+          },
+        }));
       }, 5000);
     }
   };
@@ -186,12 +256,15 @@ export function GetInvolvedEditor({
                 onFile={(file) => handleInvolvedImageUpload(i, file)}
                 previewUrl={involvedPreviews[i] ?? opt.image?.src ?? null}
                 rectHeightClass="h-32"
-                disabled={isUploading}
+                disabled={Boolean(perUpload[i]?.isUploading)}
               />
               <UploadProgress
-                isUploading={isUploading}
-                uploadProgress={uploadProgress}
-                uploadStatus={uploadStatus}
+                isUploading={Boolean(perUpload[i]?.isUploading)}
+                uploadProgress={perUpload[i]?.progress ?? 0}
+                uploadStatus={{
+                  status: perUpload[i]?.status ?? "idle",
+                  message: perUpload[i]?.message ?? "",
+                }}
               />
               <p className="text-xs text-gray-500 text-center mt-2">
                 Recommended: 400x300px, max 5MB

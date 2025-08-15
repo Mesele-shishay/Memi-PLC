@@ -37,7 +37,7 @@ class ApiClient {
 
     this.isRefreshing = true;
     this.refreshPromise = this.performTokenRefresh();
-    
+
     try {
       const result = await this.refreshPromise;
       return result;
@@ -54,17 +54,17 @@ class ApiClient {
 
       // Try to validate the current token
       const response = await fetch(`${this.baseURL}/auth/validate`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
       if (response.ok) {
         return token; // Token is still valid
       }
-      
+
       // Only clear token if we get a specific 401 response, not on network errors
       if (response.status === 401) {
         if (typeof window !== "undefined") {
@@ -72,11 +72,11 @@ class ApiClient {
         }
         return null;
       }
-      
+
       // For other errors, keep the token and let the actual request handle it
       return token;
     } catch (error) {
-      console.error('Token refresh failed:', error);
+      console.error("Token refresh failed:", error);
       // Don't clear token on network errors
       return null;
     }
@@ -96,12 +96,12 @@ class ApiClient {
     // Automatically add authorization header unless explicitly skipped
     if (!skipAuth) {
       let token = this.getAuthToken();
-      
+
       // If no token and we're not already retrying, try to refresh
       if (!token && retryCount === 0) {
         token = await this.refreshTokenIfNeeded();
       }
-      
+
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
@@ -124,9 +124,12 @@ class ApiClient {
           const newToken = await this.refreshTokenIfNeeded();
           if (newToken) {
             // Retry the request with the new token
-            return this.request<T>(endpoint, { ...options, retryCount: retryCount + 1 });
+            return this.request<T>(endpoint, {
+              ...options,
+              retryCount: retryCount + 1,
+            });
           }
-          
+
           // Only clear token if refresh explicitly fails
           if (typeof window !== "undefined") {
             localStorage.removeItem("admin-token");
@@ -135,9 +138,12 @@ class ApiClient {
         }
 
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(
+        const err = new Error(
           errorData.error || `HTTP ${response.status}: ${response.statusText}`
-        );
+        ) as Error & { status?: number; data?: any };
+        err.status = response.status;
+        err.data = errorData;
+        throw err;
       }
 
       // Handle empty responses
@@ -149,8 +155,8 @@ class ApiClient {
       return response.text() as T;
     } catch (error) {
       // If it's a network error and we have a token, don't clear it
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        console.error('Network error:', error);
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        console.error("Network error:", error);
         // Keep the token for network errors
         throw new Error("Network error - please check your connection");
       }
@@ -219,12 +225,12 @@ class ApiClient {
     // For internal routes, we need to manually add the token
     if (!skipAuth) {
       let token = this.getAuthToken();
-      
+
       // If no token and we're not already retrying, try to refresh
       if (!token && retryCount === 0) {
         token = await this.refreshTokenIfNeeded();
       }
-      
+
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
@@ -242,9 +248,12 @@ class ApiClient {
           const newToken = await this.refreshTokenIfNeeded();
           if (newToken) {
             // Retry the request with the new token
-            return this.internal<T>(endpoint, { ...options, retryCount: retryCount + 1 });
+            return this.internal<T>(endpoint, {
+              ...options,
+              retryCount: retryCount + 1,
+            });
           }
-          
+
           // Only clear token if refresh explicitly fails
           if (typeof window !== "undefined") {
             localStorage.removeItem("admin-token");
@@ -253,9 +262,12 @@ class ApiClient {
         }
 
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(
+        const err = new Error(
           errorData.error || `HTTP ${response.status}: ${response.statusText}`
-        );
+        ) as Error & { status?: number; data?: any };
+        err.status = response.status;
+        err.data = errorData;
+        throw err;
       }
 
       const contentType = response.headers.get("content-type");
@@ -266,8 +278,8 @@ class ApiClient {
       return response.text() as T;
     } catch (error) {
       // If it's a network error and we have a token, don't clear it
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        console.error('Network error:', error);
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        console.error("Network error:", error);
         // Keep the token for network errors
         throw new Error("Network error - please check your connection");
       }

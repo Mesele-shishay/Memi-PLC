@@ -19,15 +19,25 @@ export function HeroEditor({
   onHeroImage,
   heroPreview,
 }: HeroEditorProps) {
-  const { uploadSingleFile, isUploading, uploadProgress } = useFileUpload();
+  const { uploadSingleFile } = useFileUpload();
+  const [isUploading, setIsUploading] = React.useState(false);
+  const [uploadProgress, setUploadProgress] = React.useState(0);
   const [uploadStatus, setUploadStatus] = React.useState<{
     status: "idle" | "uploading" | "success" | "error";
     message: string;
   }>({ status: "idle", message: "" });
 
   const handleImageUpload = async (file: File) => {
-    // Reset upload status
     setUploadStatus({ status: "uploading", message: "Uploading image..." });
+    setIsUploading(true);
+    setUploadProgress(0);
+
+    // Local progress simulation
+    const interval = window.setInterval(() => {
+      setUploadProgress((prev) =>
+        prev >= 90 ? prev : prev + Math.random() * 10
+      );
+    }, 200);
 
     try {
       // Validate file size (5MB limit)
@@ -49,6 +59,8 @@ export function HeroEditor({
 
       const result = await uploadSingleFile(file);
       if (result.success && result.data) {
+        window.clearInterval(interval);
+        setUploadProgress(100);
         const uploadData = Array.isArray(result.data)
           ? result.data[0]
           : result.data;
@@ -87,6 +99,9 @@ export function HeroEditor({
       setTimeout(() => {
         setUploadStatus({ status: "idle", message: "" });
       }, 5000);
+    } finally {
+      setIsUploading(false);
+      setTimeout(() => setUploadProgress(0), 800);
     }
   };
 

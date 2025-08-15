@@ -34,7 +34,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { uploadSingleFile, isUploading, uploadProgress } = useFileUpload();
+  const { uploadSingleFile } = useFileUpload();
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState<{
     status: "idle" | "uploading" | "success" | "error";
     message: string;
@@ -61,9 +63,22 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     }
 
     try {
+      setIsUploading(true);
+      setUploadProgress(0);
+
+      // Simulate progress locally so multiple instances don't share state
+      const progressInterval = window.setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 90) return prev;
+          return prev + Math.random() * 10;
+        });
+      }, 200);
+
       const result = await uploadSingleFile(file);
 
       if (result.success && result.data) {
+        window.clearInterval(progressInterval);
+        setUploadProgress(100);
         const uploadData = Array.isArray(result.data)
           ? result.data[0]
           : result.data;
@@ -78,6 +93,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
           setUploadStatus({ status: "idle", message: "" });
         }, 3000);
       } else {
+        window.clearInterval(progressInterval);
         const errorMsg = result.error || "Upload failed";
         setError(errorMsg);
         setUploadStatus({ status: "error", message: errorMsg });
@@ -88,6 +104,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         }, 5000);
       }
     } catch (err) {
+      setUploadProgress(0);
       const errorMsg = "Upload failed. Please try again.";
       setError(errorMsg);
       setUploadStatus({ status: "error", message: errorMsg });
@@ -96,6 +113,10 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       setTimeout(() => {
         setUploadStatus({ status: "idle", message: "" });
       }, 5000);
+    } finally {
+      // Keep progress at 100 for a moment to show completion when successful
+      setTimeout(() => setUploadProgress(0), 800);
+      setIsUploading(false);
     }
   };
 
