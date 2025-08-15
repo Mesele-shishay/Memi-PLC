@@ -236,8 +236,26 @@ class ApiClient {
       }
     }
 
+    // Ensure absolute URL on the server (Node/Edge) where relative URLs are invalid
+    const isServer = typeof window === "undefined";
+    let url = endpoint;
+    if (!endpoint.startsWith("http")) {
+      if (isServer) {
+        const vercelUrl = process.env.VERCEL_URL;
+        const siteBase =
+          process.env.NEXT_PUBLIC_SITE_URL ||
+          (vercelUrl ? `https://${vercelUrl}` : "http://localhost:3000");
+        url = endpoint.startsWith("/")
+          ? `${siteBase}${endpoint}`
+          : `${siteBase}/${endpoint}`;
+      } else {
+        // In the browser, relative is fine
+        url = endpoint;
+      }
+    }
+
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch(url, {
         ...fetchOptions,
         headers,
       });
