@@ -91,16 +91,16 @@ const Footer: React.FC = () => {
                 {/* Glowing background effect */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
 
-                <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-2 shadow-2xl">
-                  <div className="flex flex-col sm:flex-row gap-2">
+                <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-2 shadow-2xl mx-auto w-full max-w-md sm:max-w-none">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-stretch justify-center sm:justify-start gap-2">
                     {/* Enhanced input with floating label effect */}
-                    <div className="relative flex-1">
+                    <div className="relative flex-1 w-full">
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder=""
-                        className="w-full px-6 py-4 text-secondary bg-transparent border-0 rounded-xl focus:outline-none peer placeholder-transparent"
+                        className="w-full px-6 pt-7 pb-4 text-blue-600 bg-transparent border-0 rounded-xl focus:outline-none peer placeholder-transparent"
                         required
                         id="newsletter-email"
                       />
@@ -123,16 +123,16 @@ const Footer: React.FC = () => {
                     <button
                       type="submit"
                       disabled={isSubscribed}
-                      className="relative px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-75 disabled:transform-none group/btn overflow-hidden cursor-pointer"
+                      className=" relative w-full sm:w-auto px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-5 text-sm sm:text-base lg:text-lg bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-75 disabled:transform-none group/btn overflow-hidden cursor-pointer flex items-center justify-center text-center"
                     >
                       {/* Button background animation */}
                       <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
 
-                      <span className="relative z-10 flex items-center space-x-2">
+                      <span className="relative z-10 flex items-center justify-center space-x-2">
                         {isSubscribed ? (
                           <>
                             <svg
-                              className="w-5 h-5 animate-bounce"
+                              className="size-4 sm:size-5 lg:size-6 animate-bounce"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -148,7 +148,7 @@ const Footer: React.FC = () => {
                           <>
                             <span>{newsletter.buttonText}</span>
                             <svg
-                              className="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform duration-300"
+                              className="size-4 sm:size-5 lg:size-6 transform group-hover/btn:translate-x-1 transition-transform duration-300"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -310,7 +310,7 @@ const Footer: React.FC = () => {
           {/* Bottom bar */}
           <div className="border-t border-gray-800 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <p className="text-gray-400 text-sm">{copyright}</p>
+              <p className="text-gray-400 text-sm text-center">{copyright}</p>
 
               <div className="flex space-x-6">
                 {legal.map((item, index) => (

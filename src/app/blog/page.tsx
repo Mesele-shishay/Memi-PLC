@@ -17,6 +17,7 @@ import Pagination from "@/components/Pagination";
 import BlogPostSkeleton from "@/components/BlogPostSkeleton";
 
 import { api } from "@/lib/apiClient";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
 function BlogPageContent() {
   const searchParams = useSearchParams();
@@ -374,7 +375,7 @@ function BlogPageContent() {
 
 export default function BlogPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingOverlay fullScreen={true} />}>
       <BlogPageContent />
     </Suspense>
   );
