@@ -270,9 +270,12 @@ function BlogPageContent() {
                   </div>
 
                   {/* Blog Post Description */}
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                    {post.description ?? post.excerpt}
-                  </p>
+                  <div
+                    className="text-gray-600 text-sm line-clamp-3 mb-4"
+                    dangerouslySetInnerHTML={{
+                      __html: post.description ?? post.excerpt,
+                    }}
+                  />
 
                   {/* Blog Post Meta */}
                   <div className="flex items-center justify-between mb-4">
