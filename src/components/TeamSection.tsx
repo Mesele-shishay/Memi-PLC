@@ -42,11 +42,7 @@ export default function TeamSection({
     const showFallback = hasError || !member.image.src;
 
     return (
-      <div
-        key={member.id}
-        className="group relative cursor-pointer"
-        style={{ animationDelay: `${index * 100}ms` }}
-      >
+      <div key={member.id} className="group relative cursor-pointer">
         {/* Glass morphism background */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/90 to-white/60 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl shadow-primary/5 group-hover:shadow-primary/15 transition-all duration-500"></div>
 
@@ -69,7 +65,7 @@ export default function TeamSection({
                     {!isLoaded && (
                       <div
                         aria-hidden="true"
-                        className="absolute inset-0 animate-pulse bg-[linear-gradient(110deg,rgba(255,255,255,0.4),45%,rgba(255,255,255,0.65),55%,rgba(255,255,255,0.4))]"
+                        className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0.4),45%,rgba(255,255,255,0.65),55%,rgba(255,255,255,0.4))]"
                       ></div>
                     )}
                     <Image
@@ -170,21 +166,7 @@ export default function TeamSection({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(24,118,226,0.08),transparent_40%)]"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(118,24,226,0.06),transparent_40%)]"></div>
 
-      {/* Floating Elements */}
-      <div
-        aria-hidden="true"
-        className="hidden sm:block absolute top-32 left-20 w-6 h-6 bg-primary/20 rounded-full motion-safe:animate-pulse"
-      ></div>
-      <div
-        aria-hidden="true"
-        className="hidden sm:block absolute top-48 right-32 w-4 h-4 bg-accent/30 rounded-full motion-safe:animate-bounce"
-        style={{ animationDelay: "1s" }}
-      ></div>
-      <div
-        aria-hidden="true"
-        className="hidden sm:block absolute bottom-40 left-32 w-5 h-5 bg-primary/25 rounded-full motion-safe:animate-pulse"
-        style={{ animationDelay: "2s" }}
-      ></div>
+      {/* Floating Elements removed to improve performance (hover effects retained elsewhere) */}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -202,30 +184,6 @@ export default function TeamSection({
           {team.map((member, index) => (
             <TeamMemberCard member={member} index={index} key={member.id} />
           ))}
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-16 sm:mt-20">
-          <div className="relative">
-            {/* Glass morphism background for CTA */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl shadow-primary/10"></div>
-
-            <div className="relative p-6 sm:p-8 lg:p-12 rounded-3xl">
-              <p className="text-black/80 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-                Ready to join our mission? We're always looking for passionate
-                individuals to join our team.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-                <button className="relative bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-7 sm:px-8 py-4 rounded-2xl font-semibold text-base sm:text-lg shadow-xl shadow-primary/25 hover:shadow-primary/40 hover:scale-105 transition-all duration-300 transform cursor-pointer border-0 motion-reduce:transform-none motion-reduce:transition-none">
-                  <span className="relative z-10">View Open Positions</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-600 rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                </button>
-                <button className="relative bg-white/90 backdrop-blur-xl text-black px-7 sm:px-8 py-4 rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200/50 hover:border-primary/30 hover:bg-white hover:text-black transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform cursor-pointer motion-reduce:transform-none">
-                  Get in Touch
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

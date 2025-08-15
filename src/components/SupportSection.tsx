@@ -39,8 +39,7 @@ const SupportSection: React.FC<SupportSectionProps> = ({
               {ratings.map((r, i) => (
                 <div
                   key={`${r.company}-${i}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-white/70 backdrop-blur px-3.5 py-2 text-xs sm:text-sm text-primary-700 shadow-sm animate-fade-in"
-                  style={{ animationDelay: `${i * 120}ms` }}
+                  className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-white/70 backdrop-blur px-3.5 py-2 text-xs sm:text-sm text-primary-700 shadow-sm"
                 >
                   <span className="text-primary-500">⭐</span>
                   <span className="font-semibold">{r.score}</span>
@@ -61,17 +60,15 @@ const SupportSection: React.FC<SupportSectionProps> = ({
                 {features.map((feature, index) => (
                   <div
                     key={index}
-                    className="group flex items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl transition-all duration-300 hover:bg-white/60 hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-1 cursor-pointer animate-fade-in"
-                    style={{ animationDelay: `${index * 150}ms` }}
+                    className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl cursor-pointer"
                   >
                     <div className="flex-shrink-0 relative">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 gradient-primary-to-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent group-hover:shadow-accent-hover group-hover:scale-110 transition-all duration-300 cursor-pointer">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 gradient-primary-to-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent cursor-pointer">
                         <span className="text-xl">{feature.icon}</span>
                       </div>
-                      <div className="absolute -inset-1 gradient-primary-light rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10"></div>
                     </div>
                     <div className="flex-1 space-y-1">
-                      <h3 className="text-base sm:text-lg lg:text-xl font-bold text-black group-hover:text-black transition-colors duration-300">
+                      <h3 className="text-base sm:text-lg lg:text-xl font-bold text-black">
                         {feature.title}
                       </h3>
                       <p className="text-black leading-relaxed text-sm sm:text-base lg:text-base">
@@ -88,7 +85,7 @@ const SupportSection: React.FC<SupportSectionProps> = ({
           <div className="relative md:pl-6 lg:pl-8 mt-4 sm:mt-6 lg:mt-0">
             <div className="relative group">
               {/* Glass morphism main card */}
-              <div className="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 border border-white/20 overflow-hidden animate-float-y motion-reduce:animate-none">
+              <div className="bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-2xl rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 border border-white/20 overflow-hidden">
                 {/* Dashboard header */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
                   <div className="flex items-center space-x-3">
@@ -105,15 +102,9 @@ const SupportSection: React.FC<SupportSectionProps> = ({
                     </div>
                   </div>
                   <div className="flex space-x-2">
-                    <div className="w-3 h-3 bg-primary-400 rounded-full motion-safe:animate-pulse"></div>
-                    <div
-                      className="w-3 h-3 bg-accent-400 rounded-full motion-safe:animate-pulse"
-                      style={{ animationDelay: "0.5s" }}
-                    ></div>
-                    <div
-                      className="w-3 h-3 bg-accent-400 rounded-full motion-safe:animate-pulse"
-                      style={{ animationDelay: "1s" }}
-                    ></div>
+                    <div className="w-3 h-3 bg-primary-400 rounded-full"></div>
+                    <div className="w-3 h-3 bg-accent-400 rounded-full"></div>
+                    <div className="w-3 h-3 bg-accent-400 rounded-full"></div>
                   </div>
                 </div>
 
@@ -134,10 +125,7 @@ const SupportSection: React.FC<SupportSectionProps> = ({
                       {["Addis Ababa", "Bahir Dar", "Hawassa", "Mekelle"].map(
                         (city, i) => (
                           <div key={city} className="text-center">
-                            <div
-                              className="w-3 h-3 bg-accent-500 rounded-full mx-auto mb-1 motion-safe:animate-pulse"
-                              style={{ animationDelay: `${i * 0.3}s` }}
-                            ></div>
+                            <div className="w-3 h-3 bg-accent-500 rounded-full mx-auto mb-1"></div>
                             <div className="text-xs text-accent-700 font-medium">
                               {city}
                             </div>
@@ -150,10 +138,7 @@ const SupportSection: React.FC<SupportSectionProps> = ({
 
                 {/* Support metrics with Ethiopian context */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                  <div
-                    className="text-center p-3 gradient-bg-light rounded-lg border border-accent-200/50 animate-fade-in"
-                    style={{ animationDelay: "100ms" }}
-                  >
+                  <div className="text-center p-3 gradient-bg-light rounded-lg border border-accent-200/50">
                     <div className="text-lg sm:text-xl font-bold text-accent-600">
                       2.8s
                     </div>
@@ -161,10 +146,7 @@ const SupportSection: React.FC<SupportSectionProps> = ({
                       Avg Response
                     </p>
                   </div>
-                  <div
-                    className="text-center p-3 bg-gradient-to-br from-accent-50 to-primary-50 rounded-lg border border-accent-200/50 animate-fade-in"
-                    style={{ animationDelay: "220ms" }}
-                  >
+                  <div className="text-center p-3 bg-gradient-to-br from-accent-50 to-primary-50 rounded-lg border border-accent-200/50">
                     <div className="text-lg sm:text-xl font-bold text-accent-600">
                       96%
                     </div>
@@ -172,10 +154,7 @@ const SupportSection: React.FC<SupportSectionProps> = ({
                       Student Success
                     </p>
                   </div>
-                  <div
-                    className="text-center p-3 bg-gradient-to-br from-primary-50 to-accent-50 rounded-lg border border-primary-200/50 animate-fade-in"
-                    style={{ animationDelay: "340ms" }}
-                  >
+                  <div className="text-center p-3 bg-gradient-to-br from-primary-50 to-accent-50 rounded-lg border border-primary-200/50">
                     <div className="text-lg sm:text-xl font-bold text-primary-600">
                       24/7
                     </div>
@@ -185,48 +164,7 @@ const SupportSection: React.FC<SupportSectionProps> = ({
                   </div>
                 </div>
               </div>
-
-              {/* Floating elements */}
-              <div
-                className="hidden md:block absolute -top-6 -right-6 gradient-primary-to-accent rounded-2xl shadow-xl shadow-accent p-4 text-white hover:shadow-accent-hover hover:scale-105 transition-all duration-300 cursor-pointer animate-float-x"
-                aria-hidden="true"
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-white rounded-full motion-safe:animate-pulse"></div>
-                  <span className="text-sm font-bold">Live Support</span>
-                </div>
-                <div className="text-xs opacity-90 mt-1">
-                  Ethiopian Time Zone
-                </div>
-              </div>
-
-              <div
-                className="hidden md:block absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl p-4 border-4 border-accent-200 hover:border-accent-300 transition-colors duration-300 cursor-pointer animate-float-y"
-                aria-hidden="true"
-              >
-                <div className="text-center">
-                  <div className="text-2xl mb-1">🤝</div>
-                  <div className="text-xs font-bold text-accent-700">
-                    Mentorship
-                  </div>
-                </div>
-              </div>
-
-              {/* Animated background elements */}
-              <div
-                className="hidden md:block absolute top-16 right-16 w-2 h-2 bg-accent-400 rounded-full motion-safe:animate-pulse"
-                aria-hidden="true"
-              ></div>
-              <div
-                className="hidden md:block absolute bottom-16 left-16 w-1.5 h-1.5 bg-primary-400 rounded-full motion-safe:animate-bounce"
-                style={{ animationDelay: "1s" }}
-                aria-hidden="true"
-              ></div>
-              <div
-                className="hidden md:block absolute top-1/2 right-8 w-1 h-1 bg-accent-400 rounded-full motion-safe:animate-pulse"
-                style={{ animationDelay: "2s" }}
-                aria-hidden="true"
-              ></div>
+              {/* Floating and animated decorative elements removed to improve performance */}
             </div>
           </div>
         </div>
