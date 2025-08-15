@@ -7,6 +7,9 @@ export function middleware(request: NextRequest) {
     // For dashboard API routes, ensure they require authentication
     if (request.nextUrl.pathname.startsWith("/api/dashboard/")) {
       const authHeader = request.headers.get("authorization");
+      const isPublicDashboardGet =
+        request.nextUrl.pathname === "/api/dashboard/home" &&
+        request.method === "GET";
 
       // Skip auth check for login endpoint
       if (request.nextUrl.pathname === "/api/auth/login") {
@@ -14,7 +17,7 @@ export function middleware(request: NextRequest) {
       }
 
       // For other dashboard routes, check if authorization header is present
-      if (!authHeader) {
+      if (!isPublicDashboardGet && !authHeader) {
         return NextResponse.json(
           { error: "Authorization header required" },
           { status: 401 }
