@@ -24,7 +24,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   }
 
   // Fetch all posts for sidebar data via API route for consistency
-  const allPosts = await api.internal<any[]>("http://localhost:3000/api/blog");
+  const allPosts = await api.internal<any[]>("/api/blog");
   const topPosts = (allPosts || [])
     .filter((p) => p.slug !== slug)
     .slice(0, 5)
